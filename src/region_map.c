@@ -71,7 +71,6 @@ static u16 GetRegionMapSectionIdAt_Internal(u16 x, u16 y);
 static void RegionMap_SetBG2XAndBG2Y(s16 x, s16 y);
 static void RegionMap_InitializeStateBasedOnPlayerLocation(void);
 static void RegionMap_InitializeStateBasedOnSSTidalLocation(void);
-static u8 get_flagnr_blue_points(u16 mapSecId);
 static u16 CorrectSpecialMapSecId_Internal(u16 mapSecId);
 static u16 RegionMap_GetTerraCaveMapSecId(void);
 static void RegionMap_GetMarineCaveCoords(u16 *x, u16 *y);
@@ -1186,7 +1185,7 @@ static void RegionMap_InitializeStateBasedOnSSTidalLocation(void)
     gRegionMap->cursorPosY = gRegionMapEntries[gRegionMap->mapSecId].y + y + MAPCURSOR_Y_MIN;
 }
 
-static u8 get_flagnr_blue_points(u16 mapSecId)
+u8 get_flagnr_blue_points(u16 mapSecId)
 {
     switch (mapSecId)
     {

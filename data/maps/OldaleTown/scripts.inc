@@ -5,6 +5,7 @@ OldaleTown_MapScripts:: @ 81E8EA2
 OldaleTown_OnTransition: @ 81E8EA8
 	call Common_EventScript_SetupRivalGender
 	setflag FLAG_VISITED_OLDALE_TOWN
+	setflag FLAG_VISITED_ROUTE101
 	call_if_unset FLAG_ADVENTURE_STARTED, OldaleTown_EventScript_1E8ED2
 	call_if_unset FLAG_RECEIVED_POTION_OLDALE, OldaleTown_EventScript_1E8EDE
 	call_if_set FLAG_ADVENTURE_STARTED, OldaleTown_EventScript_1E8ECC
