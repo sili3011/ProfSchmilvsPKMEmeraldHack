@@ -47,6 +47,7 @@
 	.include "src/multiboot.o"
 	.include "src/mirage_tower.o"
 	.include "src/berry_fix_program.o"
+	.include "src/soar.o"
 
     @ pokenav
 gUnknown_030012BC: @ 30012BC

@@ -42,6 +42,7 @@
 #include "constants/songs.h"
 #include "constants/vars.h"
 #include "event_obj_lock.h"
+#include "soar.h"
 
 extern u8 BerryTree_EventScript_274482[];
 extern u8 BerryTree_EventScript_2744C0[];
@@ -1099,4 +1100,18 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
 void ItemUseOutOfBattle_CannotUse(u8 taskId)
 {
     DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].data[3]);
+}
+
+void ItemUseOutOfBattle_EonFlute(u8 taskId)
+{
+	s16* data = gTasks[taskId].data;
+	
+	if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+	{
+		gUnknown_0203A0F4 = ItemUseOnFieldCB_EonFlute;
+		SetUpItemUseOnFieldCallback(taskId);
+	}
+	else {
+		DisplayDadsAdviceCannotUseItemMessage(taskId, data[3]);
+	}
 }
