@@ -1552,5 +1552,5 @@ static const u8 sOldSeaMapDesc[] = _(
 
 static const u8 sEonFluteDesc[] = _(
 	"A flute that can\n"
-	"summon LATIAS\n"
-	"wherever you are.");
+	"summon LATIAS or\n"
+	"LATIOS.");

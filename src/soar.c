@@ -77,19 +77,15 @@ static const u32 sRegionMapBkgnd_TilemapLZ[] = INCBIN_U32("graphics/soar/region_
 
 #define GFX_TAG_EON 9999
 
-//#if SAPPHIRE
 static const u32 sEonBrendanSpriteTiles[] = INCBIN_U32("graphics/soar/latias_brendan.4bpp.lz");
 static const u32 sEonBrendanSpritePaletteData[] = INCBIN_U32("graphics/soar/latias_brendan.gbapal.lz");
 static const u32 sEonMaySpriteTiles[] = INCBIN_U32("graphics/soar/latias_may.4bpp.lz");
 static const u32 sEonMaySpritePaletteData[] = INCBIN_U32("graphics/soar/latias_may.gbapal.lz");
-//#else
-/*
-static const u8 sEonBrendanSpriteTiles[] = INCBIN_U8("graphics/soar/latios_brendan.4bpp.lz");
-static const u8 sEonBrendanSpritePaletteData[] = INCBIN_U8("graphics/soar/latios_brendan.gbapal.lz");
-static const u8 sEonMaySpriteTiles[] = INCBIN_U8("graphics/soar/latios_may.4bpp.lz");
-static const u8 sEonMaySpritePaletteData[] = INCBIN_U8("graphics/soar/latios_may.gbapal.lz");
-*/
-//#endif
+
+static const u32 sEonBrendanSpriteTiles2[] = INCBIN_U32("graphics/soar/latios_brendan.4bpp.lz");
+static const u32 sEonBrendanSpritePaletteData2[] = INCBIN_U32("graphics/soar/latios_brendan.gbapal.lz");
+static const u32 sEonMaySpriteTiles2[] = INCBIN_U32("graphics/soar/latios_may.4bpp.lz");
+static const u32 sEonMaySpritePaletteData2[] = INCBIN_U32("graphics/soar/latios_may.gbapal.lz");
 
 static const struct OamData sEonSpriteOamData =
 {
@@ -235,19 +231,28 @@ void ItemUseOnFieldCB_EonFlute(u8 taskId)
 
 static void LoadEonGraphics(void)
 {
-	struct CompressedSpriteSheet sEonSpriteSheet =
-	{
-		sEonBrendanSpriteTiles, 1024, GFX_TAG_EON
-	};
-	struct CompressedSpritePalette sEonSpritePalette =
-	{
-		sEonBrendanSpritePaletteData, GFX_TAG_EON
-	};
+	struct CompressedSpriteSheet sEonSpriteSheet = { .size = 1024,.tag = GFX_TAG_EON };
+	struct CompressedSpritePalette sEonSpritePalette = { .tag = GFX_TAG_EON };
 
-	if (gSaveBlock2Ptr->playerGender != MALE)
-	{
-		sEonSpriteSheet.data = sEonMaySpriteTiles;
-		sEonSpritePalette.data = sEonMaySpritePaletteData;
+	if (FlagGet(FLAG_EON_LATI)) {
+		sEonSpriteSheet.data = sEonBrendanSpriteTiles;
+		sEonSpritePalette.data = sEonBrendanSpritePaletteData;
+
+		if (gSaveBlock2Ptr->playerGender != MALE)
+		{
+			sEonSpriteSheet.data = sEonMaySpriteTiles;
+			sEonSpritePalette.data = sEonMaySpritePaletteData;
+		}
+	}
+	else {
+		sEonSpriteSheet.data = sEonBrendanSpriteTiles2;
+		sEonSpritePalette.data = sEonBrendanSpritePaletteData2;
+
+		if (gSaveBlock2Ptr->playerGender != MALE)
+		{
+			sEonSpriteSheet.data = sEonMaySpriteTiles2;
+			sEonSpritePalette.data = sEonMaySpritePaletteData2;
+		}
 	}
 
 	LoadCompressedSpriteSheet(&sEonSpriteSheet);
