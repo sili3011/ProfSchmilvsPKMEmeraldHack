@@ -420,4 +420,16 @@ void sub_8097BB4(u8 var1, u8 graphicsId);
 void sub_8097CC4(u8 var1, u8 var2);
 bool32 sub_8097D9C(u8 var);
 
+// run slow
+u8 GetPlayerRunSlowMovementAction(u32);
+//sideways stairs
+u8 GetSidewaysStairsToRightDirection(s16, s16, u8);
+u8 GetSidewaysStairsToLeftDirection(s16, s16, u8);
+u8 GetDiagonalRightStairsMovement(u32);
+u8 GetDiagonalLeftStairsMovement(u32);
+u8 GetDiagonalRightStairsRunningMovement(u32);
+u8 GetDiagonalLeftStairsRunningMovement(u32);
+u8 GetDiagonalLeftAcroBikeMovement(u32);
+u8 GetDiagonalRightAcroBikeMovement(u32);
+
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H
