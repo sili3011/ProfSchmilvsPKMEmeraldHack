@@ -143,6 +143,19 @@ static u8 GetMachBikeTransition(u8 *dirTraveling)
 {
     // if the dir updated before this function, get the relevent new direction to check later.
     u8 direction = GetPlayerMovementDirection();
+    
+    // fix direction when moving on sideways stairs
+    switch (direction)
+    {
+    case DIR_SOUTHWEST:
+    case DIR_NORTHWEST:
+        direction = DIR_WEST;
+        break;
+    case DIR_SOUTHEAST:
+    case DIR_NORTHEAST:
+        direction = DIR_EAST;
+        break;
+    }
 
     // is the player standing still?
     if (*dirTraveling == 0)
@@ -179,7 +192,7 @@ static u8 GetMachBikeTransition(u8 *dirTraveling)
 
 // the difference between face direction and turn direction is that one changes direction while the other does the animation of turning as well as changing direction.
 static void MachBikeTransition_FaceDirection(u8 direction)
-{   
+{
     PlayerFaceDirection(direction);
     Bike_SetBikeStill();
 }
@@ -232,41 +245,8 @@ static void MachBikeTransition_TrySpeedUp(u8 direction)
                     PlayerOnBikeCollide(direction);
             }
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-        {
-            #if SLOW_MOVEMENT_ON_STAIRS == TRUE
-                gPlayerAvatar.bikeFrameCounter = 0;
-                gPlayerAvatar.bikeSpeed = SPEED_STANDING;
-                PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
-                return;
-            #else
-                gPlayerAvatar.bikeFrameCounter = 2;
-                gPlayerAvatar.bikeSpeed = SPEED_STANDING;
-                PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
-                return;
-            #endif
-
-        }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-        {
-            #if SLOW_MOVEMENT_ON_STAIRS == TRUE
-                gPlayerAvatar.bikeFrameCounter = 0;
-                gPlayerAvatar.bikeSpeed = SPEED_STANDING;
-                PlayerGoSpeed2(GetRightSideStairsDirection(direction));
-                return;
-            #else
-                gPlayerAvatar.bikeFrameCounter = 2;
-                gPlayerAvatar.bikeSpeed = SPEED_STANDING;
-                PlayerGoSpeed2(GetRightSideStairsDirection(direction));
-                return;
-            #endif
-            
-        }
         else
         {
-            if (PlayerIsMovingOnRockStairs(direction))
-                gPlayerAvatar.bikeFrameCounter--;
-            
             sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
             gPlayerAvatar.bikeSpeed = gPlayerAvatar.bikeFrameCounter + (gPlayerAvatar.bikeFrameCounter >> 1); // same as dividing by 2, but compiler is insistent on >> 1
             if (gPlayerAvatar.bikeFrameCounter < 2) // do not go faster than the last element in the mach bike array
@@ -301,13 +281,6 @@ static void MachBikeTransition_TrySlowDown(u8 direction)
     }
     else
     {
-        #if SLOW_MOVEMENT_ON_STAIRS == TRUE
-            if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-                return PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
-            else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-                return PlayerGoSpeed2(GetRightSideStairsDirection(direction));
-        #endif
-        
         sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
     }
 }
@@ -315,13 +288,11 @@ static void MachBikeTransition_TrySlowDown(u8 direction)
 // the acro bike requires the input handler to be executed before the transition can.
 static void MovePlayerOnAcroBike(u8 newDirection, u16 newKeys, u16 heldKeys)
 {
-    gSidewaysStairsDirection = newDirection;
     sAcroBikeTransitions[CheckMovementInputAcroBike(&newDirection, newKeys, heldKeys)](newDirection);
 }
 
 static u8 CheckMovementInputAcroBike(u8 *newDirection, u16 newKeys, u16 heldKeys)
 {
-    gSidewaysStairsDirection = *newDirection;
     return sAcroBikeInputHandlers[gPlayerAvatar.acroBikeState](newDirection, newKeys, heldKeys);
 }
 
@@ -410,7 +381,7 @@ static u8 AcroBikeHandleInputWheelieStanding(u8 *newDirection, u16 newKeys, u16 
     struct ObjectEvent *playerObjEvent;
 
     direction = GetPlayerMovementDirection();
-    gSidewaysStairsDirection = direction;
+    //gSidewaysStairsDirection = direction;
     
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     gPlayerAvatar.runningState = NOT_MOVING;
@@ -607,15 +578,7 @@ static void AcroBikeTransition_Moving(u8 direction)
     }
     else
     {
-        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-            return PlayerGoSpeed2(GetRightSideStairsDirection(direction));
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-            return PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
-
-        if (PlayerIsMovingOnRockStairs(direction))
-            PlayerGoSpeed2(direction);
-        else
-            PlayerRideWaterCurrent(direction);
+        PlayerRideWaterCurrent(direction);
     }
 }
 
@@ -684,11 +647,6 @@ static void AcroBikeTransition_WheelieHoppingMoving(u8 direction)
         else
         {
         derp:
-            if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-                gSidewaysStairsDirection = GetLeftSideStairsDirection(direction);
-            else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-                gSidewaysStairsDirection = GetRightSideStairsDirection(direction);
-            
             PlayerMovingHoppingWheelie(direction);
         }
     }
@@ -757,11 +715,6 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
         return;
     }
     
-    if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-        gSidewaysStairsDirection = GetLeftSideStairsDirection(direction);
-    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-        gSidewaysStairsDirection = GetRightSideStairsDirection(direction);
-    
     PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;
 }
@@ -796,12 +749,7 @@ static void AcroBikeTransition_WheelieRisingMoving(u8 direction)
         }
         return;
     }
-    
-    if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-        gSidewaysStairsDirection = GetLeftSideStairsDirection(direction);
-    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-        gSidewaysStairsDirection = GetRightSideStairsDirection(direction);
-    
+
     PlayerPopWheelieWhileMoving(direction);
     gPlayerAvatar.runningState = MOVING;
 }
@@ -825,12 +773,7 @@ static void AcroBikeTransition_WheelieLoweringMoving(u8 direction)
             PlayerEndWheelie(direction);
         return;
     }
-    
-    if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-        gSidewaysStairsDirection = GetLeftSideStairsDirection(direction);
-    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-        gSidewaysStairsDirection = GetRightSideStairsDirection(direction);
-    
+
     PlayerEndWheelieWhileMoving(direction);
 }
 
@@ -1090,7 +1033,7 @@ void Bike_UpdateBikeCounterSpeed(u8 counter)
 
 static void Bike_SetBikeStill(void)
 {
-    gSidewaysStairsDirection = gObjectEvents[gPlayerAvatar.objectEventId].facingDirection;
+    //gSidewaysStairsDirection = gObjectEvents[gPlayerAvatar.objectEventId].facingDirection;
     gPlayerAvatar.bikeFrameCounter = 0;
     gPlayerAvatar.bikeSpeed = SPEED_STANDING;
 }
