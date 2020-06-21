@@ -209,6 +209,8 @@ void CB2_InitSoar(void)
 			sPlayerYaw = 0;
 			sPlayerPitch = 0;
 
+			FadeOutAndFadeInNewMapMusic(MUS_NAMINORI, 2, 2);
+
 			// some of these may not be necessary, but I'm just being safe
 			ScanlineEffect_Stop();
 			ResetTasks();
@@ -521,7 +523,7 @@ static void CB2_HandleInput(void)
 	int sinYaw;
 	int cosYaw;
 
-	if ((gMain.newKeys & A_BUTTON) && sPrevMapSection != MAPSEC_NONE && sPrevMapSection != MAPSEC_ROUTE_126 && sPrevMapSection != MAPSEC_ROUTE_128 && sPrevMapSection != MAPSEC_ROUTE_129 && sPrevMapSection != MAPSEC_ROUTE_130 && sPrevMapSection != MAPSEC_ROUTE_131 && (get_flagnr_blue_points(sPrevMapSection) == MAPSECTYPE_CITY_CANFLY || get_flagnr_blue_points(sPrevMapSection) == MAPSECTYPE_BATTLE_FRONTIER))
+	if ((gMain.newKeys & A_BUTTON) && sPrevMapSection != MAPSEC_NONE && sPrevMapSection != MAPSEC_ROUTE_126 && sPrevMapSection != MAPSEC_ROUTE_128 && sPrevMapSection != MAPSEC_ROUTE_129 && sPrevMapSection != MAPSEC_ROUTE_130 && sPrevMapSection != MAPSEC_ROUTE_131 && (GetMapsecType(sPrevMapSection) == MAPSECTYPE_CITY_CANFLY || GetMapsecType(sPrevMapSection) == MAPSECTYPE_BATTLE_FRONTIER))
 	{
 		PlaySE(SE_SELECT);
 
