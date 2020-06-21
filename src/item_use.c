@@ -1133,7 +1133,7 @@ void ItemUseOutOfBattle_EonFlute(u8 taskId)
 	
 	if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
 	{
-		gUnknown_0203A0F4 = ItemUseOnFieldCB_EonFlute;
+        sItemUseOnFieldCB = ItemUseOnFieldCB_EonFlute;
 		SetUpItemUseOnFieldCallback(taskId);
 	}
 	else {
