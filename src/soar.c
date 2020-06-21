@@ -225,7 +225,7 @@ void CB2_InitSoar(void)
 void ItemUseOnFieldCB_EonFlute(u8 taskId)
 {
 	ScriptContext2_Enable();
-	FreezeEventObjects();
+	FreezeObjectEvents();
 	SetMainCallback2(CB2_InitSoar);
 }
 
@@ -478,7 +478,7 @@ static void StartBarrelRoll(void)
 
 static void UpdateMapSectionPopup(void)
 {
-	unsigned int mapSection = GetRegionMapSectionIdAt(IPART(sPlayerPosX) / 8, IPART(sPlayerPosY) / 8);
+	unsigned int mapSection = GetRegionMapSecIdAt(IPART(sPlayerPosX) / 8, IPART(sPlayerPosY) / 8);
 
 	if (mapSection != sPrevMapSection)
 	{
@@ -646,10 +646,10 @@ static void WarpCB2(void)
 		SetWarpDestinationToHealLocation(HEAL_LOCATION_BATTLE_FRONTIER_OUTSIDE_EAST);
 		break;
 	case MAPSEC_LITTLEROOT_TOWN:
-		SetWarpDestinationToHealLocation(gSaveBlock2Ptr->playerGender == MALE ? HEAL_LOCATION_LITTLEROOT_TOWN_1 : HEAL_LOCATION_LITTLEROOT_TOWN_2);
+		SetWarpDestinationToHealLocation(gSaveBlock2Ptr->playerGender == MALE ? HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE : HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE);
 		break;
 	case MAPSEC_EVER_GRANDE_CITY:
-		SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_2 : HEAL_LOCATION_EVER_GRANDE_CITY_1);
+		SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
 		break;
 	case MAPSEC_MT_CHIMNEY:
 		SetWarpDestinationToHealLocation(HEAL_LOCATION_MT_CHIMNEY);
