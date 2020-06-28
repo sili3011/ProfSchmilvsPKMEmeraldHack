@@ -7,8 +7,8 @@
 
 // Exported ROM declarations
 u8 CreateWarpArrowSprite(void);
-u8 sub_8155800(u8 oldSpriteId);
-void sub_81555AC(u8, u8);
+u8 DoBobbingFieldEffect(u8 oldSpriteId);
+void BindFieldEffectToSprite(u8, u8);
 bool8 sub_8155DA0(struct ObjectEvent *);
 void sub_8155D78(struct ObjectEvent *);
 void StartAshFieldEffect(s16, s16, u16, s16);

@@ -960,7 +960,7 @@ u32 FldEff_SurfBlob(void)
     return spriteId;
 }
 
-void sub_81555AC(u8 spriteId, u8 value)
+void BindFieldEffectToSprite(u8 spriteId, u8 value)
 {
     gSprites[spriteId].data[0] = (gSprites[spriteId].data[0] & ~0xF) | (value & 0xF);
 }
@@ -1072,7 +1072,7 @@ static void CreateBobbingEffect(struct ObjectEvent *objectEvent, struct Sprite *
     }
 }
 
-u8 sub_8155800(u8 oldSpriteId)
+u8 DoBobbingFieldEffect(u8 oldSpriteId)
 {
     u8 spriteId;
     struct Sprite *sprite;

@@ -2936,7 +2936,7 @@ static void sub_80B8F24(struct Task *task)
         gPlayerAvatar.preventStep = FALSE;
         gPlayerAvatar.flags &= 0xdf;
         ObjectEventSetHeldMovement(objectEvent, GetFaceDirectionMovementAction(objectEvent->movementDirection));
-        sub_81555AC(objectEvent->fieldEffectSpriteId, 1);
+        BindFieldEffectToSprite(objectEvent->fieldEffectSpriteId, 1);
         UnfreezeObjectEvents();
         ScriptContext2_Disable();
         FieldEffectActiveListRemove(FLDEFF_USE_SURF);
@@ -3072,7 +3072,7 @@ static void sub_80B92A0(struct Task *task)
         struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
         if (task->data[15] & 0x08)
         {
-            sub_81555AC(objectEvent->fieldEffectSpriteId, 2);
+            BindFieldEffectToSprite(objectEvent->fieldEffectSpriteId, 2);
             sub_81555D8(objectEvent->fieldEffectSpriteId, 0);
         }
         task->data[1] = sub_80B94C4();
@@ -3341,7 +3341,7 @@ static void sub_80B9804(struct Task *task)
         SetPlayerAvatarStateMask(0x01);
         if (task->data[15] & 0x08)
         {
-            sub_81555AC(objectEvent->fieldEffectSpriteId, 0);
+            BindFieldEffectToSprite(objectEvent->fieldEffectSpriteId, 0);
         }
         ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(0x3));
         CameraObjectReset2();
@@ -3451,7 +3451,7 @@ static void sub_80B9A60(struct Task *task)
         if (task->data[15] & 0x08)
         {
             state = 3;
-            sub_81555AC(objectEvent->fieldEffectSpriteId, 1);
+            BindFieldEffectToSprite(objectEvent->fieldEffectSpriteId, 1);
         }
         ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(state));
         ObjectEventTurn(objectEvent, DIR_SOUTH);
