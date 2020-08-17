@@ -4069,16 +4069,16 @@ extern const u8 gHealthboxElementsGfxTable[][32];
 
 extern const u16 gNamingScreenMenu_Pal[];
 extern const u32 gNamingScreenMenu_Gfx[];
-extern const u32 gUnknown_08DD4544[];
-extern const u8 gUnknown_08DD4620[];
-extern const u8 gUnknown_08DD46E0[];
-extern const u8 gUnknown_08DD47A0[];
+extern const u32 gNamingScreenBackground_Tilemap[];
+extern const u8 gNamingScreenKeyboardUpper_Tilemap[];
+extern const u8 gNamingScreenKeyboardLower_Tilemap[];
+extern const u8 gNamingScreenKeyboardSymbols_Tilemap[];
 extern const u8 gNamingScreenRWindow_Gfx[];
-extern const u8 gNamingScreenKeyboardButton_Gfx[];
+extern const u8 gNamingScreenPageButton_Gfx[];
 extern const u8 gNamingScreenROptions_Gfx[];
 extern const u8 gNamingScreenCursor_Gfx[];
-extern const u8 gNamingScreenRightPointingTriangleTiles[];
-extern const u8 gNamingScreenUnderscoreTiles[];
+extern const u8 gNamingScreenInputArrow_Gfx[];
+extern const u8 gNamingScreenUnderscore_Gfx[];
 
 extern const u32 gUnknown_08D9BA44[];
 
@@ -4918,13 +4918,13 @@ extern const u32 gPartyMenuPokeball_Pal[];
 extern const u32 gStatusPal_Icons[];
 
 // Roulette
-extern const u32 gRouletteMenuTiles[];
-extern const u32 gRouletteWheelTiles[];
+extern const u32 gRouletteMenu_Gfx[];
+extern const u32 gRouletteWheel_Gfx[];
 extern const u32 gRouletteCenter_Gfx[];
-extern const u32 gRouletteHeadersTiles[];
-extern const u32 gRouletteCreditTiles[];
-extern const u32 gRouletteNumbersTiles[];
-extern const u32 gRouletteMultiplierTiles[];
+extern const u32 gRouletteHeaders_Gfx[];
+extern const u32 gRouletteCredit_Gfx[];
+extern const u32 gRouletteNumbers_Gfx[];
+extern const u32 gRouletteMultiplier_Gfx[];
 
 // Contest util
 extern const u32 gContestResults_Gfx[];
