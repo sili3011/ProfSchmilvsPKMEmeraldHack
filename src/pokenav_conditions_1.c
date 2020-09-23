@@ -25,7 +25,7 @@ struct PokenavSub11
     u8 fill2[0x6320 - 0x6308];
     u8 unk6320[3][24];
     u8 unk6368[3][64];
-    struct UnknownStruct_81D1ED4 unk6428;
+    struct ConditionGraph unk6428;
     u8 unk6780[3];
     u8 unk6783[3];
     s8 unk6786;
@@ -89,13 +89,13 @@ u32 sub_81CD08C(struct PokenavSub11 *structPtr)
 
     if (ret == 0)
     {
-        if (gMain.newKeys & B_BUTTON)
+        if (JOY_NEW(B_BUTTON))
         {
             PlaySE(SE_SELECT);
             structPtr->unk6304 = sub_81CD19C;
             ret = 2;
         }
-        else if (gMain.newKeys & A_BUTTON)
+        else if (JOY_NEW(A_BUTTON))
         {
             if (structPtr->unk6300 == 0)
             {
@@ -166,7 +166,7 @@ u8 sub_81CD1E4(struct PokenavSub11 *structPtr)
     struct PokenavSub18 *unkPtr = GetSubstructPtr(18);
     u8 ret = 0;
 
-    if (gMain.heldKeys & DPAD_UP)
+    if (JOY_HELD(DPAD_UP))
     {
         if (structPtr->unk6300 == 0 || unkPtr->unk2 != 0)
         {
@@ -174,7 +174,7 @@ u8 sub_81CD1E4(struct PokenavSub11 *structPtr)
             ret = sub_81CD258(1);
         }
     }
-    else if (gMain.heldKeys & DPAD_DOWN)
+    else if (JOY_HELD(DPAD_DOWN))
     {
         if (structPtr->unk6300 == 0 || unkPtr->unk2 < unkPtr->unk0 - 1)
         {
@@ -546,7 +546,7 @@ u16 sub_81CDC60(void)
     return unkPtr->unk2;
 }
 
-struct UnknownStruct_81D1ED4 *sub_81CDC70(void)
+struct ConditionGraph *sub_81CDC70(void)
 {
     struct PokenavSub11 *structPtr = GetSubstructPtr(11);
     return &structPtr->unk6428;
