@@ -1217,10 +1217,10 @@ static void CreateDexNavWildMon(u16 species, u8 potential, u8 level, u8 abilityN
     
     CreateWildMon(species, level);  // shiny rate bonus handled in CreateBoxMon
     
-    //Pick potential ivs to set to 31
+    //Pick potential unique ivs to set to 31
     iv[0] = Random() % 6;
-    iv[1] = Random() % 6;
-    iv[2] = Random() % 6;
+    do {iv[1] = Random() % 6;} while (iv[1] == iv[0]);
+    do {iv[2] = Random() % 6;} while (iv[2] == iv[0] || iv[2] == iv[1]);
     if ((iv[0] != iv[1]) && (iv[0] != iv[2]) && (iv[1] != iv[2]))
     {
         if (potential > 2)
