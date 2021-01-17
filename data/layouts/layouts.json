@@ -4417,7 +4417,7 @@
       "width": 50,
       "height": 50,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Dewford",
+      "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/playground/border.bin",
       "blockdata_filepath": "data/layouts/playground/map.bin"
     }

@@ -30,8 +30,8 @@
   ],
   "warp_events": [
     {
-      "x": 12,
-      "y": 10,
+      "x": 15,
+      "y": 4,
       "elevation": 0,
       "dest_map": "MAP_PLAYGROUND",
       "dest_warp_id": 0
@@ -41,6 +41,69 @@
 
   ],
   "bg_events": [
-
+    {
+      "type": "sign",
+      "x": 31,
+      "y": 11,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 32,
+      "y": 11,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 33,
+      "y": 11,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 31,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 33,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 31,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 32,
+      "y": 13,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    },
+    {
+      "type": "sign",
+      "x": 33,
+      "y": 12,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "playground_EventScript_CheckFountain"
+    }
   ]
 }

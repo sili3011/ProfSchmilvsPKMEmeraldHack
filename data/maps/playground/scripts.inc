@@ -4,7 +4,8 @@ playground_MapScripts::
 
 playground_EventScript_GetRowlet::
 	lockall
-	givemon SPECIES_ROWLET, 5, ITEM_ORAN_BERRY
+	givemon SPECIES_ROWLET, 10, ITEM_ORAN_BERRY
+	giveitem ITEM_ULTRA_BALL, 10
 	call playground_EventScript_RowletFanfare
 	releaseall
 	end
@@ -20,5 +21,16 @@ playground_EventScript_RowletFanfare::
 	return
 
 
+playground_EventScript_CheckFountain::
+	lockall
+	message playground_Text_CheckFountain_Dry
+	waitmessage
+	releaseall
+	end
+
+
 playground_Text_ObtainedRowlet::
 	.string "{PLAYER} obtained Rowlet!$"
+
+playground_Text_CheckFountain_Dry::
+	.string "The fountain seems oddly dry...$"
