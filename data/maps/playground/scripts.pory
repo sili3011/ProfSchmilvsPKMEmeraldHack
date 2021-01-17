@@ -14,9 +14,11 @@ script playground_EventScript_GetRowlet {
 script playground_EventScript_RowletFanfare {
     bufferspeciesname(1, SPECIES_ROWLET)
     removeobject(1)
+    playfanfare(MUS_OBTAIN_ITEM)
     setflag(FLAG_SYS_POKEMON_GET)
     message(playground_Text_ObtainedRowlet)
     waitmessage
+    waitfanfare
     bufferspeciesname(0, SPECIES_ROWLET)
     return
 }
@@ -36,8 +38,10 @@ script playground_EventScript_GetEonFlute {
 }
 
 script playground_EventScript_EonFluteFanfare {
-    setflag(FLAG_SYS_POKEMON_GET)
-    message(playground_Text_ObtainedRowlet)
+    removeobject(2)
+    playfanfare(MUS_OBTAIN_ITEM)
+    message(playground_Text_ObtainedEonFlute)
+    waitfanfare
     waitmessage
     return
 }
