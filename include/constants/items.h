@@ -694,7 +694,9 @@
 #define ITEM_TAPUNIUM_Z               602
 #define ITEM_ULTRANECROZIUM_Z         603
 
-#define ITEMS_COUNT 604
+#define ITEM_EON_FLUTE 604
+
+#define ITEMS_COUNT 605
 #define ITEM_FIELD_ARROW ITEMS_COUNT
 
 #define FIRST_BERRY_INDEX             ITEM_CHERI_BERRY

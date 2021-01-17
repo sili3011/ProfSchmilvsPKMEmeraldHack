@@ -3862,6 +3862,19 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
 
+    [ITEM_EON_FLUTE] =
+    {
+        .name = _("EON FLUTE"),
+        .itemId = ITEM_EON_FLUTE,
+        .price = 0,
+        .description = sEonFluteDesc,
+		.importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
+        .type = 2,
+        .fieldUseFunc = ItemUseOutOfBattle_EonFlute,
+        .secondaryId = 0,
+    },
+
     [ITEM_WAILMER_PAIL] =
     {
         .name = _("Wailmer Pail"),

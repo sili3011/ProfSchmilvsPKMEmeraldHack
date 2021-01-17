@@ -3008,3 +3008,7 @@ static const u8 sUltranecroziumZDesc[] = _(
     "A crystal to turn\n"
     "fused Necrozma\n"
     "into a new form.");
+static const u8 sEonFluteDesc[] = _(
+	"A flute that can\n"
+	"summon LATIAS or\n"
+	"LATIOS.");

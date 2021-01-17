@@ -70,6 +70,22 @@ static void FieldCallback_UseFly(void);
 static void Task_UseFly(u8);
 static void FieldCallback_FlyIntoMap(void);
 static void Task_FlyIntoMap(u8);
+static void PokeballGlowEffect_0(struct Sprite *);
+static void PokeballGlowEffect_1(struct Sprite *);
+static void PokeballGlowEffect_2(struct Sprite *);
+static void PokeballGlowEffect_3(struct Sprite *);
+static void PokeballGlowEffect_4(struct Sprite *);
+static void PokeballGlowEffect_5(struct Sprite *);
+static void PokeballGlowEffect_6(struct Sprite *);
+static void PokeballGlowEffect_7(struct Sprite *);
+
+static u8 PokecenterHealEffectHelper(s16, s16);
+static void HallOfFameRecordEffectHelper(s16, s16, s16, u8);
+
+static void FieldCallback_Fly(void);
+static void FieldCallback_Fly_2(void);
+static void mapldr_08084390(void);
+static void c3_080843F8(u8);
 
 static void Task_FallWarpFieldEffect(u8);
 static bool8 FallWarpEffect_Init(struct Task *);
@@ -269,6 +285,12 @@ static const u8 sRockFragment_TopLeft[] = INCBIN_U8("graphics/misc/deoxys_rock_f
 static const u8 sRockFragment_TopRight[] = INCBIN_U8("graphics/misc/deoxys_rock_fragment_top_right.4bpp");
 static const u8 sRockFragment_BottomLeft[] = INCBIN_U8("graphics/misc/deoxys_rock_fragment_bottom_left.4bpp");
 static const u8 sRockFragment_BottomRight[] = INCBIN_U8("graphics/misc/deoxys_rock_fragment_bottom_right.4bpp");
+
+void Fldeff_FlyLand(void)
+{
+	SetMainCallback2(CB2_ReturnToField);
+	gFieldCallback = FieldCallback_Fly_2;
+}
 
 bool8 (*const gFieldEffectScriptFuncs[])(u8 **, u32 *) =
 {
@@ -1338,6 +1360,17 @@ static void FieldCallback_UseFly(void)
     ScriptContext2_Enable();
     FreezeObjectEvents();
     gFieldCallback = NULL;
+}
+
+static void FieldCallback_Fly_2(void)
+{
+	u8 taskId;
+    FadeInFromBlack();
+	taskId = CreateTask(Task_UseFly, 0);
+	gTasks[taskId].data[0] = 1; //do landing anim only
+	ScriptContext2_Enable();
+    FreezeObjectEvents();
+	gFieldCallback = NULL;
 }
 
 static void Task_UseFly(u8 taskId)
