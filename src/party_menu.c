@@ -2535,13 +2535,14 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
-    for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
-    {
+    //for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
+    //{
         // if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
-        if (GetMonData(&mons[slotId], MON_DATA_SPECIES) == SPECIES_ROWLET && sFieldMoves[j] == FIELD_MOVE_CUT) {
-            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
+        // gBaseStats[playerSpecies2].type1
+        if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_WATER || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_WATER) {
+            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 4 + MENU_FIELD_MOVES);
         }
-    }
+    //}
 
     if (!InBattlePike())
     {
@@ -3771,7 +3772,7 @@ static void FieldCallback_Surf(void)
 
 static bool8 SetUpFieldMove_Surf(void)
 {
-    if (PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
+    if (IsPlayerFacingSurfableFishableWater() == TRUE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
         gPostMenuFieldCallback = FieldCallback_Surf;
