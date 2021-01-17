@@ -21,6 +21,21 @@ playground_EventScript_RowletFanfare::
 	return
 
 
+playground_EventScript_GetEonFlute::
+	lockall
+	giveitem ITEM_EON_FLUTE, 1
+	call playground_EventScript_EonFluteFanfare
+	releaseall
+	end
+
+
+playground_EventScript_EonFluteFanfare::
+	setflag FLAG_SYS_POKEMON_GET
+	message playground_Text_ObtainedRowlet
+	waitmessage
+	return
+
+
 playground_EventScript_CheckFountain::
 	lockall
 	message playground_Text_CheckFountain_Dry
@@ -31,6 +46,9 @@ playground_EventScript_CheckFountain::
 
 playground_Text_ObtainedRowlet::
 	.string "{PLAYER} obtained Rowlet!$"
+
+playground_Text_ObtainedEonFlute::
+	.string "{PLAYER} obtained the Eon Flute!$"
 
 playground_Text_CheckFountain_Dry::
 	.string "The fountain seems oddly dry...$"
