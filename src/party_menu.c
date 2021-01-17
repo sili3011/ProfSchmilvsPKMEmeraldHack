@@ -2535,25 +2535,13 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
-    // Add field moves to action list
-    for (i = 0; i < MAX_MON_MOVES; i++) {
-        for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
-        {
-            if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
-            {
-                AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-                break;
-            }
+    for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
+    {
+        // if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
+        if (GetMonData(&mons[slotId], MON_DATA_SPECIES) == SPECIES_ROWLET && sFieldMoves[j] == FIELD_MOVE_CUT) {
+            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
         }
     }
-    
-    // for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
-    // {
-    //     // if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
-    //     if (GetMonData(&mons[slotId], MON_DATA_SPECIES) == SPECIES_ROWLET && sFieldMoves[j] == FIELD_MOVE_CUT) {
-    //         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-    //     }
-    // }
 
     if (!InBattlePike())
     {
@@ -3653,13 +3641,7 @@ static void CursorCb_FieldMove(u8 taskId)
     }
     else
     {
-        // All field moves before WATERFALL are HMs.
-        if (fieldMove <= FIELD_MOVE_WATERFALL && FlagGet(FLAG_BADGE01_GET + fieldMove) != TRUE)
-        {
-            DisplayPartyMenuMessage(gText_CantUseUntilNewBadge, TRUE);
-            gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
-        }
-        else if (sFieldMoveCursorCallbacks[fieldMove].fieldMoveFunc() == TRUE)
+        if (sFieldMoveCursorCallbacks[fieldMove].fieldMoveFunc() == TRUE)
         {
             switch (fieldMove)
             {
