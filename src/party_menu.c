@@ -2537,7 +2537,10 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
     for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
     {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
+        // if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
+        if (GetMonData(&mons[slotId], MON_DATA_SPECIES) == SPECIES_ROWLET && sFieldMoves[j] == FIELD_MOVE_CUT) {
+            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
+        }
     }
 
     if (!InBattlePike())
