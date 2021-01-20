@@ -401,6 +401,7 @@ static void CursorCb_Trade2(u8);
 static void CursorCb_Toss(u8);
 static void CursorCb_FieldMove(u8);
 static bool8 SetUpFieldMove_Surf(void);
+static bool8 SetUpFieldMove_Ride(void);
 static bool8 SetUpFieldMove_Fly(void);
 static bool8 SetUpFieldMove_Waterfall(void);
 static bool8 SetUpFieldMove_Dive(void);
@@ -2535,14 +2536,20 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
-    //for (j = 0; sFieldMoves[j] != FIELD_MOVE_TERMINATOR; j++)
-    //{
-        // if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
-        // gBaseStats[playerSpecies2].type1
-        if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_WATER || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_WATER) {
-            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 4 + MENU_FIELD_MOVES);
-        }
-    //}
+    // PUT FIELD MOVE CONDITIONS HERE
+
+    // SURF
+    if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_WATER || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_WATER) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 4 + MENU_FIELD_MOVES);
+    }
+
+    // FLY
+    if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_FLYING || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_FLYING) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
+    }
+
+    // RIDE
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 14 + MENU_FIELD_MOVES);
 
     if (!InBattlePike())
     {
@@ -3773,6 +3780,17 @@ static void FieldCallback_Surf(void)
 static bool8 SetUpFieldMove_Surf(void)
 {
     if (IsPlayerFacingSurfableFishableWater() == TRUE)
+    {
+        gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
+        gPostMenuFieldCallback = FieldCallback_Surf;
+        return TRUE;
+    }
+    return FALSE;
+}
+
+static bool8 SetUpFieldMove_Ride(void)
+{
+    if (IsPlayerFacingSurfableFishableWater() == FALSE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
         gPostMenuFieldCallback = FieldCallback_Surf;

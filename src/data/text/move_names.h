@@ -58,6 +58,7 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_WATER_GUN] = _("Water Gun"),
     [MOVE_HYDRO_PUMP] = _("Hydro Pump"),
     [MOVE_SURF] = _("Surf"),
+    [MOVE_RIDE] = _("Ride"),
     [MOVE_ICE_BEAM] = _("Ice Beam"),
     [MOVE_BLIZZARD] = _("Blizzard"),
     [MOVE_PSYBEAM] = _("Psybeam"),
