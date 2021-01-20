@@ -1,5 +1,17 @@
 playground_MapScripts::
+	map_script MAP_SCRIPT_ON_LOAD, playground_OnLoad
 	.byte 0
+
+
+playground_OnLoad::
+	setflag FLAG_SYS_B_DASH
+	setflag FLAG_RECEIVED_RUNNING_SHOES
+	setflag FLAG_SYS_POKEDEX_GET
+	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
+	setflag FLAG_SYS_POKENAV_GET
+	setflag FLAG_RECEIVED_POKENAV
+	setflag FLAG_SYS_DEXNAV_GET
+	return
 
 
 playground_EventScript_GetRowlet::
