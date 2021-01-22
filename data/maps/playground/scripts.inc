@@ -60,6 +60,17 @@ playground_EventScript_CheckFountain::
 	end
 
 
+playground_EventScript_Mavera::
+	trainerbattle_single TRAINER_MAVERA, playground_EventScript_Mavera_Text_0, playground_EventScript_Mavera_Text_1
+	end
+
+
+playground_EventScript_Mavera_Text_0:
+	.string "Surf is my favorite move!$"
+
+playground_EventScript_Mavera_Text_1:
+	.string "Guess I ll sleep with the fisches today...$"
+
 playground_Text_ObtainedRowlet::
 	.string "{PLAYER} obtained Rowlet!$"
 
