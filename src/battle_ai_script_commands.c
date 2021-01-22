@@ -370,7 +370,7 @@ void BattleAI_SetupFlags(void)
     else if (gBattleTypeFlags & BATTLE_TYPE_FACTORY)
         AI_THINKING_STRUCT->aiFlags = GetAiScriptsInBattleFactory();
     else if (gBattleTypeFlags & (BATTLE_TYPE_FRONTIER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_SECRET_BASE))
-        AI_THINKING_STRUCT->aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_TRY_TO_FAINT;
+        AI_THINKING_STRUCT->aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_FOR_ADVANTAGE_SWITCH;
     else if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
         AI_THINKING_STRUCT->aiFlags = gTrainers[gTrainerBattleOpponent_A].aiFlags | gTrainers[gTrainerBattleOpponent_B].aiFlags;
     else
@@ -513,8 +513,19 @@ static u8 ChooseMoveOrAction_Singles(void)
         && !(gBattleMons[gActiveBattler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
         && !(gStatuses3[gActiveBattler] & STATUS3_ROOTED)
         && !(gBattleTypeFlags & (BATTLE_TYPE_ARENA | BATTLE_TYPE_PALACE))
-        && AI_THINKING_STRUCT->aiFlags & (AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_PREFER_BATON_PASS))
+        && AI_THINKING_STRUCT->aiFlags & (AI_SCRIPT_CHECK_VIABILITY | AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_PREFER_BATON_PASS | AI_SCRIPT_CHECK_FOR_ADVANTAGE_SWITCH))
     {
+        // AI checks if it has disadvantage vs opponent typing and switches accordingly
+        if(AI_THINKING_STRUCT->aiFlags & (AI_SCRIPT_CHECK_FOR_ADVANTAGE_SWITCH)) {
+            if(IsWeakVSEnemy()){
+                if (GetMostSuitableMonToSwitchInto() != PARTY_SIZE)
+                {
+                    AI_THINKING_STRUCT->switchMon = TRUE;
+                    return AI_CHOICE_SWITCH;
+                }
+            }
+        }
+
         // Consider switching if all moves are worthless to use.
         if (GetTotalBaseStat(gBattleMons[sBattler_AI].species) >= 310 // Mon is not weak.
             && gBattleMons[sBattler_AI].hp >= gBattleMons[sBattler_AI].maxHP / 2)
