@@ -599,7 +599,7 @@ static u32 GetBestMonBatonPass(struct Pokemon *party, int firstId, int lastId, u
     return PARTY_SIZE;
 }
 
-static u32 GestBestMonOffensive(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 opposingBattler)
+static u32 GetBestMonOffensive(struct Pokemon *party, int firstId, int lastId, u8 invalidMons, u32 opposingBattler)
 {
     int i, bits = 0;
 
@@ -754,7 +754,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
     if (bestMonId != PARTY_SIZE)
         return bestMonId;
 
-    bestMonId = GestBestMonOffensive(party, firstId, lastId, invalidMons, opposingBattler);
+    bestMonId = GetBestMonOffensive(party, firstId, lastId, invalidMons, opposingBattler);
     if (bestMonId != PARTY_SIZE)
         return bestMonId;
 
@@ -935,6 +935,53 @@ static bool8 ShouldUseItem(void)
             return shouldUse;
         }
     }
+
+    return FALSE;
+}
+
+bool8 IsWeakVSEnemy(u32 species) {
+
+    u32 opposingBattler = 0;
+    u8 battlerIn1, battlerIn2, defType1, defType2, atkType1, atkType2;
+    u32 typeDmg = UQ_4_12(1.0);
+
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+    {
+        battlerIn1 = gActiveBattler;
+        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK)])
+            battlerIn2 = gActiveBattler;
+        else
+            battlerIn2 = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK);
+
+        opposingBattler = BATTLE_OPPOSITE(battlerIn1);
+        if (gAbsentBattlerFlags & gBitTable[opposingBattler])
+            opposingBattler ^= BIT_FLANK;
+    }
+    else
+    {
+        opposingBattler = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_SIDE);
+        battlerIn1 = gActiveBattler;
+        battlerIn2 = gActiveBattler;
+    }
+
+    defType1 = gBaseStats[species].type1;
+    defType2 = gBaseStats[species].type2;
+    atkType1 = gBattleMons[opposingBattler].type1;
+    atkType2 = gBattleMons[opposingBattler].type2;
+
+    typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType1, defType1));
+    if(defType1 != defType2) {
+        typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType1, defType2));
+    }
+    if(atkType1 != atkType2){
+        typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType2, defType1));
+        if(defType1 != defType2) {
+            typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType2, defType2));
+        }
+    }
+    
+    if(Q_4_12_TO_INT(typeDmg) > 1)
+        return TRUE;
 
     return FALSE;
 }

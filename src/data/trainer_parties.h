@@ -1,9 +1,16 @@
-static const struct TrainerMonNoItemDefaultMoves sParty_Sawyer1[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_Mavera[] = {
     {
-    .iv = 0,
-    .lvl = 21,
-    .species = SPECIES_GEODUDE,
-    }
+    .iv = 255,
+    .lvl = 16,
+    .species = SPECIES_TAUROS,
+    .moves = {MOVE_SURF, MOVE_BULLDOZE, MOVE_HORN_ATTACK, MOVE_RAIN_DANCE}
+    },
+    {
+    .iv = 255,
+    .lvl = 18,
+    .species = SPECIES_MANTINE,
+    .moves = {MOVE_SURF, MOVE_ICY_WIND, MOVE_WING_ATTACK, MOVE_ROOST}
+    },
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_GruntAquaHideout1[] = {

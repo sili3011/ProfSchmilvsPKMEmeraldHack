@@ -11,7 +11,6 @@ LittlerootTown_MaysHouse_1F_MapScripts:: @ 81F88A5
 LittlerootTown_MaysHouse_1F_OnLoad: @ 81F88B5
 	compare VAR_LITTLEROOT_INTRO_STATE, 6
 	call_if_lt LittlerootTown_MaysHouse_1F_EventScript_SetMovingBoxes
-	call_if_set FLAG_RECEIVED_RUNNING_SHOES, LittlerootTown_MaysHouse_1F_EventScript_CheckShowShoesManual
 	end
 
 LittlerootTown_MaysHouse_1F_EventScript_SetMovingBoxes:: @ 81F88CA

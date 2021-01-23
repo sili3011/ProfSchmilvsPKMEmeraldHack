@@ -11,7 +11,6 @@ LittlerootTown_BrendansHouse_1F_MapScripts:: @ 81F7755
 LittlerootTown_BrendansHouse_1F_OnLoad: @ 81F7765
 	compare VAR_LITTLEROOT_INTRO_STATE, 6
 	call_if_lt LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes
-	call_if_set FLAG_RECEIVED_RUNNING_SHOES, LittlerootTown_BrendansHouse_1F_EventScript_CheckShowShoesManual
 	end
 
 LittlerootTown_BrendansHouse_1F_EventScript_SetMovingBoxes:: @ 81F777A
