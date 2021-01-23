@@ -1,10 +1,4 @@
 mapscripts playground_MapScripts {
-    MAP_SCRIPT_ON_LOAD: playground_OnLoad
-}
-
-script playground_OnLoad {
-    setflag(FLAG_SYS_B_DASH)
-    setflag(FLAG_RECEIVED_RUNNING_SHOES)
 }
 
 //ROWLET

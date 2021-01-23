@@ -1,12 +1,5 @@
 playground_MapScripts::
-	map_script MAP_SCRIPT_ON_LOAD, playground_OnLoad
 	.byte 0
-
-
-playground_OnLoad::
-	setflag FLAG_SYS_B_DASH
-	setflag FLAG_RECEIVED_RUNNING_SHOES
-	return
 
 
 playground_EventScript_GetRowlet::
