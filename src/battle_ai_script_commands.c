@@ -517,7 +517,7 @@ static u8 ChooseMoveOrAction_Singles(void)
     {
         // AI checks if it has disadvantage vs opponent typing and switches accordingly
         if(AI_THINKING_STRUCT->aiFlags & (AI_SCRIPT_CHECK_FOR_ADVANTAGE_SWITCH)) {
-            if(IsWeakVSEnemy()){
+            if(IsWeakVSEnemy(gBattleMons[sBattler_AI].species)){
                 if (GetMostSuitableMonToSwitchInto() != PARTY_SIZE)
                 {
                     AI_THINKING_STRUCT->switchMon = TRUE;

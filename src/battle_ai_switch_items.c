@@ -11,7 +11,6 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
-#include "stdio.h"
 
 // this file's functions
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
@@ -940,11 +939,10 @@ static bool8 ShouldUseItem(void)
     return FALSE;
 }
 
-bool8 IsWeakVSEnemy() {
+bool8 IsWeakVSEnemy(u32 species) {
 
     u32 opposingBattler = 0;
     u8 battlerIn1, battlerIn2, defType1, defType2, atkType1, atkType2;
-    u16 species = GetMonData(gActiveBattler, MON_DATA_SPECIES);
     u32 typeDmg = UQ_4_12(1.0);
 
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
@@ -971,17 +969,18 @@ bool8 IsWeakVSEnemy() {
     atkType1 = gBattleMons[opposingBattler].type1;
     atkType2 = gBattleMons[opposingBattler].type2;
 
-    typeDmg *= GetTypeModifier(atkType1, defType1);
-    if (atkType2 != atkType1)
-        typeDmg *= GetTypeModifier(atkType2, defType1);
-    if (defType2 != defType1)
-    {
-        typeDmg *= GetTypeModifier(atkType1, defType2);
-        if (atkType2 != atkType1)
-            typeDmg *= GetTypeModifier(atkType2, defType2);
+    typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType1, defType1));
+    if(defType1 != defType2) {
+        typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType1, defType2));
     }
-
-    if(typeDmg >= UQ_4_12(1.1))
+    if(atkType1 != atkType2){
+        typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType2, defType1));
+        if(defType1 != defType2) {
+            typeDmg *= Q_4_12_TO_INT(GetTypeModifier(atkType2, defType2));
+        }
+    }
+    
+    if(Q_4_12_TO_INT(typeDmg) > 1)
         return TRUE;
 
     return FALSE;
