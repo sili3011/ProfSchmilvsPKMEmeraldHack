@@ -332,6 +332,8 @@ SECTIONS {
         src/map_preview.o(.text);
 		src/soar.o(.text);
         src/dexnav.o(.text);
+        src/mgba.o(.text);
+		src/printf.o(.text);
     } =0
 
     script_data :
@@ -696,6 +698,7 @@ SECTIONS {
         data/sound_data.o(.rodata);
         src/map_preview.o(.rodata);
         src/dexnav.o(.rodata);
+        src/printf.o(.rodata);
     } =0
 
     song_data :
