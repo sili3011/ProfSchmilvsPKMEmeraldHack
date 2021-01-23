@@ -119,16 +119,16 @@ MtChimney_EventScript_LavaCookieLady:: @ 822EEF3
 	checkitemspace ITEM_LAVA_COOKIE, 1
 	compare VAR_RESULT, TRUE
 	call_if_eq MtChimney_EventScript_RemoveMoney
+    hidemoneybox
 	giveitem ITEM_LAVA_COOKIE
 	compare VAR_RESULT, FALSE
 	goto_if_eq MtChimney_EventScript_BagIsFull
-	hidemoneybox
 	release
 	end
 
 MtChimney_EventScript_BagIsFull:: @ 822EF51
 	msgbox gText_TooBadBagIsFull, MSGBOX_DEFAULT
-	hidemoneybox
+	@hidemoneybox
 	release
 	end
 
@@ -524,7 +524,6 @@ MtChimney_EventScript_Grunt1:: @ 822F1F1
 	end
 
 MtChimney_EventScript_Sawyer:: @ 822F208
-	trainerbattle_single TRAINER_SAWYER_1, MtChimney_Text_SawyerIntro, MtChimney_Text_SawyerDefeat, MtChimney_EventScript_SawyerDefeated
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	compare VAR_RESULT, TRUE
 	goto_if_eq MtChimney_EventScript_SawyerRematch
@@ -536,12 +535,10 @@ MtChimney_EventScript_SawyerDefeated:: @ 822F234
 	special PlayerFaceTrainerAfterBattle
 	waitmovement 0
 	msgbox MtChimney_Text_SawyerRegister, MSGBOX_DEFAULT
-	register_matchcall TRAINER_SAWYER_1
 	release
 	end
 
 MtChimney_EventScript_SawyerRematch:: @ 822F253
-	trainerbattle_rematch TRAINER_SAWYER_1, MtChimney_Text_SawyerRematchIntro, MtChimney_Text_SawyerRematchDefeat
 	msgbox MtChimney_Text_SawyerPostRematch, MSGBOX_AUTOCLOSE
 	end
 
