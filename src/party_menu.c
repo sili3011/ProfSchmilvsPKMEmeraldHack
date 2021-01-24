@@ -75,6 +75,10 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+//REMOVE
+#include "printf.h"
+#include "mgba.h"
+
 #define PARTY_PAL_SELECTED     (1 << 0)
 #define PARTY_PAL_FAINTED      (1 << 1)
 #define PARTY_PAL_TO_SWITCH    (1 << 2)
@@ -2538,18 +2542,25 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
     // PUT FIELD MOVE CONDITIONS HERE
 
+    // ROCKSMASH
+    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM06_ROCK_SMASH - ITEM_TM01_FOCUS_PUNCH)) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 2 + MENU_FIELD_MOVES);
+    }
+
     // SURF
-    if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_WATER || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_WATER) {
+    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM03_SURF - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 4 + MENU_FIELD_MOVES);
     }
 
     // FLY
-    if (gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type1 == TYPE_FLYING || gBaseStats[GetMonData(&mons[slotId], MON_DATA_SPECIES)].type2 == TYPE_FLYING) {
+    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM02_FLY - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     }
 
     // RIDE
-    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 14 + MENU_FIELD_MOVES);
+    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM09_RIDE - ITEM_TM01_FOCUS_PUNCH)) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 14 + MENU_FIELD_MOVES);
+    }
 
     if (!InBattlePike())
     {

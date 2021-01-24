@@ -3175,7 +3175,8 @@ const u32 gTMHMLearnsets[][2] =
                                             | TMHM(TM25_THUNDER)
                                             | TMHM(TM24_THUNDERBOLT)
                                             | TMHM(TM06_TOXIC)
-                                            | TMHM(TM03_WATER_PULSE)),
+                                            | TMHM(TM03_WATER_PULSE)
+                                            | TMHM(HM09_RIDE)),
 
     [SPECIES_MAGIKARP]    = TMHM_LEARNSET(0),
 

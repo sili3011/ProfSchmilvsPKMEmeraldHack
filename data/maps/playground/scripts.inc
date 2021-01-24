@@ -17,14 +17,18 @@ playground_OnLoad::
 playground_EventScript_GetRowlet::
 	lockall
 	givemon SPECIES_LAPRAS, 20, ITEM_ORAN_BERRY
-	giveitem ITEM_ULTRA_BALL, 10
+	givemon SPECIES_MACHOP, 20, ITEM_ORAN_BERRY
+	givemon SPECIES_TAUROS, 20, ITEM_ORAN_BERRY
 	call playground_EventScript_RowletFanfare
+	giveitem ITEM_ULTRA_BALL, 10
 	releaseall
 	end
 
 
 playground_EventScript_RowletFanfare::
 	bufferspeciesname 1, SPECIES_LAPRAS
+	bufferspeciesname 1, SPECIES_MACHOP
+	bufferspeciesname 1, SPECIES_TAUROS
 	removeobject 1
 	playfanfare MUS_OBTAIN_ITEM
 	setflag FLAG_SYS_POKEMON_GET
@@ -32,6 +36,8 @@ playground_EventScript_RowletFanfare::
 	waitmessage
 	waitfanfare
 	bufferspeciesname 0, SPECIES_LAPRAS
+	bufferspeciesname 0, SPECIES_MACHOP
+	bufferspeciesname 0, SPECIES_TAUROS
 	return
 
 

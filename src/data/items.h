@@ -4830,20 +4830,20 @@ const struct Item gItems[] =
         .secondaryId = 0,
     },
 
-// FireRed/LeafGreen key items
-
-    [ITEM_OAKS_PARCEL] =
+    [ITEM_HM09_RIDE] =
     {
-        .name = _("Oak's Parcel"),
-        .itemId = ITEM_OAKS_PARCEL,
+        .name = _("HM09"),
+        .itemId = ITEM_HM09_RIDE,
         .price = 0,
-        .description = sOaksParcelDesc,
-        .importance = 2,
-        .pocket = POCKET_KEY_ITEMS,
-        .type = 4,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .description = sHM08Desc,
+        .importance = 1,
+        .pocket = POCKET_TM_HM,
+        .type = 1,
+        .fieldUseFunc = ItemUseOutOfBattle_TMHM,
         .secondaryId = 0,
     },
+
+// FireRed/LeafGreen key items
 
     [ITEM_POKE_FLUTE] =
     {
