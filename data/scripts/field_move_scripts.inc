@@ -1,7 +1,6 @@
 @ Interact with cuttable tree
 EventScript_CutTree:: @ 82906BB
 	lockall
-	goto_if_unset FLAG_BADGE01_GET, EventScript_CheckTreeCantCut
 	checkpartymove MOVE_CUT
 	compare VAR_RESULT, PARTY_SIZE
 	goto_if_eq EventScript_CheckTreeCantCut
@@ -13,16 +12,12 @@ EventScript_CutTree:: @ 82906BB
 	goto_if_eq EventScript_CancelCut
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
 	goto EventScript_CutTreeDown
 	end
 
 @ Use cut from party menu
 EventScript_UseCut:: @ 8290705
 	lockall
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
 	goto EventScript_CutTreeDown
 	end
 
@@ -62,7 +57,6 @@ Text_CantCut: @ 829077D
 @ Interact with smashable rock
 EventScript_RockSmash:: @ 82907A6
 	lockall
-	goto_if_unset FLAG_BADGE03_GET, EventScript_CantSmashRock
 	checkpartymove MOVE_ROCK_SMASH
 	compare VAR_RESULT, PARTY_SIZE
 	goto_if_eq EventScript_CantSmashRock
@@ -74,16 +68,12 @@ EventScript_RockSmash:: @ 82907A6
 	goto_if_eq EventScript_CancelSmash
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
-	dofieldeffect FLDEFF_USE_ROCK_SMASH
-	waitstate
 	goto EventScript_SmashRock
 	end
 
 @ Use rock smash from party menu
 EventScript_UseRockSmash:: @ 82907F0
 	lockall
-	dofieldeffect FLDEFF_USE_ROCK_SMASH
-	waitstate
 	goto EventScript_SmashRock
 	end
 
@@ -97,7 +87,6 @@ EventScript_SmashRock:: @ 82907FB
 	special RockSmashWildEncounter
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_EndSmash
-	waitstate
 	releaseall
 	end
 
@@ -129,7 +118,6 @@ Text_CantSmash: @ 829087F
 
 EventScript_StrengthBoulder:: @ 82908BA
 	lockall
-	goto_if_unset FLAG_BADGE04_GET, EventScript_CantStrength
 	goto_if_set FLAG_SYS_USE_STRENGTH, EventScript_CheckActivatedBoulder
 	checkpartymove MOVE_STRENGTH
 	compare VAR_RESULT, PARTY_SIZE
@@ -139,15 +127,11 @@ EventScript_StrengthBoulder:: @ 82908BA
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_CancelStrength
 	closemessage
-	dofieldeffect FLDEFF_USE_STRENGTH
-	waitstate
 	goto EventScript_ActivateStrength
 	end
 
 EventScript_UseStrength:: @ 82908FD
 	lockall
-	dofieldeffect FLDEFF_USE_STRENGTH
-	waitstate
 	goto EventScript_ActivateStrength
 	end
 
@@ -237,7 +221,6 @@ EventScript_UseDive:: @ 8290B0F
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_EndDive
 	msgbox Text_MonUsedDive, MSGBOX_DEFAULT
-	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndDive
 	end
 
@@ -262,7 +245,6 @@ EventScript_UseDiveUnderwater:: @ 8290B5A
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_EndSurface
 	msgbox Text_MonUsedDive, MSGBOX_DEFAULT
-	dofieldeffect FLDEFF_USE_DIVE
 	goto EventScript_EndSurface
 	end
 

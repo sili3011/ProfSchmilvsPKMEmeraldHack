@@ -75,10 +75,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
-//REMOVE
-#include "printf.h"
-#include "mgba.h"
-
 #define PARTY_PAL_SELECTED     (1 << 0)
 #define PARTY_PAL_FAINTED      (1 << 1)
 #define PARTY_PAL_TO_SWITCH    (1 << 2)
@@ -2536,35 +2532,48 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
 static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 {
     u8 i, j;
+    u16 species;
 
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
+    species = GetMonData(&mons[slotId], MON_DATA_SPECIES);
+
     // PUT FIELD MOVE CONDITIONS HERE
 
+     // CUT
+    if (CanSpeciesLearnTMHM(species, ITEM_HM01_CUT - ITEM_TM01_FOCUS_PUNCH)) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 0 + MENU_FIELD_MOVES);
+    }
+
     // ROCKSMASH
-    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM06_ROCK_SMASH - ITEM_TM01_FOCUS_PUNCH)) {
+    if (CanSpeciesLearnTMHM(species, ITEM_HM06_ROCK_SMASH - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 2 + MENU_FIELD_MOVES);
     }
 
+     // STRENGTH
+    if (CanSpeciesLearnTMHM(species, ITEM_HM04_STRENGTH - ITEM_TM01_FOCUS_PUNCH)) {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 3 + MENU_FIELD_MOVES);
+    }
+
     // SURF
-    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM03_SURF - ITEM_TM01_FOCUS_PUNCH)) {
+    if (CanSpeciesLearnTMHM(species, ITEM_HM03_SURF - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 4 + MENU_FIELD_MOVES);
     }
 
     // FLY
-    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM02_FLY - ITEM_TM01_FOCUS_PUNCH)) {
+    if (CanSpeciesLearnTMHM(species, ITEM_HM02_FLY - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     }
 
     // RIDE
-    if (CanSpeciesLearnTMHM(GetMonData(&mons[slotId], MON_DATA_SPECIES), ITEM_HM09_RIDE - ITEM_TM01_FOCUS_PUNCH)) {
+    if (CanSpeciesLearnTMHM(species, ITEM_HM09_RIDE - ITEM_TM01_FOCUS_PUNCH)) {
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 14 + MENU_FIELD_MOVES);
     }
 
     if (!InBattlePike())
     {
-        if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
+        if (species != SPECIES_NONE)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SWITCH);
         if (ItemIsMail(GetMonData(&mons[slotId], MON_DATA_HELD_ITEM)))
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_MAIL);
@@ -3664,7 +3673,6 @@ static void CursorCb_FieldMove(u8 taskId)
         {
             switch (fieldMove)
             {
-            case FIELD_MOVE_MILK_DRINK:
             case FIELD_MOVE_SOFT_BOILED:
                 ChooseMonForSoftboiled(taskId);
                 break;
@@ -4727,6 +4735,16 @@ void ItemUseCB_PPUp(u8 taskId, TaskFunc task)
     DisplayPartyMenuStdMessage(PARTY_MSG_BOOST_PP_WHICH_MOVE);
     ShowMoveSelectWindow(gPartyMenu.slotId);
     gTasks[taskId].func = Task_HandleWhichMoveInput;
+}
+
+u8 BattleMoveIdToItemId(int moveId)
+{
+    size_t index = 0; 
+    size_t size = NUM_TECHNICAL_MACHINES + NUM_HIDDEN_MACHINES;
+
+    while ( index < size && sTMHMMoves[index] != moveId ) ++index;
+
+    return ( index == size ? -1 : index );
 }
 
 u16 ItemIdToBattleMoveId(u16 item)
