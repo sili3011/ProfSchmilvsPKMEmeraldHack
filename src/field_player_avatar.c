@@ -84,6 +84,7 @@ static void PlayerAvatarTransition_AcroBike(struct ObjectEvent *a);
 static void PlayerAvatarTransition_Surfing(struct ObjectEvent *a);
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent *a);
 static void PlayerAvatarTransition_ReturnToField(struct ObjectEvent *a);
+static void PlayerAvatarTransition_Riding(struct ObjectEvent *a);
 
 static bool8 player_is_anim_in_certain_ranges(void);
 static bool8 sub_808B618(void);
@@ -223,6 +224,7 @@ static void (*const sPlayerAvatarTransitionFuncs[])(struct ObjectEvent *) =
     [PLAYER_AVATAR_STATE_FIELD_MOVE] = PlayerAvatarTransition_ReturnToField,
     [PLAYER_AVATAR_STATE_FISHING]    = PlayerAvatarTransition_Dummy,
     [PLAYER_AVATAR_STATE_WATERING]   = PlayerAvatarTransition_Dummy,
+    [PLAYER_AVATAR_STATE_RIDING]     = PlayerAvatarTransition_Riding
 };
 
 static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
@@ -756,7 +758,7 @@ static bool8 ShouldJumpLedge(s16 x, s16 y, u8 z)
 
 static bool8 TryPushBoulder(s16 x, s16 y, u8 direction)
 {
-    if (FlagGet(FLAG_SYS_USE_STRENGTH))
+    if (FlagGet(FLAG_SYS_USE_STRENGTH)) // REPLACE WITH CHECK FOR STRENGTH IN TEAM
     {
         u8 objectEventId = GetObjectEventIdByXY(x, y);
 
@@ -882,6 +884,21 @@ static void PlayerAvatarTransition_Surfing(struct ObjectEvent *objEvent)
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_SURFING));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_SURFING);
+    gFieldEffectArguments[0] = objEvent->currentCoords.x;
+    gFieldEffectArguments[1] = objEvent->currentCoords.y;
+    gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
+    spriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
+    objEvent->fieldEffectSpriteId = spriteId;
+    SetSurfBobState(spriteId, 1);
+}
+
+static void PlayerAvatarTransition_Riding(struct ObjectEvent *objEvent)
+{
+    u8 spriteId;
+
+    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_RIDING));
+    ObjectEventTurn(objEvent, objEvent->movementDirection);
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_RIDING);
     gFieldEffectArguments[0] = objEvent->currentCoords.x;
     gFieldEffectArguments[1] = objEvent->currentCoords.y;
     gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
@@ -1211,7 +1228,7 @@ void sub_808BC90(s16 x, s16 y)
     MoveObjectEventToMapCoords(&gObjectEvents[gPlayerAvatar.objectEventId], x, y);
 }
 
-u8 TestPlayerAvatarFlags(u8 flag)
+u8 TestPlayerAvatarFlags(u16 flag)
 {
     return gPlayerAvatar.flags & flag;
 }
@@ -1249,7 +1266,7 @@ u8 GetRivalAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
     return sRivalAvatarGfxIds[state][gender];
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u8 state, u8 gender)
+u8 GetPlayerAvatarGraphicsIdByStateIdAndGender(u16 state, u8 gender)
 {
     return sPlayerAvatarGfxIds[state][gender];
 }
@@ -1264,7 +1281,7 @@ u8 GetRSAvatarGraphicsIdByGender(u8 gender)
     return sRSAvatarGfxIds[gender];
 }
 
-u8 GetPlayerAvatarGraphicsIdByStateId(u8 state)
+u8 GetPlayerAvatarGraphicsIdByStateId(u16 state)
 {
     return GetPlayerAvatarGraphicsIdByStateIdAndGender(state, gPlayerAvatar.gender);
 }
@@ -1350,7 +1367,7 @@ void ClearPlayerAvatarInfo(void)
     memset(&gPlayerAvatar, 0, sizeof(struct PlayerAvatar));
 }
 
-void SetPlayerAvatarStateMask(u8 flags)
+void SetPlayerAvatarStateMask(u16 flags)
 {
     gPlayerAvatar.flags &= (PLAYER_AVATAR_FLAG_DASH | PLAYER_AVATAR_FLAG_FORCED_MOVE | PLAYER_AVATAR_FLAG_5);
     gPlayerAvatar.flags |= flags;

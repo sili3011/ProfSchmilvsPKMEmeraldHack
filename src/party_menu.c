@@ -296,6 +296,7 @@ static void Task_CancelAfterAorBPress(u8);
 static void DisplayFieldMoveExitAreaMessage(u8);
 static void DisplayCantUseFlashMessage(void);
 static void DisplayCantUseSurfMessage(void);
+static void DisplayCantUseRideMessage(void);
 static void Task_FieldMoveExitAreaYesNo(u8);
 static void Task_HandleFieldMoveExitAreaYesNoInput(u8);
 static void Task_FieldMoveWaitForFade(u8);
@@ -3708,6 +3709,9 @@ static void CursorCb_FieldMove(u8 taskId)
             case FIELD_MOVE_SURF:
                 DisplayCantUseSurfMessage();
                 break;
+            case FIELD_MOVE_RIDE:
+                DisplayCantUseRideMessage();
+                break;
             case FIELD_MOVE_FLASH:
                 DisplayCantUseFlashMessage();
                 break;
@@ -3796,6 +3800,12 @@ static void FieldCallback_Surf(void)
     FieldEffectStart(FLDEFF_USE_SURF);
 }
 
+static void FieldCallback_Ride(void)
+{
+    gFieldEffectArguments[0] = GetCursorSelectionMonId();
+    FieldEffectStart(FLDEFF_USE_RIDE);
+}
+
 static bool8 SetUpFieldMove_Surf(void)
 {
     if (IsPlayerFacingSurfableFishableWater() == TRUE)
@@ -3824,6 +3834,14 @@ static void DisplayCantUseSurfMessage(void)
         DisplayPartyMenuStdMessage(PARTY_MSG_ALREADY_SURFING);
     else
         DisplayPartyMenuStdMessage(PARTY_MSG_CANT_SURF_HERE);
+}
+
+static void DisplayCantUseRideMessage(void)
+{
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_RIDING))
+        DisplayPartyMenuStdMessage(PARTY_MSG_ALREADY_RIDING);
+    else
+        DisplayPartyMenuStdMessage(PARTY_MSG_CANT_RIDE_HERE);
 }
 
 static bool8 SetUpFieldMove_Fly(void)

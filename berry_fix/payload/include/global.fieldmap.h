@@ -227,6 +227,7 @@ struct EventObjectGraphicsInfo
 #define PLAYER_AVATAR_FLAG_5          (1 << 5)
 #define PLAYER_AVATAR_FLAG_6          (1 << 6)
 #define PLAYER_AVATAR_FLAG_DASH       (1 << 7)
+#define PLAYER_AVATAR_FLAG_RIDING     (1 << 8)
 
 enum
 {
