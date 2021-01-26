@@ -632,7 +632,9 @@ static const u8 *const sActionStringTable[] =
     [PARTY_MSG_GIVE_TO_WHICH_MON]      = gText_GiveToWhichPokemon,
     [PARTY_MSG_NOTHING_TO_CUT]         = gText_NothingToCut,
     [PARTY_MSG_CANT_SURF_HERE]         = gText_CantSurfHere,
+    [PARTY_MSG_CANT_RIDE_HERE]         = gText_CantRideHere,
     [PARTY_MSG_ALREADY_SURFING]        = gText_AlreadySurfing,
+    [PARTY_MSG_ALREADY_RIDING]         = gText_AlreadyRiding,
     [PARTY_MSG_CURRENT_TOO_FAST]       = gText_CurrentIsTooFast,
     [PARTY_MSG_ENJOY_CYCLING]          = gText_EnjoyCycling,
     [PARTY_MSG_ALREADY_IN_USE]         = gText_InUseAlready_PM,
@@ -717,6 +719,7 @@ enum
     FIELD_MOVE_MILK_DRINK,
     FIELD_MOVE_SOFT_BOILED,
     FIELD_MOVE_SWEET_SCENT,
+    FIELD_MOVE_RIDE
 };
 
 // What a weird choice of table termination;
@@ -752,6 +755,7 @@ struct
     [MENU_FIELD_MOVES + FIELD_MOVE_ROCK_SMASH] = {gMoveNames[MOVE_ROCK_SMASH], CursorCb_FieldMove},
     [MENU_FIELD_MOVES + FIELD_MOVE_STRENGTH] = {gMoveNames[MOVE_STRENGTH], CursorCb_FieldMove},
     [MENU_FIELD_MOVES + FIELD_MOVE_SURF] = {gMoveNames[MOVE_SURF], CursorCb_FieldMove},
+    [MENU_FIELD_MOVES + FIELD_MOVE_RIDE] = {gMoveNames[MOVE_RIDE], CursorCb_FieldMove},
     [MENU_FIELD_MOVES + FIELD_MOVE_FLY] = {gMoveNames[MOVE_FLY], CursorCb_FieldMove},
     [MENU_FIELD_MOVES + FIELD_MOVE_DIVE] = {gMoveNames[MOVE_DIVE], CursorCb_FieldMove},
     [MENU_FIELD_MOVES + FIELD_MOVE_WATERFALL] = {gMoveNames[MOVE_WATERFALL], CursorCb_FieldMove},
@@ -858,6 +862,7 @@ struct
     [FIELD_MOVE_MILK_DRINK]   = {SetUpFieldMove_SoftBoiled,  PARTY_MSG_NOT_ENOUGH_HP},
     [FIELD_MOVE_SOFT_BOILED]  = {SetUpFieldMove_SoftBoiled,  PARTY_MSG_NOT_ENOUGH_HP},
     [FIELD_MOVE_SWEET_SCENT]  = {SetUpFieldMove_SweetScent,  PARTY_MSG_CANT_USE_HERE},
+    [FIELD_MOVE_RIDE]         = {SetUpFieldMove_Ride,        PARTY_MSG_CANT_RIDE_HERE},
 };
 
 static const u8 *const sUnionRoomTradeMessages[] =

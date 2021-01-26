@@ -16,22 +16,28 @@ playground_OnLoad::
 
 playground_EventScript_GetRowlet::
 	lockall
-	givemon SPECIES_SIRFETCHD, 30, ITEM_ORAN_BERRY
-	giveitem ITEM_ULTRA_BALL, 10
+	givemon SPECIES_LAPRAS, 20, ITEM_ORAN_BERRY
+	givemon SPECIES_MACHOP, 20, ITEM_ORAN_BERRY
+	givemon SPECIES_TAUROS, 20, ITEM_ORAN_BERRY
 	call playground_EventScript_RowletFanfare
+	giveitem ITEM_ULTRA_BALL, 10
 	releaseall
 	end
 
 
 playground_EventScript_RowletFanfare::
-	bufferspeciesname 1, SPECIES_SIRFETCHD
+	bufferspeciesname 1, SPECIES_LAPRAS
+	bufferspeciesname 1, SPECIES_MACHOP
+	bufferspeciesname 1, SPECIES_TAUROS
 	removeobject 1
 	playfanfare MUS_OBTAIN_ITEM
 	setflag FLAG_SYS_POKEMON_GET
 	message playground_Text_ObtainedRowlet
 	waitmessage
 	waitfanfare
-	bufferspeciesname 0, SPECIES_SIRFETCHD
+	bufferspeciesname 0, SPECIES_LAPRAS
+	bufferspeciesname 0, SPECIES_MACHOP
+	bufferspeciesname 0, SPECIES_TAUROS
 	return
 
 
@@ -72,7 +78,7 @@ playground_EventScript_Mavera_Text_1:
 	.string "Guess I ll sleep with the fishes today...$"
 
 playground_Text_ObtainedRowlet::
-	.string "{PLAYER} obtained Rowlet!$"
+	.string "{PLAYER} obtained a Lapras!$"
 
 playground_Text_ObtainedEonFlute::
 	.string "{PLAYER} obtained the Eon Flute!$"
