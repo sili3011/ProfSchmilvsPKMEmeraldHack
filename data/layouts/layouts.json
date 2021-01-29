@@ -12,16 +12,6 @@
       "blockdata_filepath": "data/layouts/playground/map.bin"
     },
     {
-      "id": "LAYOUT_SLATEPORT_CITY",
-      "name": "SlateportCity_Layout",
-      "width": 40,
-      "height": 60,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Slateport",
-      "border_filepath": "data/layouts/SlateportCity/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity/map.bin"
-    },
-    {
       "id": "LAYOUT_MAUVILLE_CITY",
       "name": "MauvilleCity_Layout",
       "width": 40,
@@ -742,26 +732,6 @@
       "blockdata_filepath": "data/layouts/HouseWithBed/map.bin"
     },
     {
-      "id": "LAYOUT_SLATEPORT_CITY_STERNS_SHIPYARD_1F",
-      "name": "SlateportCity_SternsShipyard_1F_Layout",
-      "width": 21,
-      "height": 15,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Facility",
-      "border_filepath": "data/layouts/SlateportCity_SternsShipyard_1F/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity_SternsShipyard_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_SLATEPORT_CITY_STERNS_SHIPYARD_2F",
-      "name": "SlateportCity_SternsShipyard_2F_Layout",
-      "width": 17,
-      "height": 15,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Facility",
-      "border_filepath": "data/layouts/SlateportCity_SternsShipyard_2F/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity_SternsShipyard_2F/map.bin"
-    },
-    {
       "id": "LAYOUT_UNKNOWN_084294C4",
       "name": "Unknown_084294C4_Layout",
       "width": 1,
@@ -780,36 +750,6 @@
       "secondary_tileset": "gTileset_Contest",
       "border_filepath": "data/layouts/Unknown_084294E8/border.bin",
       "blockdata_filepath": "data/layouts/Unknown_084294E8/map.bin"
-    },
-    {
-      "id": "LAYOUT_SLATEPORT_CITY_POKEMON_FAN_CLUB",
-      "name": "SlateportCity_PokemonFanClub_Layout",
-      "width": 14,
-      "height": 11,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonFanClub",
-      "border_filepath": "data/layouts/SlateportCity_PokemonFanClub/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity_PokemonFanClub/map.bin"
-    },
-    {
-      "id": "LAYOUT_SLATEPORT_CITY_OCEANIC_MUSEUM_1F",
-      "name": "SlateportCity_OceanicMuseum_1F_Layout",
-      "width": 20,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_OceanicMuseum",
-      "border_filepath": "data/layouts/SlateportCity_OceanicMuseum_1F/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity_OceanicMuseum_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_SLATEPORT_CITY_OCEANIC_MUSEUM_2F",
-      "name": "SlateportCity_OceanicMuseum_2F_Layout",
-      "width": 20,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_OceanicMuseum",
-      "border_filepath": "data/layouts/SlateportCity_OceanicMuseum_2F/border.bin",
-      "blockdata_filepath": "data/layouts/SlateportCity_OceanicMuseum_2F/map.bin"
     },
     {
       "id": "LAYOUT_HARBOR",

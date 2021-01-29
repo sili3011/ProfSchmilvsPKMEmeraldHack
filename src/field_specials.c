@@ -2014,7 +2014,6 @@ bool8 UsedPokemonCenterWarp(void)
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
             MAP_VERDANTURF_TOWN_POKEMON_CENTER_1F,
             MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F,
-            MAP_SLATEPORT_CITY_POKEMON_CENTER_1F,
             MAP_MAUVILLE_CITY_POKEMON_CENTER_1F,
             MAP_RUSTBORO_CITY_POKEMON_CENTER_1F,
             MAP_FORTREE_CITY_POKEMON_CENTER_1F,
@@ -2520,7 +2519,6 @@ static const u8 *const sScrollableMultichoiceOptions[][MAX_SCROLL_MULTI_LENGTH] 
                 gText_Exit},
         [SCROLL_MULTI_SS_TIDAL_DESTINATION] =
             {
-                gText_SlateportCity,
                 gText_BattleFrontier,
                 gText_SouthernIsland,
                 gText_NavelRock,
@@ -3636,7 +3634,6 @@ u32 GetMartEmployeeObjectEventId(void)
             {MAP_GROUP(LAVARIDGE_TOWN_MART), MAP_NUM(LAVARIDGE_TOWN_MART), 1},
             {MAP_GROUP(FALLARBOR_TOWN_MART), MAP_NUM(FALLARBOR_TOWN_MART), 1},
             {MAP_GROUP(VERDANTURF_TOWN_MART), MAP_NUM(VERDANTURF_TOWN_MART), 1},
-            {MAP_GROUP(SLATEPORT_CITY_MART), MAP_NUM(SLATEPORT_CITY_MART), 1},
             {MAP_GROUP(MAUVILLE_CITY_MART), MAP_NUM(MAUVILLE_CITY_MART), 1},
             {MAP_GROUP(RUSTBORO_CITY_MART), MAP_NUM(RUSTBORO_CITY_MART), 1},
             {MAP_GROUP(FORTREE_CITY_MART), MAP_NUM(FORTREE_CITY_MART), 1},
@@ -3924,7 +3921,6 @@ bool8 InPokemonCenter(void)
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
             MAP_VERDANTURF_TOWN_POKEMON_CENTER_1F,
             MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F,
-            MAP_SLATEPORT_CITY_POKEMON_CENTER_1F,
             MAP_MAUVILLE_CITY_POKEMON_CENTER_1F,
             MAP_RUSTBORO_CITY_POKEMON_CENTER_1F,
             MAP_FORTREE_CITY_POKEMON_CENTER_1F,
@@ -4262,7 +4258,6 @@ static void BufferFanClubTrainerName_(struct LinkBattleRecords *linkRecords, u8 
         default:
             StringCopy(gStringVar1, gText_Wallace);
             break;
-
         }
     }
     else

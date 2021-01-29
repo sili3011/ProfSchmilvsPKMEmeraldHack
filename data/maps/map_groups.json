@@ -38,7 +38,6 @@
   ],
   "gMapGroup0": [
     "playground",
-    "SlateportCity",
     "MauvilleCity",
     "RustboroCity",
     "FortreeCity",
@@ -155,20 +154,6 @@
 
   ],
   "gMapGroup9": [
-    "SlateportCity_SternsShipyard_1F",
-    "SlateportCity_SternsShipyard_2F",
-    "SlateportCity_BattleTentLobby",
-    "SlateportCity_BattleTentCorridor",
-    "SlateportCity_BattleTentBattleRoom",
-    "SlateportCity_NameRatersHouse",
-    "SlateportCity_PokemonFanClub",
-    "SlateportCity_OceanicMuseum_1F",
-    "SlateportCity_OceanicMuseum_2F",
-    "SlateportCity_Harbor",
-    "SlateportCity_House",
-    "SlateportCity_PokemonCenter_1F",
-    "SlateportCity_PokemonCenter_2F",
-    "SlateportCity_Mart"
   ],
   "gMapGroup10": [
     "MauvilleCity_Gym",

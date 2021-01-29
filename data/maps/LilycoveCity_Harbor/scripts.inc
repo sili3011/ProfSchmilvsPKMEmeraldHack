@@ -52,7 +52,6 @@ LilycoveCity_Harbor_EventScript_FerryRegularLocationSelect:: @ 821E09F
 	waitstate
 	special GetLilycoveSSTidalSelection
 	switch VAR_RESULT
-	case 0, LilycoveCity_Harbor_EventScript_GoToSlateport
 	case 1, LilycoveCity_Harbor_EventScript_GoToBattleFrontier
 	case 2, LilycoveCity_Harbor_EventScript_GoToSouthernIsland
 	case 3, LilycoveCity_Harbor_EventScript_GoToNavelRock
@@ -86,17 +85,6 @@ LilycoveCity_Harbor_EventScript_GoToBirthIsland:: @ 821E129
 LilycoveCity_Harbor_EventScript_GoToFarawayIsland:: @ 821E139
 	call LilycoveCity_Harbor_EventScript_BoardFerry
 	warp MAP_FARAWAY_ISLAND_ENTRANCE, 255, 13, 38
-	waitstate
-	release
-	end
-
-LilycoveCity_Harbor_EventScript_GoToSlateport:: @ 821E149
-	msgbox LilycoveCity_Harbor_Text_SlateportItIs, MSGBOX_YESNO
-	compare VAR_RESULT, NO
-	goto_if_eq LilycoveCity_Harbor_EventScript_FerryDestinationChangeMind
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_BOARD_LILYCOVE
-	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_SS_TIDAL_CORRIDOR, 255, 1, 10
 	waitstate
 	release
 	end
@@ -393,18 +381,6 @@ LilycoveCity_Harbor_EventScript_NoTicket:: @ 821E56B
 	end
 
 @ Unused
-LilycoveCity_Harbor_EventScript_GoToSlateportUnused:: @ 821E575
-	msgbox LilycoveCity_Harbor_Text_SlateportItIs, MSGBOX_YESNO
-	compare VAR_RESULT, NO
-	goto_if_eq LilycoveCity_Harbor_EventScript_FerryDestinationChangeMind
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_BOARD_LILYCOVE
-	call LilycoveCity_Harbor_EventScript_BoardFerry
-	warp MAP_SS_TIDAL_CORRIDOR, 255, 1, 10
-	waitstate
-	release
-	end
-
-@ Unused
 LilycoveCity_Harbor_EventScript_GoToBattleFrontierUnused:: @ 821E59D
 	msgbox LilycoveCity_Harbor_Text_BattleFrontierItIs, MSGBOX_YESNO
 	compare VAR_RESULT, NO
@@ -599,9 +575,6 @@ LilycoveCity_Harbor_Text_FlashTicketWhereTo: @ 821E7ED
 
 LilycoveCity_Harbor_Text_SailAnotherTime: @ 821E842
 	.string "Please sail with us another time!$"
-
-LilycoveCity_Harbor_Text_SlateportItIs: @ 821E864
-	.string "SLATEPORT CITY it is, then!$"
 
 LilycoveCity_Harbor_Text_BattleFrontierItIs: @ 821E880
 	.string "BATTLE FRONTIER it is, then!$"

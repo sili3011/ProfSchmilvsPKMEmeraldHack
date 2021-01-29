@@ -2774,12 +2774,6 @@ bool8 IsPriceDiscounted(u8 newsKind)
 {
     switch (newsKind)
     {
-    case POKENEWS_SLATEPORT:
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SLATEPORT_CITY) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SLATEPORT_CITY) && gSpecialVar_LastTalked == 25)
-        {
-            return TRUE;
-        }
-        return FALSE;
     case POKENEWS_LILYCOVE:
         if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP))
         {
