@@ -2,7 +2,6 @@
 #define GUARD_DATA_REGION_MAP_REGION_MAP_ENTRIES_H
 
 static const u8 sMapName_Playground[] = _("PLAYGROUND");
-static const u8 sMapName_LittlerootTown[] = _("LITTLEROOT TOWN");
 static const u8 sMapName_OldaleTown[] = _("OLDALE TOWN");
 static const u8 sMapName_DewfordTown[] = _("DEWFORD TOWN");
 static const u8 sMapName_LavaridgeTown[] = _("LAVARIDGE TOWN");
@@ -18,6 +17,7 @@ static const u8 sMapName_LilycoveCity[] = _("LILYCOVE CITY");
 static const u8 sMapName_MossdeepCity[] = _("MOSSDEEP CITY");
 static const u8 sMapName_SootopolisCity[] = _("SOOTOPOLIS CITY");
 static const u8 sMapName_EverGrandeCity[] = _("EVER GRANDE CITY");
+static const u8 sMapName_Route01[] = _("ROUTE 1");
 static const u8 sMapName_Route101[] = _("ROUTE 101");
 static const u8 sMapName_Route102[] = _("ROUTE 102");
 static const u8 sMapName_Route103[] = _("ROUTE 103");
@@ -201,7 +201,6 @@ static const u8 sMapName_DesertUnderpass[] = _("DESERT UNDERPASS");
 static const u8 sMapName_TrainerHill[] = _("TRAINER HILL");
 
 const struct RegionMapLocation gRegionMapEntries[] = {
-    [MAPSEC_LITTLEROOT_TOWN] = {4, 11, 1, 1, sMapName_LittlerootTown},
     [MAPSEC_OLDALE_TOWN] = {4, 9, 1, 1, sMapName_OldaleTown},
     [MAPSEC_DEWFORD_TOWN] = {2, 14, 1, 1, sMapName_DewfordTown},
     [MAPSEC_LAVARIDGE_TOWN] = {5, 3, 1, 1, sMapName_LavaridgeTown},

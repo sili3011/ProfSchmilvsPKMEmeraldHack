@@ -45,8 +45,8 @@ u8 gSelectedObjectEvent;
 static void GetPlayerPosition(struct MapPosition *);
 static void GetInFrontOfPlayerPosition(struct MapPosition *);
 static u16 GetPlayerCurMetatileBehavior(int);
-static bool8 TryStartInteractionScript(struct MapPosition*, u16, u8);
-static const u8 *GetInteractionScript(struct MapPosition*, u8, u8);
+static bool8 TryStartInteractionScript(struct MapPosition *, u16, u8);
+static const u8 *GetInteractionScript(struct MapPosition *, u8, u8);
 static const u8 *GetInteractedObjectEventScript(struct MapPosition *, u8, u8);
 static const u8 *GetInteractedBackgroundEventScript(struct MapPosition *, u8, u8);
 static const u8 *GetInteractedMetatileScript(struct MapPosition *, u8, u8);
@@ -200,10 +200,10 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
     }
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
         return TRUE;
-    
+
     if (input->tookStep && TryFindHiddenPokemon())
         return TRUE;
-    
+
     if (input->pressedRButton && TryStartDexnavSearch())
         return TRUE;
 
@@ -243,13 +243,7 @@ static bool8 TryStartInteractionScript(struct MapPosition *position, u16 metatil
         return FALSE;
 
     // Don't play interaction sound for certain scripts.
-    if (script != LittlerootTown_BrendansHouse_2F_EventScript_PC
-     && script != LittlerootTown_MaysHouse_2F_EventScript_PC
-     && script != SecretBase_EventScript_PC
-     && script != SecretBase_EventScript_RecordMixingPC
-     && script != SecretBase_EventScript_DollInteract
-     && script != SecretBase_EventScript_CushionInteract
-     && script != EventScript_PC)
+    if (script != SecretBase_EventScript_PC && script != SecretBase_EventScript_RecordMixingPC && script != SecretBase_EventScript_DollInteract && script != SecretBase_EventScript_CushionInteract && script != EventScript_PC)
         PlaySE(SE_SELECT);
 
     ScriptContext1_SetupScript(script);
@@ -403,8 +397,6 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
         return Route110_TrickHousePuzzle_EventScript_Door;
     if (MetatileBehavior_IsRegionMap(metatileBehavior) == TRUE)
         return EventScript_RegionMap;
-    if (MetatileBehavior_IsRunningShoesManual(metatileBehavior) == TRUE)
-        return EventScript_RunningShoesManual;
     if (MetatileBehavior_IsPictureBookShelf(metatileBehavior) == TRUE)
         return EventScript_PictureBookShelf;
     if (MetatileBehavior_IsBookShelf(metatileBehavior) == TRUE)
@@ -596,11 +588,6 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
             ScriptContext1_SetupScript(Route119_EventScript_ScottWonAtFortreeGymCall);
             return TRUE;
         }
-        if (ShouldDoScottBattleFrontierCall() == TRUE)
-        {
-            ScriptContext1_SetupScript(LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall);
-            return TRUE;
-        }
         if (ShouldDoRoxanneCall() == TRUE)
         {
             ScriptContext1_SetupScript(RustboroCity_Gym_EventScript_RegisterRoxanne);
@@ -770,16 +757,7 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
 
 static bool8 IsWarpMetatileBehavior(u16 metatileBehavior)
 {
-    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE
-     && MetatileBehavior_IsLadder(metatileBehavior) != TRUE
-     && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE
-     && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE
-     && MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) != TRUE
-     && MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) != TRUE
-     && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE
-     && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE
-     && MetatileBehavior_IsMossdeepGymWarp(metatileBehavior) != TRUE
-     && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
+    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLadder(metatileBehavior) != TRUE && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE && MetatileBehavior_IsMossdeepGymWarp(metatileBehavior) != TRUE && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
         return FALSE;
     return TRUE;
 }
@@ -1016,9 +994,9 @@ int SetCableClubWarp(void)
 {
     struct MapPosition position;
 
-    GetPlayerMovementDirection();  //unnecessary
+    GetPlayerMovementDirection(); //unnecessary
     GetPlayerPosition(&position);
-    MapGridGetMetatileBehaviorAt(position.x, position.y);  //unnecessary
+    MapGridGetMetatileBehaviorAt(position.x, position.y); //unnecessary
     SetupWarp(&gMapHeader, GetWarpEventAtMapPosition(&gMapHeader, &position), &position);
     return 0;
 }

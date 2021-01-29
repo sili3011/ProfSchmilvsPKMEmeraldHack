@@ -36,7 +36,6 @@ EventScript_MomDadMightLikeThis1:: @ 827EE8A
 	end
 
 EventScript_PlayersHouseMovie:: @ 827EE9A
-	msgbox PlayersHouse_1F_Text_TheresAMovieOnTV, MSGBOX_DEFAULT
 	releaseall
 	end
 
@@ -44,7 +43,6 @@ EventScript_PlayersHouseMovie:: @ 827EE9A
 @ It's called again when Mom actually asks for the color, overwriting
 @ whatever it does here.
 EventScript_PlayersHouseLatiNewsFlash:: @ 827EEA4
-	msgbox PlayersHouse_1F_Text_LatiEmergencyNewsFlash, MSGBOX_DEFAULT
 	special InitRoamer
 	clearflag FLAG_SYS_TV_LATIAS_LATIOS
 	setflag FLAG_LATIOS_OR_LATIAS_ROAMING

@@ -109,7 +109,6 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/MossdeepCity/scripts.inc"
 	.include "data/maps/SootopolisCity/scripts.inc"
 	.include "data/maps/EverGrandeCity/scripts.inc"
-	.include "data/maps/LittlerootTown/scripts.inc"
 	.include "data/maps/OldaleTown/scripts.inc"
 	.include "data/maps/DewfordTown/scripts.inc"
 	.include "data/maps/LavaridgeTown/scripts.inc"
@@ -157,11 +156,6 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/Underwater_Route129/scripts.inc"
 	.include "data/maps/Underwater_Route105/scripts.inc"
 	.include "data/maps/Underwater_Route125/scripts.inc"
-	.include "data/maps/LittlerootTown_BrendansHouse_1F/scripts.inc"
-	.include "data/maps/LittlerootTown_BrendansHouse_2F/scripts.inc"
-	.include "data/maps/LittlerootTown_MaysHouse_1F/scripts.inc"
-	.include "data/maps/LittlerootTown_MaysHouse_2F/scripts.inc"
-	.include "data/maps/LittlerootTown_ProfessorBirchsLab/scripts.inc"
 	.include "data/maps/OldaleTown_House1/scripts.inc"
 	.include "data/maps/OldaleTown_House2/scripts.inc"
 	.include "data/maps/OldaleTown_PokemonCenter_1F/scripts.inc"
@@ -445,7 +439,6 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/RecordCorner/scripts.inc"
 	.include "data/maps/BattleColosseum_4P/scripts.inc"
 	.include "data/maps/ContestHall/scripts.inc"
-	.include "data/maps/InsideOfTruck/scripts.inc"
 	.include "data/maps/SSTidalCorridor/scripts.inc"
 	.include "data/maps/SSTidalLowerDeck/scripts.inc"
 	.include "data/maps/SSTidalRooms/scripts.inc"
@@ -719,7 +712,6 @@ Common_EventScript_OutOfCenterPartyHeal:: @ 8272083
 
 EventScript_RegionMap:: @ 827208F
 	lockall
-	msgbox Common_Text_LookCloserAtMap, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
 	special FieldShowRegionMap
 	waitstate
@@ -1021,7 +1013,6 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 	.include "data/scripts/mystery_event_club.inc"
 	.include "data/scripts/day_care.inc"
 	.include "data/scripts/flash.inc"
-	.include "data/scripts/players_house.inc"
 	.include "data/scripts/berry_blender.inc"
 	.include "data/text/mauville_man.inc"
 	.include "data/text/trainers.inc"
@@ -1054,3 +1045,5 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 	.include "data/text/birch_speech.inc"
 	.include "data/maps/playground/scripts.inc"
     .include "data/scripts/dexnav.inc"
+
+	.include "data/maps/Route01/scripts.inc"

@@ -46,13 +46,13 @@
     "MossdeepCity",
     "SootopolisCity",
     "EverGrandeCity",
-    "LittlerootTown",
     "OldaleTown",
     "DewfordTown",
     "LavaridgeTown",
     "FallarborTown",
     "VerdanturfTown",
     "PacifidlogTown",
+    "Route01",
     "Route101",
     "Route102",
     "Route103",
@@ -96,11 +96,6 @@
     "Underwater_Route125"
   ],
   "gMapGroup1": [
-    "LittlerootTown_BrendansHouse_1F",
-    "LittlerootTown_BrendansHouse_2F",
-    "LittlerootTown_MaysHouse_1F",
-    "LittlerootTown_MaysHouse_2F",
-    "LittlerootTown_ProfessorBirchsLab"
   ],
   "gMapGroup2": [
     "OldaleTown_House1",
@@ -467,7 +462,6 @@
     "ContestHallCool",
     "ContestHallSmart",
     "ContestHallCute",
-    "InsideOfTruck",
     "SSTidalCorridor",
     "SSTidalLowerDeck",
     "SSTidalRooms",
