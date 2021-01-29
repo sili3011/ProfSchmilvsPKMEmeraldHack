@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "MauvilleCity",
     "RustboroCity",
     "FortreeCity",
     "LilycoveCity",
@@ -103,14 +102,7 @@
 
   ],
   "gMapGroup10": [
-    "MauvilleCity_Gym",
-    "MauvilleCity_BikeShop",
-    "MauvilleCity_House1",
-    "MauvilleCity_GameCorner",
-    "MauvilleCity_House2",
-    "MauvilleCity_PokemonCenter_1F",
-    "MauvilleCity_PokemonCenter_2F",
-    "MauvilleCity_Mart"
+
   ],
   "gMapGroup11": [
     "RustboroCity_DevonCorp_1F",
@@ -270,8 +262,6 @@
     "ShoalCave_LowTideLowerRoom",
     "ShoalCave_HighTideEntranceRoom",
     "ShoalCave_HighTideInnerRoom",
-    "NewMauville_Entrance",
-    "NewMauville_Inside",
     "AbandonedShip_Deck",
     "AbandonedShip_Corridors_1F",
     "AbandonedShip_Rooms_1F",

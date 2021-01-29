@@ -576,11 +576,6 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
             ScriptContext1_SetupScript(IslandCave_EventScript_OpenRegiEntrance);
             return TRUE;
         }
-        if (ShouldDoWallyCall() == TRUE)
-        {
-            ScriptContext1_SetupScript(MauvilleCity_EventScript_RegisterWallyCall);
-            return TRUE;
-        }
         if (ShouldDoRoxanneCall() == TRUE)
         {
             ScriptContext1_SetupScript(RustboroCity_Gym_EventScript_RegisterRoxanne);

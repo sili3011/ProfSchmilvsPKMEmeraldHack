@@ -22,16 +22,6 @@
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
     {
-      "id": "LAYOUT_MAUVILLE_CITY",
-      "name": "MauvilleCity_Layout",
-      "width": 40,
-      "height": 20,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Mauville",
-      "border_filepath": "data/layouts/MauvilleCity/border.bin",
-      "blockdata_filepath": "data/layouts/MauvilleCity/map.bin"
-    },
-    {
       "id": "LAYOUT_RUSTBORO_CITY",
       "name": "RustboroCity_Layout",
       "width": 40,
@@ -400,36 +390,6 @@
       "secondary_tileset": "gTileset_Facility",
       "border_filepath": "data/layouts/Harbor/border.bin",
       "blockdata_filepath": "data/layouts/Harbor/map.bin"
-    },
-    {
-      "id": "LAYOUT_MAUVILLE_CITY_GYM",
-      "name": "MauvilleCity_Gym_Layout",
-      "width": 10,
-      "height": 21,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_MauvilleGym",
-      "border_filepath": "data/layouts/MauvilleCity_Gym/border.bin",
-      "blockdata_filepath": "data/layouts/MauvilleCity_Gym/map.bin"
-    },
-    {
-      "id": "LAYOUT_MAUVILLE_CITY_BIKE_SHOP",
-      "name": "MauvilleCity_BikeShop_Layout",
-      "width": 12,
-      "height": 9,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_BikeShop",
-      "border_filepath": "data/layouts/MauvilleCity_BikeShop/border.bin",
-      "blockdata_filepath": "data/layouts/MauvilleCity_BikeShop/map.bin"
-    },
-    {
-      "id": "LAYOUT_MAUVILLE_CITY_GAME_CORNER",
-      "name": "MauvilleCity_GameCorner_Layout",
-      "width": 22,
-      "height": 11,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_MauvilleGameCorner",
-      "border_filepath": "data/layouts/MauvilleCity_GameCorner/border.bin",
-      "blockdata_filepath": "data/layouts/MauvilleCity_GameCorner/map.bin"
     },
     {
       "id": "LAYOUT_RUSTBORO_CITY_DEVON_CORP_1F",
@@ -1270,26 +1230,6 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/Unknown_0843E894/border.bin",
       "blockdata_filepath": "data/layouts/Unknown_0843E894/map.bin"
-    },
-    {
-      "id": "LAYOUT_NEW_MAUVILLE_ENTRANCE",
-      "name": "NewMauville_Entrance_Layout",
-      "width": 9,
-      "height": 9,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Facility",
-      "border_filepath": "data/layouts/NewMauville_Entrance/border.bin",
-      "blockdata_filepath": "data/layouts/NewMauville_Entrance/map.bin"
-    },
-    {
-      "id": "LAYOUT_NEW_MAUVILLE_INSIDE",
-      "name": "NewMauville_Inside_Layout",
-      "width": 41,
-      "height": 41,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_BikeShop",
-      "border_filepath": "data/layouts/NewMauville_Inside/border.bin",
-      "blockdata_filepath": "data/layouts/NewMauville_Inside/map.bin"
     },
     {
       "id": "LAYOUT_ABANDONED_SHIP_DECK",

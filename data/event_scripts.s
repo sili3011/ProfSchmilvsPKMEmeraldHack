@@ -101,7 +101,6 @@ gStdScripts:: @ 81DC2A0
 	.4byte Std_10
 gStdScripts_End:: @ 81DC2CC
 
-	.include "data/maps/MauvilleCity/scripts.inc"
 	.include "data/maps/RustboroCity/scripts.inc"
 	.include "data/maps/FortreeCity/scripts.inc"
 	.include "data/maps/LilycoveCity/scripts.inc"
@@ -156,14 +155,6 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/PacifidlogTown_House3/scripts.inc"
 	.include "data/maps/PacifidlogTown_House4/scripts.inc"
 	.include "data/maps/PacifidlogTown_House5/scripts.inc"
-	.include "data/maps/MauvilleCity_Gym/scripts.inc"
-	.include "data/maps/MauvilleCity_BikeShop/scripts.inc"
-	.include "data/maps/MauvilleCity_House1/scripts.inc"
-	.include "data/maps/MauvilleCity_GameCorner/scripts.inc"
-	.include "data/maps/MauvilleCity_House2/scripts.inc"
-	.include "data/maps/MauvilleCity_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/MauvilleCity_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/MauvilleCity_Mart/scripts.inc"
 	.include "data/maps/RustboroCity_DevonCorp_1F/scripts.inc"
 	.include "data/maps/RustboroCity_DevonCorp_2F/scripts.inc"
 	.include "data/maps/RustboroCity_DevonCorp_3F/scripts.inc"
@@ -310,8 +301,6 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/ShoalCave_LowTideLowerRoom/scripts.inc"
 	.include "data/maps/ShoalCave_HighTideEntranceRoom/scripts.inc"
 	.include "data/maps/ShoalCave_HighTideInnerRoom/scripts.inc"
-	.include "data/maps/NewMauville_Entrance/scripts.inc"
-	.include "data/maps/NewMauville_Inside/scripts.inc"
 	.include "data/maps/AbandonedShip_Deck/scripts.inc"
 	.include "data/maps/AbandonedShip_Corridors_1F/scripts.inc"
 	.include "data/maps/AbandonedShip_Rooms_1F/scripts.inc"
