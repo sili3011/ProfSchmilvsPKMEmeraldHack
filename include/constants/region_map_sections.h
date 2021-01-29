@@ -10,52 +10,52 @@
 #define MAPSEC_PACIFIDLOG_TOWN 0x06
 #define MAPSEC_UNUSED 0x07 // UNUSED
 #define MAPSEC_OLDALE_TOWN 0x08
-#define MAPSEC_MAUVILLE_CITY 0x09 // UNUSED
-#define MAPSEC_RUSTBORO_CITY 0x0A // UNUSED
-#define MAPSEC_FORTREE_CITY 0x0B  // UNUSED
-#define MAPSEC_LILYCOVE_CITY 0x0C // UNUSED
-#define MAPSEC_MOSSDEEP_CITY 0x0D
-#define MAPSEC_SOOTOPOLIS_CITY 0x0E
+#define MAPSEC_MAUVILLE_CITY 0x09   // UNUSED
+#define MAPSEC_RUSTBORO_CITY 0x0A   // UNUSED
+#define MAPSEC_FORTREE_CITY 0x0B    // UNUSED
+#define MAPSEC_LILYCOVE_CITY 0x0C   // UNUSED
+#define MAPSEC_MOSSDEEP_CITY 0x0D   // UNUSED
+#define MAPSEC_SOOTOPOLIS_CITY 0x0E // UNUSED
 #define MAPSEC_EVER_GRANDE_CITY 0x0F
 #define MAPSEC_ROUTE_01 0x10
-#define MAPSEC_ROUTE_102 0x11      // UNUSED
-#define MAPSEC_ROUTE_103 0x12      // UNUSED
-#define MAPSEC_ROUTE_104 0x13      // UNUSED
-#define MAPSEC_ROUTE_105 0x14      // UNUSED
-#define MAPSEC_ROUTE_106 0x15      // UNUSED
-#define MAPSEC_ROUTE_107 0x16      // UNUSED
-#define MAPSEC_ROUTE_108 0x17      // UNUSED
-#define MAPSEC_ROUTE_109 0x18      // UNUSED
-#define MAPSEC_ROUTE_110 0x19      // UNUSED
-#define MAPSEC_ROUTE_111 0x1A      // UNUSED
-#define MAPSEC_ROUTE_112 0x1B      // UNUSED
-#define MAPSEC_ROUTE_113 0x1C      // UNUSED
-#define MAPSEC_ROUTE_114 0x1D      // UNUSED
-#define MAPSEC_ROUTE_115 0x1E      // UNUSED
-#define MAPSEC_ROUTE_116 0x1F      // UNUSED
-#define MAPSEC_ROUTE_117 0x20      // UNUSED
-#define MAPSEC_ROUTE_118 0x21      // UNUSED
-#define MAPSEC_ROUTE_119 0x22      // UNUSED
-#define MAPSEC_ROUTE_120 0x23      // UNUSED
-#define MAPSEC_ROUTE_121 0x24      // UNUSED
-#define MAPSEC_ROUTE_122 0x25      // UNUSED
-#define MAPSEC_ROUTE_123 0x26      // UNUSED
-#define MAPSEC_ROUTE_124 0x27      // UNUSED
-#define MAPSEC_ROUTE_125 0x28      // UNUSED
-#define MAPSEC_ROUTE_126 0x29      // UNUSED
-#define MAPSEC_ROUTE_127 0x2A      // UNUSED
-#define MAPSEC_ROUTE_128 0x2B      // UNUSED
-#define MAPSEC_ROUTE_129 0x2C      // UNUSED
-#define MAPSEC_ROUTE_130 0x2D      // UNUSED
-#define MAPSEC_ROUTE_131 0x2E      // UNUSED
-#define MAPSEC_ROUTE_132 0x2F      // UNUSED
-#define MAPSEC_ROUTE_133 0x30      // UNUSED
-#define MAPSEC_ROUTE_134 0x31      // UNUSED
-#define MAPSEC_UNDERWATER_124 0x32 // UNUSED
-#define MAPSEC_UNDERWATER_126 0x33 // UNUSED
-#define MAPSEC_UNDERWATER_127 0x34 // UNUSED
-#define MAPSEC_UNDERWATER_128 0x35 // UNUSED
-#define MAPSEC_UNDERWATER_SOOTOPOLIS 0x36
+#define MAPSEC_ROUTE_102 0x11             // UNUSED
+#define MAPSEC_ROUTE_103 0x12             // UNUSED
+#define MAPSEC_ROUTE_104 0x13             // UNUSED
+#define MAPSEC_ROUTE_105 0x14             // UNUSED
+#define MAPSEC_ROUTE_106 0x15             // UNUSED
+#define MAPSEC_ROUTE_107 0x16             // UNUSED
+#define MAPSEC_ROUTE_108 0x17             // UNUSED
+#define MAPSEC_ROUTE_109 0x18             // UNUSED
+#define MAPSEC_ROUTE_110 0x19             // UNUSED
+#define MAPSEC_ROUTE_111 0x1A             // UNUSED
+#define MAPSEC_ROUTE_112 0x1B             // UNUSED
+#define MAPSEC_ROUTE_113 0x1C             // UNUSED
+#define MAPSEC_ROUTE_114 0x1D             // UNUSED
+#define MAPSEC_ROUTE_115 0x1E             // UNUSED
+#define MAPSEC_ROUTE_116 0x1F             // UNUSED
+#define MAPSEC_ROUTE_117 0x20             // UNUSED
+#define MAPSEC_ROUTE_118 0x21             // UNUSED
+#define MAPSEC_ROUTE_119 0x22             // UNUSED
+#define MAPSEC_ROUTE_120 0x23             // UNUSED
+#define MAPSEC_ROUTE_121 0x24             // UNUSED
+#define MAPSEC_ROUTE_122 0x25             // UNUSED
+#define MAPSEC_ROUTE_123 0x26             // UNUSED
+#define MAPSEC_ROUTE_124 0x27             // UNUSED
+#define MAPSEC_ROUTE_125 0x28             // UNUSED
+#define MAPSEC_ROUTE_126 0x29             // UNUSED
+#define MAPSEC_ROUTE_127 0x2A             // UNUSED
+#define MAPSEC_ROUTE_128 0x2B             // UNUSED
+#define MAPSEC_ROUTE_129 0x2C             // UNUSED
+#define MAPSEC_ROUTE_130 0x2D             // UNUSED
+#define MAPSEC_ROUTE_131 0x2E             // UNUSED
+#define MAPSEC_ROUTE_132 0x2F             // UNUSED
+#define MAPSEC_ROUTE_133 0x30             // UNUSED
+#define MAPSEC_ROUTE_134 0x31             // UNUSED
+#define MAPSEC_UNDERWATER_124 0x32        // UNUSED
+#define MAPSEC_UNDERWATER_126 0x33        // UNUSED
+#define MAPSEC_UNDERWATER_127 0x34        // UNUSED
+#define MAPSEC_UNDERWATER_128 0x35        // UNUSED
+#define MAPSEC_UNDERWATER_SOOTOPOLIS 0x36 // UNUSED
 #define MAPSEC_GRANITE_CAVE 0x37
 #define MAPSEC_MT_CHIMNEY 0x38
 #define MAPSEC_SAFARI_ZONE 0x39

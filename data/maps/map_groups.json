@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "SootopolisCity",
     "EverGrandeCity",
     "OldaleTown",
     "DewfordTown",
@@ -113,21 +112,7 @@
 
   ],
   "gMapGroup15": [
-    "SootopolisCity_Gym_1F",
-    "SootopolisCity_Gym_B1F",
-    "SootopolisCity_PokemonCenter_1F",
-    "SootopolisCity_PokemonCenter_2F",
-    "SootopolisCity_Mart",
-    "SootopolisCity_House1",
-    "SootopolisCity_House2",
-    "SootopolisCity_House3",
-    "SootopolisCity_House4",
-    "SootopolisCity_House5",
-    "SootopolisCity_House6",
-    "SootopolisCity_House7",
-    "SootopolisCity_LotadAndSeedotHouse",
-    "SootopolisCity_MysteryEventsHouse_1F",
-    "SootopolisCity_MysteryEventsHouse_B1F"
+
   ],
   "gMapGroup16": [
     "EverGrandeCity_SidneysRoom",
@@ -152,7 +137,6 @@
     "MeteorFalls_B1F_1R",
     "MeteorFalls_B1F_2R",
     "RusturfTunnel",
-    "Underwater_SootopolisCity",
     "DesertRuins",
     "GraniteCave_1F",
     "GraniteCave_B1F",
