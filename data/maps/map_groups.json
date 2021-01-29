@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "LilycoveCity",
     "MossdeepCity",
     "SootopolisCity",
     "EverGrandeCity",
@@ -109,29 +108,7 @@
 
   ],
   "gMapGroup13": [
-    "LilycoveCity_CoveLilyMotel_1F",
-    "LilycoveCity_CoveLilyMotel_2F",
-    "LilycoveCity_LilycoveMuseum_1F",
-    "LilycoveCity_LilycoveMuseum_2F",
-    "LilycoveCity_ContestLobby",
-    "LilycoveCity_ContestHall",
-    "LilycoveCity_PokemonCenter_1F",
-    "LilycoveCity_PokemonCenter_2F",
-    "LilycoveCity_UnusedMart",
-    "LilycoveCity_PokemonTrainerFanClub",
-    "LilycoveCity_Harbor",
-    "LilycoveCity_MoveDeletersHouse",
-    "LilycoveCity_House1",
-    "LilycoveCity_House2",
-    "LilycoveCity_House3",
-    "LilycoveCity_House4",
-    "LilycoveCity_DepartmentStore_1F",
-    "LilycoveCity_DepartmentStore_2F",
-    "LilycoveCity_DepartmentStore_3F",
-    "LilycoveCity_DepartmentStore_4F",
-    "LilycoveCity_DepartmentStore_5F",
-    "LilycoveCity_DepartmentStoreRooftop",
-    "LilycoveCity_DepartmentStoreElevator"
+    
   ],
   "gMapGroup14": [
     "MossdeepCity_Gym",

@@ -1195,7 +1195,6 @@ extern const u8 gText_50CoinsAndPrice[];
 extern const u8 gText_500CoinsAndPrice[];
 extern const u8 gText_Excellent2[];
 extern const u8 gText_NotSoGood[];
-extern const u8 gText_LilycoveCity[];
 extern const u8 gText_Right[];
 extern const u8 gText_Left[];
 extern const u8 gText_RedShard[];

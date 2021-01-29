@@ -8,16 +8,15 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_LILYCOVE_CITY      (2 | (0 << 8))
-#define MAP_MOSSDEEP_CITY      (3 | (0 << 8))
-#define MAP_SOOTOPOLIS_CITY    (4 | (0 << 8))
-#define MAP_EVER_GRANDE_CITY   (5 | (0 << 8))
-#define MAP_OLDALE_TOWN        (6 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (7 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (8 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (9 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (10 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (11 | (0 << 8))
+#define MAP_MOSSDEEP_CITY      (2 | (0 << 8))
+#define MAP_SOOTOPOLIS_CITY    (3 | (0 << 8))
+#define MAP_EVER_GRANDE_CITY   (4 | (0 << 8))
+#define MAP_OLDALE_TOWN        (5 | (0 << 8))
+#define MAP_DEWFORD_TOWN       (6 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (7 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (8 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (9 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (10 | (0 << 8))
 
 // Map Group 1
 
@@ -86,29 +85,6 @@
 // Map Group 12
 
 // Map Group 13
-#define MAP_LILYCOVE_CITY_COVE_LILY_MOTEL_1F        (0 | (13 << 8))
-#define MAP_LILYCOVE_CITY_COVE_LILY_MOTEL_2F        (1 | (13 << 8))
-#define MAP_LILYCOVE_CITY_LILYCOVE_MUSEUM_1F        (2 | (13 << 8))
-#define MAP_LILYCOVE_CITY_LILYCOVE_MUSEUM_2F        (3 | (13 << 8))
-#define MAP_LILYCOVE_CITY_CONTEST_LOBBY             (4 | (13 << 8))
-#define MAP_LILYCOVE_CITY_CONTEST_HALL              (5 | (13 << 8))
-#define MAP_LILYCOVE_CITY_POKEMON_CENTER_1F         (6 | (13 << 8))
-#define MAP_LILYCOVE_CITY_POKEMON_CENTER_2F         (7 | (13 << 8))
-#define MAP_LILYCOVE_CITY_UNUSED_MART               (8 | (13 << 8))
-#define MAP_LILYCOVE_CITY_POKEMON_TRAINER_FAN_CLUB  (9 | (13 << 8))
-#define MAP_LILYCOVE_CITY_HARBOR                    (10 | (13 << 8))
-#define MAP_LILYCOVE_CITY_MOVE_DELETERS_HOUSE       (11 | (13 << 8))
-#define MAP_LILYCOVE_CITY_HOUSE1                    (12 | (13 << 8))
-#define MAP_LILYCOVE_CITY_HOUSE2                    (13 | (13 << 8))
-#define MAP_LILYCOVE_CITY_HOUSE3                    (14 | (13 << 8))
-#define MAP_LILYCOVE_CITY_HOUSE4                    (15 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_1F       (16 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_2F       (17 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_3F       (18 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_4F       (19 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_5F       (20 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP  (21 | (13 << 8))
-#define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_ELEVATOR (22 | (13 << 8))
 
 // Map Group 14
 #define MAP_MOSSDEEP_CITY_GYM               (0 | (14 << 8))

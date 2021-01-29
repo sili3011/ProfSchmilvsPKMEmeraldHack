@@ -24,7 +24,6 @@ SSTidalRooms_EventScript_Bed:: @ 823CA33
 	msgbox SSTidalRooms_Text_TakeRestOnBed, MSGBOX_DEFAULT
 	closemessage
 	call Common_EventScript_OutOfCenterPartyHeal
-	call SSTidalRooms_EventScript_ProgessCruiseAfterBed
 	releaseall
 	end
 

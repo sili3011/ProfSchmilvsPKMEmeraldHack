@@ -771,11 +771,7 @@ void UpdateTVScreensOnMap(int width, int height)
     case 2:
         break;
     default:
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(LILYCOVE_CITY_COVE_LILY_MOTEL_1F) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(LILYCOVE_CITY_COVE_LILY_MOTEL_1F))
-        {
-            SetTVMetatilesOnMap(width, height, 0x3);
-        }
-        else if (FlagGet(FLAG_SYS_TV_START) && (FindAnyTVShowOnTheAir() != 0xFF || FindAnyTVNewsOnTheAir() != 0xFF || IsTVShowInSearchOfTrainersAiring()))
+        if (FlagGet(FLAG_SYS_TV_START) && (FindAnyTVShowOnTheAir() != 0xFF || FindAnyTVNewsOnTheAir() != 0xFF || IsTVShowInSearchOfTrainersAiring()))
         {
             FlagClear(FLAG_SYS_TV_WATCH);
             SetTVMetatilesOnMap(width, height, 0x3);
@@ -2743,17 +2739,9 @@ bool8 GetPriceReduction(u8 newsKind)
     return FALSE;
 }
 
+// MIGHT DELETE
 bool8 IsPriceDiscounted(u8 newsKind)
 {
-    switch (newsKind)
-    {
-    case POKENEWS_LILYCOVE:
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP))
-        {
-            return TRUE;
-        }
-        return FALSE;
-    }
     return TRUE;
 }
 

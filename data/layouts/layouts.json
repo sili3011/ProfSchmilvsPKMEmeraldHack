@@ -22,16 +22,6 @@
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
     {
-      "id": "LAYOUT_LILYCOVE_CITY",
-      "name": "LilycoveCity_Layout",
-      "width": 80,
-      "height": 40,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Lilycove",
-      "border_filepath": "data/layouts/LilycoveCity/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity/map.bin"
-    },
-    {
       "id": "LAYOUT_MOSSDEEP_CITY",
       "name": "MossdeepCity_Layout",
       "width": 80,
@@ -282,16 +272,6 @@
       "blockdata_filepath": "data/layouts/FallarborTown_LeftoverRSContestHall/map.bin"
     },
     {
-      "id": "LAYOUT_LILYCOVE_CITY_HOUSE2",
-      "name": "LilycoveCity_House2_Layout",
-      "width": 8,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/LilycoveCity_House2/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_House2/map.bin"
-    },
-    {
       "id": "LAYOUT_UNKNOWN_08428450",
       "name": "Unknown_08428450_Layout",
       "width": 1,
@@ -370,56 +350,6 @@
       "secondary_tileset": "gTileset_Facility",
       "border_filepath": "data/layouts/Harbor/border.bin",
       "blockdata_filepath": "data/layouts/Harbor/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_LILYCOVE_MUSEUM_1F",
-      "name": "LilycoveCity_LilycoveMuseum_1F_Layout",
-      "width": 21,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_LilycoveMuseum",
-      "border_filepath": "data/layouts/LilycoveCity_LilycoveMuseum_1F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_LilycoveMuseum_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_LILYCOVE_MUSEUM_2F",
-      "name": "LilycoveCity_LilycoveMuseum_2F_Layout",
-      "width": 22,
-      "height": 13,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_LilycoveMuseum",
-      "border_filepath": "data/layouts/LilycoveCity_LilycoveMuseum_2F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_LilycoveMuseum_2F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_CONTEST_LOBBY",
-      "name": "LilycoveCity_ContestLobby_Layout",
-      "width": 31,
-      "height": 12,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Contest",
-      "border_filepath": "data/layouts/LilycoveCity_ContestLobby/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_ContestLobby/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_CONTEST_HALL",
-      "name": "LilycoveCity_ContestHall_Layout",
-      "width": 51,
-      "height": 33,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Contest",
-      "border_filepath": "data/layouts/LilycoveCity_ContestHall/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_ContestHall/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_POKEMON_TRAINER_FAN_CLUB",
-      "name": "LilycoveCity_PokemonTrainerFanClub_Layout",
-      "width": 12,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/LilycoveCity_PokemonTrainerFanClub/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_PokemonTrainerFanClub/map.bin"
     },
     {
       "id": "LAYOUT_MOSSDEEP_CITY_GYM",
@@ -1672,66 +1602,6 @@
       "blockdata_filepath": "data/layouts/Unknown_08447028/map.bin"
     },
     {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_1F",
-      "name": "LilycoveCity_DepartmentStore_1F_Layout",
-      "width": 18,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStore_1F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStore_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_2F",
-      "name": "LilycoveCity_DepartmentStore_2F_Layout",
-      "width": 18,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStore_2F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStore_2F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_3F",
-      "name": "LilycoveCity_DepartmentStore_3F_Layout",
-      "width": 18,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStore_3F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStore_3F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_4F",
-      "name": "LilycoveCity_DepartmentStore_4F_Layout",
-      "width": 18,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStore_4F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStore_4F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_5F",
-      "name": "LilycoveCity_DepartmentStore_5F_Layout",
-      "width": 18,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStore_5F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStore_5F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP",
-      "name": "LilycoveCity_DepartmentStoreRooftop_Layout",
-      "width": 18,
-      "height": 12,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStoreRooftop/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStoreRooftop/map.bin"
-    },
-    {
       "id": "LAYOUT_BATTLE_FRONTIER_BATTLE_TOWER_LOBBY",
       "name": "BattleFrontier_BattleTowerLobby_Layout",
       "width": 25,
@@ -1790,16 +1660,6 @@
       "secondary_tileset": "gTileset_PokemonCenter",
       "border_filepath": "data/layouts/EverGrandeCity_PokemonLeague_1F/border.bin",
       "blockdata_filepath": "data/layouts/EverGrandeCity_PokemonLeague_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_DEPARTMENT_STORE_ELEVATOR",
-      "name": "LilycoveCity_DepartmentStoreElevator_Layout",
-      "width": 5,
-      "height": 6,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_BattleFrontier",
-      "border_filepath": "data/layouts/LilycoveCity_DepartmentStoreElevator/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_DepartmentStoreElevator/map.bin"
     },
     {
       "id": "LAYOUT_MOSSDEEP_CITY_SPACE_CENTER_1F",
@@ -1990,26 +1850,6 @@
       "secondary_tileset": "gTileset_CableClub",
       "border_filepath": "data/layouts/EverGrandeCity_HallOfFame/border.bin",
       "blockdata_filepath": "data/layouts/EverGrandeCity_HallOfFame/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_COVE_LILY_MOTEL_1F",
-      "name": "LilycoveCity_CoveLilyMotel_1F_Layout",
-      "width": 12,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/LilycoveCity_CoveLilyMotel_1F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_CoveLilyMotel_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LILYCOVE_CITY_COVE_LILY_MOTEL_2F",
-      "name": "LilycoveCity_CoveLilyMotel_2F_Layout",
-      "width": 12,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/LilycoveCity_CoveLilyMotel_2F/border.bin",
-      "blockdata_filepath": "data/layouts/LilycoveCity_CoveLilyMotel_2F/map.bin"
     },
     {
       "id": "LAYOUT_MT_PYRE_EXTERIOR",

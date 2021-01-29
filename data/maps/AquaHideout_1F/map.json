@@ -56,20 +56,6 @@
   ],
   "warp_events": [
     {
-      "x": 13,
-      "y": 27,
-      "elevation": 1,
-      "dest_map": "MAP_LILYCOVE_CITY",
-      "dest_warp_id": 6
-    },
-    {
-      "x": 14,
-      "y": 27,
-      "elevation": 1,
-      "dest_map": "MAP_LILYCOVE_CITY",
-      "dest_warp_id": 6
-    },
-    {
       "x": 22,
       "y": 1,
       "elevation": 3,
