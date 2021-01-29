@@ -182,15 +182,6 @@ static const match_call_text_data_t sMrStoneTextScripts[] = {
     {MatchCall_Text_MrStone11, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {NULL, 0xFFFF, 0xFFFF}};
 
-static const struct MatchCallStructNPC sMrStoneMatchCallHeader =
-    {
-        .type = MC_TYPE_NPC,
-        .mapSec = MAPSEC_RUSTBORO_CITY,
-        .flag = 0xFFFF,
-        .desc = gText_MrStoneMatchCallDesc,
-        .name = gText_MrStoneMatchCallName,
-        .textData = sMrStoneTextScripts};
-
 static const match_call_text_data_t sNormanTextScripts[] = {
     {MatchCall_Text_Norman1, FLAG_ENABLE_NORMAN_MATCH_CALL, 0xFFFF},
     {MatchCall_Text_Norman2, FLAG_DEFEATED_DEWFORD_GYM, 0xFFFF},
@@ -202,16 +193,6 @@ static const match_call_text_data_t sNormanTextScripts[] = {
     {MatchCall_Text_Norman8, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {MatchCall_Text_Norman9, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {NULL, 0xFFFF, 0xFFFF}};
-
-static const struct MatchCallStructTrainer sNormanMatchCallHeader =
-    {
-        .type = MC_TYPE_LEADER,
-        .mapSec = MAPSEC_PLAYGROUND,
-        .flag = FLAG_ENABLE_NORMAN_MATCH_CALL,
-        .rematchTableIdx = REMATCH_NORMAN,
-        .desc = gText_NormanMatchCallDesc,
-        .name = gText_NormanMatchCallName,
-        .textData = sNormanTextScripts};
 
 static const struct MatchCallBirch sProfBirchMatchCallHeader =
     {
@@ -226,15 +207,6 @@ static const match_call_text_data_t sMomTextScripts[] = {
     {MatchCall_Text_Mom2, FLAG_DEFEATED_PETALBURG_GYM, 0xFFFF},
     {MatchCall_Text_Mom3, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {NULL, 0xFFFF, 0xFFFF}};
-
-static const struct MatchCallStructNPC sMomMatchCallHeader =
-    {
-        .type = MC_TYPE_NPC,
-        .mapSec = MAPSEC_PLAYGROUND,
-        .flag = FLAG_ENABLE_MOM_MATCH_CALL,
-        .desc = gText_MomMatchCallDesc,
-        .name = gText_MomMatchCallName,
-        .textData = sMomTextScripts};
 
 static const match_call_text_data_t sStevenTextScripts[] = {
     {MatchCall_Text_Steven1, 0xFFFF, 0xFFFF},
@@ -361,16 +333,6 @@ static const match_call_text_data_t sRoxanneTextScripts[] = {
     {MatchCall_Text_Roxanne3, 0xFFFF, 0xFFFF},
     {MatchCall_Text_Roxanne4, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {NULL, 0xFFFF, 0xFFFF}};
-
-static const struct MatchCallStructTrainer sRoxanneMatchCallHeader =
-    {
-        .type = MC_TYPE_LEADER,
-        .mapSec = MAPSEC_RUSTBORO_CITY,
-        .flag = FLAG_ENABLE_ROXANNE_MATCH_CALL,
-        .rematchTableIdx = REMATCH_ROXANNE,
-        .desc = gText_RoxanneMatchCallDesc,
-        .name = NULL,
-        .textData = sRoxanneTextScripts};
 
 static const match_call_text_data_t sBrawlyTextScripts[] = {
     {MatchCall_Text_Brawly1, 0xFFFE, 0xFFFF},
@@ -545,16 +507,12 @@ static const struct MatchCallStructTrainer sWallaceMatchCallHeader =
         .textData = sWallaceTextScripts};
 
 static const match_call_t sMatchCallHeaders[] = {
-    [MC_HEADER_MR_STONE] = {.npc = &sMrStoneMatchCallHeader},
     [MC_HEADER_PROF_BIRCH] = {.birch = &sProfBirchMatchCallHeader},
     [MC_HEADER_BRENDAN] = {.rival = &sBrendanMatchCallHeader},
     [MC_HEADER_MAY] = {.rival = &sMayMatchCallHeader},
     [MC_HEADER_WALLY] = {.wally = &sWallyMatchCallHeader},
-    [MC_HEADER_NORMAN] = {.leader = &sNormanMatchCallHeader},
-    [MC_HEADER_MOM] = {.npc = &sMomMatchCallHeader},
     [MC_HEADER_STEVEN] = {.npc = &sStevenMatchCallHeader},
     [MC_HEADER_SCOTT] = {.npc = &sScottMatchCallHeader},
-    [MC_HEADER_ROXANNE] = {.leader = &sRoxanneMatchCallHeader},
     [MC_HEADER_BRAWLY] = {.leader = &sBrawlyMatchCallHeader},
     [MC_HEADER_WATTSON] = {.leader = &sWattsonMatchCallHeader},
     [MC_HEADER_FLANNERY] = {.leader = &sFlanneryMatchCallHeader},

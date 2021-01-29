@@ -8,18 +8,17 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_RUSTBORO_CITY      (2 | (0 << 8))
-#define MAP_FORTREE_CITY       (3 | (0 << 8))
-#define MAP_LILYCOVE_CITY      (4 | (0 << 8))
-#define MAP_MOSSDEEP_CITY      (5 | (0 << 8))
-#define MAP_SOOTOPOLIS_CITY    (6 | (0 << 8))
-#define MAP_EVER_GRANDE_CITY   (7 | (0 << 8))
-#define MAP_OLDALE_TOWN        (8 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (9 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (10 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (11 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (12 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (13 | (0 << 8))
+#define MAP_FORTREE_CITY       (2 | (0 << 8))
+#define MAP_LILYCOVE_CITY      (3 | (0 << 8))
+#define MAP_MOSSDEEP_CITY      (4 | (0 << 8))
+#define MAP_SOOTOPOLIS_CITY    (5 | (0 << 8))
+#define MAP_EVER_GRANDE_CITY   (6 | (0 << 8))
+#define MAP_OLDALE_TOWN        (7 | (0 << 8))
+#define MAP_DEWFORD_TOWN       (8 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (9 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (10 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (11 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (12 | (0 << 8))
 
 // Map Group 1
 
@@ -84,23 +83,6 @@
 // Map Group 10
 
 // Map Group 11
-#define MAP_RUSTBORO_CITY_DEVON_CORP_1F     (0 | (11 << 8))
-#define MAP_RUSTBORO_CITY_DEVON_CORP_2F     (1 | (11 << 8))
-#define MAP_RUSTBORO_CITY_DEVON_CORP_3F     (2 | (11 << 8))
-#define MAP_RUSTBORO_CITY_GYM               (3 | (11 << 8))
-#define MAP_RUSTBORO_CITY_POKEMON_SCHOOL    (4 | (11 << 8))
-#define MAP_RUSTBORO_CITY_POKEMON_CENTER_1F (5 | (11 << 8))
-#define MAP_RUSTBORO_CITY_POKEMON_CENTER_2F (6 | (11 << 8))
-#define MAP_RUSTBORO_CITY_MART              (7 | (11 << 8))
-#define MAP_RUSTBORO_CITY_FLAT1_1F          (8 | (11 << 8))
-#define MAP_RUSTBORO_CITY_FLAT1_2F          (9 | (11 << 8))
-#define MAP_RUSTBORO_CITY_HOUSE1            (10 | (11 << 8))
-#define MAP_RUSTBORO_CITY_CUTTERS_HOUSE     (11 | (11 << 8))
-#define MAP_RUSTBORO_CITY_HOUSE2            (12 | (11 << 8))
-#define MAP_RUSTBORO_CITY_FLAT2_1F          (13 | (11 << 8))
-#define MAP_RUSTBORO_CITY_FLAT2_2F          (14 | (11 << 8))
-#define MAP_RUSTBORO_CITY_FLAT2_3F          (15 | (11 << 8))
-#define MAP_RUSTBORO_CITY_HOUSE3            (16 | (11 << 8))
 
 // Map Group 12
 #define MAP_FORTREE_CITY_HOUSE1            (0 | (12 << 8))
