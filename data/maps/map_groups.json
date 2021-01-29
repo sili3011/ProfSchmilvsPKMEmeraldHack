@@ -37,7 +37,7 @@
     "gMapGroup33"
   ],
   "gMapGroup0": [
-    "PetalburgCity",
+    "playground",
     "SlateportCity",
     "MauvilleCity",
     "RustboroCity",
@@ -93,8 +93,7 @@
     "Underwater_Route128",
     "Underwater_Route129",
     "Underwater_Route105",
-    "Underwater_Route125",
-    "playground"
+    "Underwater_Route125"
   ],
   "gMapGroup1": [
     "LittlerootTown_BrendansHouse_1F",
@@ -158,13 +157,7 @@
     "PacifidlogTown_House5"
   ],
   "gMapGroup8": [
-    "PetalburgCity_WallysHouse",
-    "PetalburgCity_Gym",
-    "PetalburgCity_House1",
-    "PetalburgCity_House2",
-    "PetalburgCity_PokemonCenter_1F",
-    "PetalburgCity_PokemonCenter_2F",
-    "PetalburgCity_Mart"
+
   ],
   "gMapGroup9": [
     "SlateportCity_SternsShipyard_1F",

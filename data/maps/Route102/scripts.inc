@@ -9,10 +9,6 @@ Route102_EventScript_RouteSignOldale:: @ 81EC0EA
 	msgbox Route102_Text_RouteSignOldale, MSGBOX_SIGN
 	end
 
-Route102_EventScript_RouteSignPetalburg:: @ 81EC0F3
-	msgbox Route102_Text_RouteSignPetalburg, MSGBOX_SIGN
-	end
-
 Route102_EventScript_Boy:: @ 81EC0FC
 	msgbox Route102_Text_CatchWholeBunchOfPokemon, MSGBOX_NPC
 	end
@@ -105,7 +101,3 @@ Route102_Text_CatchWholeBunchOfPokemon: @ 81EC32E
 Route102_Text_RouteSignOldale: @ 81EC35B
 	.string "ROUTE 102\n"
 	.string "{RIGHT_ARROW} OLDALE TOWN$"
-
-Route102_Text_RouteSignPetalburg: @ 81EC373
-	.string "ROUTE 102\n"
-	.string "{LEFT_ARROW} PETALBURG CITY$"
