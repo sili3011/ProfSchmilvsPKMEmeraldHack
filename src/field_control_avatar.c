@@ -576,11 +576,6 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
             ScriptContext1_SetupScript(IslandCave_EventScript_OpenRegiEntrance);
             return TRUE;
         }
-        if (ShouldDoRivalRayquazaCall() == TRUE)
-        {
-            ScriptContext1_SetupScript(MossdeepCity_SpaceCenter_2F_EventScript_RivalRayquazaCall);
-            return TRUE;
-        }
     }
 
     if (SafariZoneTakeStep() == TRUE)
@@ -722,20 +717,16 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
             ScriptContext1_SetupScript(EventScript_FallDownHoleMtPyre);
             return TRUE;
         }
-        if (MetatileBehavior_IsMossdeepGymWarp(metatileBehavior) == TRUE)
-        {
-            DoMossdeepGymWarp();
-            return TRUE;
-        }
         DoWarp();
         return TRUE;
     }
     return FALSE;
 }
 
+// MIGHT MODIFY
 static bool8 IsWarpMetatileBehavior(u16 metatileBehavior)
 {
-    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLadder(metatileBehavior) != TRUE && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE && MetatileBehavior_IsMossdeepGymWarp(metatileBehavior) != TRUE && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
+    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLadder(metatileBehavior) != TRUE && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
         return FALSE;
     return TRUE;
 }

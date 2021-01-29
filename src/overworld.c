@@ -986,22 +986,15 @@ static u8 GetObjectEventLoadFlag(void)
     return sObjectEventLoadFlag;
 }
 
+// MIGHT MODIFY
 static bool16 ShouldLegendaryMusicPlayAtLocation(struct WarpData *warp)
 {
     if (!FlagGet(FLAG_SYS_WEATHER_CTRL))
         return FALSE;
     if (warp->mapGroup == 0)
     {
-        switch (warp->mapNum)
-        {
-        case MAP_NUM(MOSSDEEP_CITY):
-        case MAP_NUM(SOOTOPOLIS_CITY):
-        case MAP_NUM(EVER_GRANDE_CITY):
-            return TRUE;
-        default:
-            if (VarGet(VAR_SOOTOPOLIS_CITY_STATE) < 4)
-                return FALSE;
-        }
+        if (VarGet(VAR_SOOTOPOLIS_CITY_STATE) < 4)
+            return FALSE;
     }
     return FALSE;
 }

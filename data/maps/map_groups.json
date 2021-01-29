@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "MossdeepCity",
     "SootopolisCity",
     "EverGrandeCity",
     "OldaleTown",
@@ -111,19 +110,7 @@
     
   ],
   "gMapGroup14": [
-    "MossdeepCity_Gym",
-    "MossdeepCity_House1",
-    "MossdeepCity_House2",
-    "MossdeepCity_PokemonCenter_1F",
-    "MossdeepCity_PokemonCenter_2F",
-    "MossdeepCity_Mart",
-    "MossdeepCity_House3",
-    "MossdeepCity_StevensHouse",
-    "MossdeepCity_House4",
-    "MossdeepCity_SpaceCenter_1F",
-    "MossdeepCity_SpaceCenter_2F",
-    "MossdeepCity_GameCorner_1F",
-    "MossdeepCity_GameCorner_B1F"
+
   ],
   "gMapGroup15": [
     "SootopolisCity_Gym_1F",

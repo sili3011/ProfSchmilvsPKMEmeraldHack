@@ -8,15 +8,14 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_MOSSDEEP_CITY      (2 | (0 << 8))
-#define MAP_SOOTOPOLIS_CITY    (3 | (0 << 8))
-#define MAP_EVER_GRANDE_CITY   (4 | (0 << 8))
-#define MAP_OLDALE_TOWN        (5 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (6 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (7 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (8 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (9 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (10 | (0 << 8))
+#define MAP_SOOTOPOLIS_CITY    (2 | (0 << 8))
+#define MAP_EVER_GRANDE_CITY   (3 | (0 << 8))
+#define MAP_OLDALE_TOWN        (4 | (0 << 8))
+#define MAP_DEWFORD_TOWN       (5 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (6 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (7 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (8 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (9 | (0 << 8))
 
 // Map Group 1
 
@@ -87,19 +86,6 @@
 // Map Group 13
 
 // Map Group 14
-#define MAP_MOSSDEEP_CITY_GYM               (0 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_HOUSE1            (1 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_HOUSE2            (2 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_POKEMON_CENTER_1F (3 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_POKEMON_CENTER_2F (4 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_MART              (5 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_HOUSE3            (6 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_STEVENS_HOUSE     (7 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_HOUSE4            (8 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_SPACE_CENTER_1F   (9 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_SPACE_CENTER_2F   (10 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_GAME_CORNER_1F    (11 | (14 << 8))
-#define MAP_MOSSDEEP_CITY_GAME_CORNER_B1F   (12 | (14 << 8))
 
 // Map Group 15
 #define MAP_SOOTOPOLIS_CITY_GYM_1F                   (0 | (15 << 8))
