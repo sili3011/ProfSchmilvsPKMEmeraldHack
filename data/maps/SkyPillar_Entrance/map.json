@@ -16,13 +16,6 @@
   "object_events": [],
   "warp_events": [
     {
-      "x": 6,
-      "y": 16,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE131",
-      "dest_warp_id": 0
-    },
-    {
       "x": 14,
       "y": 4,
       "elevation": 3,

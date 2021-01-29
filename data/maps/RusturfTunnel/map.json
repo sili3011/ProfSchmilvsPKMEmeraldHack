@@ -147,25 +147,11 @@
   ],
   "warp_events": [
     {
-      "x": 4,
-      "y": 10,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE116",
-      "dest_warp_id": 0
-    },
-    {
       "x": 29,
       "y": 16,
       "elevation": 3,
       "dest_map": "MAP_VERDANTURF_TOWN",
       "dest_warp_id": 4
-    },
-    {
-      "x": 18,
-      "y": 20,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE116",
-      "dest_warp_id": 2
     }
   ],
   "coord_events": [

@@ -187,41 +187,14 @@ static void DoTVShowPokemonContestLiveUpdates2(void);
 
 // .rodata
 
+// MIGHT MODIFY
 static const struct
 {
     u16 species;
     u16 moves[MAX_MON_MOVES];
     u8 level;
     u8 location;
-} sPokeOutbreakSpeciesList[] = {
-    {.species = SPECIES_SEEDOT,
-     .moves = {MOVE_BIDE, MOVE_HARDEN, MOVE_LEECH_SEED},
-     .level = 3,
-     .location = MAP_NUM(ROUTE102)},
-    {
-        .species = SPECIES_NUZLEAF,
-        .moves = {MOVE_HARDEN, MOVE_GROWTH, MOVE_NATURE_POWER, MOVE_LEECH_SEED},
-        .level = 15,
-        .location = MAP_NUM(ROUTE114),
-    },
-    {
-        .species = SPECIES_SEEDOT,
-        .moves = {MOVE_HARDEN, MOVE_GROWTH, MOVE_NATURE_POWER, MOVE_LEECH_SEED},
-        .level = 13,
-        .location = MAP_NUM(ROUTE117),
-    },
-    {
-        .species = SPECIES_SEEDOT,
-        .moves = {MOVE_GIGA_DRAIN, MOVE_FRUSTRATION, MOVE_SOLAR_BEAM, MOVE_LEECH_SEED},
-        .level = 25,
-        .location = MAP_NUM(ROUTE120),
-    },
-    {
-        .species = SPECIES_SKITTY,
-        .moves = {MOVE_GROWL, MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_ATTRACT},
-        .level = 8,
-        .location = MAP_NUM(ROUTE116),
-    }};
+} sPokeOutbreakSpeciesList[] = {};
 
 static const u16 sGoldSymbolFlags[] = {
     FLAG_SYS_TOWER_GOLD,

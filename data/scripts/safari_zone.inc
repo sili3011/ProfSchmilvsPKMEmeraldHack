@@ -1,13 +1,11 @@
 SafariZone_EventScript_OutOfBallsMidBattle:: @ 82A4B4C
 	setvar VAR_SAFARI_ZONE_STATE, 1
 	special ExitSafariMode
-	setwarp MAP_ROUTE121_SAFARI_ZONE_ENTRANCE, 255, 2, 5
 	end
 
 SafariZone_EventScript_Exit:: @ 82A4B5D
 	setvar VAR_SAFARI_ZONE_STATE, 1
 	special ExitSafariMode
-	warp MAP_ROUTE121_SAFARI_ZONE_ENTRANCE, 255, 2, 5
 	waitstate
 	end
 

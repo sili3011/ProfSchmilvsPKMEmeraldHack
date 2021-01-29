@@ -56,24 +56,10 @@
   ],
   "warp_events": [
     {
-      "x": 17,
-      "y": 18,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE122",
-      "dest_warp_id": 0
-    },
-    {
       "x": 3,
       "y": 6,
       "elevation": 3,
       "dest_map": "MAP_MT_PYRE_EXTERIOR",
-      "dest_warp_id": 0
-    },
-    {
-      "x": 18,
-      "y": 18,
-      "elevation": 3,
-      "dest_map": "MAP_ROUTE122",
       "dest_warp_id": 0
     },
     {

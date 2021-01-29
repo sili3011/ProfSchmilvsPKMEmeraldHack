@@ -276,12 +276,13 @@ u16 GetRecordedCyclingRoadResults(void)
     return TRUE;
 }
 
+// MIGHT DELETE
 void UpdateCyclingRoadState(void)
 {
-    if (gLastUsedWarp.mapNum == MAP_NUM(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE) && gLastUsedWarp.mapGroup == MAP_GROUP(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE))
-    {
-        return;
-    }
+    // if (gLastUsedWarp.mapNum == MAP_NUM(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE) && gLastUsedWarp.mapGroup == MAP_GROUP(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE))
+    // {
+    //     return;
+    // }
 
     if (VarGet(VAR_CYCLING_CHALLENGE_STATE) == 2 || VarGet(VAR_CYCLING_CHALLENGE_STATE) == 3)
     {
@@ -311,60 +312,61 @@ bool32 CountSSTidalStep(u16 delta)
     return TRUE;
 }
 
+// MIGHT MODIFY
 u8 GetSSTidalLocation(s8 *mapGroup, s8 *mapNum, s16 *x, s16 *y)
 {
-    u16 *varCruiseStepCount = GetVarPointer(VAR_CRUISE_STEP_COUNT);
-    switch (*GetVarPointer(VAR_SS_TIDAL_STATE))
-    {
-    case SS_TIDAL_BOARD_SLATEPORT:
-    case SS_TIDAL_LAND_SLATEPORT:
-        return SS_TIDAL_LOCATION_SLATEPORT;
-    case SS_TIDAL_HALFWAY_LILYCOVE:
-    case SS_TIDAL_EXIT_CURRENTS_RIGHT:
-        return SS_TIDAL_LOCATION_ROUTE131;
-    case SS_TIDAL_LAND_LILYCOVE:
-    case SS_TIDAL_BOARD_LILYCOVE:
-        return SS_TIDAL_LOCATION_LILYCOVE;
-    case SS_TIDAL_DEPART_LILYCOVE:
-    case SS_TIDAL_EXIT_CURRENTS_LEFT:
-        return SS_TIDAL_LOCATION_ROUTE124;
-    case SS_TIDAL_DEPART_SLATEPORT:
-        if (*varCruiseStepCount < 60)
-        {
-            *mapNum = MAP_NUM(ROUTE134);
-            *x = *varCruiseStepCount + 19;
-        }
-        else if (*varCruiseStepCount < 140)
-        {
-            *mapNum = MAP_NUM(ROUTE133);
-            *x = *varCruiseStepCount - 60;
-        }
-        else
-        {
-            *mapNum = MAP_NUM(ROUTE132);
-            *x = *varCruiseStepCount - 140;
-        }
-        break;
-    case SS_TIDAL_HALFWAY_SLATEPORT:
-        if (*varCruiseStepCount < 66)
-        {
-            *mapNum = MAP_NUM(ROUTE132);
-            *x = 65 - *varCruiseStepCount;
-        }
-        else if (*varCruiseStepCount < 146)
-        {
-            *mapNum = MAP_NUM(ROUTE133);
-            *x = 145 - *varCruiseStepCount;
-        }
-        else
-        {
-            *mapNum = MAP_NUM(ROUTE134);
-            *x = 224 - *varCruiseStepCount;
-        }
-        break;
-    }
-    *mapGroup = MAP_GROUP(ROUTE132);
-    *y = 20;
+    // u16 *varCruiseStepCount = GetVarPointer(VAR_CRUISE_STEP_COUNT);
+    // switch (*GetVarPointer(VAR_SS_TIDAL_STATE))
+    // {
+    // case SS_TIDAL_BOARD_SLATEPORT:
+    // case SS_TIDAL_LAND_SLATEPORT:
+    //     return SS_TIDAL_LOCATION_SLATEPORT;
+    // case SS_TIDAL_HALFWAY_LILYCOVE:
+    // case SS_TIDAL_EXIT_CURRENTS_RIGHT:
+    //     return SS_TIDAL_LOCATION_ROUTE131;
+    // case SS_TIDAL_LAND_LILYCOVE:
+    // case SS_TIDAL_BOARD_LILYCOVE:
+    //     return SS_TIDAL_LOCATION_LILYCOVE;
+    // case SS_TIDAL_DEPART_LILYCOVE:
+    // case SS_TIDAL_EXIT_CURRENTS_LEFT:
+    //     return SS_TIDAL_LOCATION_ROUTE124;
+    // case SS_TIDAL_DEPART_SLATEPORT:
+    //     if (*varCruiseStepCount < 60)
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE134);
+    //         *x = *varCruiseStepCount + 19;
+    //     }
+    //     else if (*varCruiseStepCount < 140)
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE133);
+    //         *x = *varCruiseStepCount - 60;
+    //     }
+    //     else
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE132);
+    //         *x = *varCruiseStepCount - 140;
+    //     }
+    //     break;
+    // case SS_TIDAL_HALFWAY_SLATEPORT:
+    //     if (*varCruiseStepCount < 66)
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE132);
+    //         *x = 65 - *varCruiseStepCount;
+    //     }
+    //     else if (*varCruiseStepCount < 146)
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE133);
+    //         *x = 145 - *varCruiseStepCount;
+    //     }
+    //     else
+    //     {
+    //         *mapNum = MAP_NUM(ROUTE134);
+    //         *x = 224 - *varCruiseStepCount;
+    //     }
+    //     break;
+    // }
+    // *mapGroup = MAP_GROUP(ROUTE132);
+    // *y = 20;
     return SS_TIDAL_LOCATION_CURRENTS;
 }
 
@@ -960,16 +962,17 @@ u8 GetBattleOutcome(void)
     return gBattleOutcome;
 }
 
+// MIGHT MODIFY
 void CableCarWarp(void)
 {
-    if (gSpecialVar_0x8004 != 0)
-    {
-        SetWarpDestination(MAP_GROUP(ROUTE112_CABLE_CAR_STATION), MAP_NUM(ROUTE112_CABLE_CAR_STATION), -1, 6, 4);
-    }
-    else
-    {
-        SetWarpDestination(MAP_GROUP(MT_CHIMNEY_CABLE_CAR_STATION), MAP_NUM(MT_CHIMNEY_CABLE_CAR_STATION), -1, 6, 4);
-    }
+    // if (gSpecialVar_0x8004 != 0)
+    // {
+    //     SetWarpDestination(MAP_GROUP(ROUTE112_CABLE_CAR_STATION), MAP_NUM(ROUTE112_CABLE_CAR_STATION), -1, 6, 4);
+    // }
+    // else
+    // {
+    //     SetWarpDestination(MAP_GROUP(MT_CHIMNEY_CABLE_CAR_STATION), MAP_NUM(MT_CHIMNEY_CABLE_CAR_STATION), -1, 6, 4);
+    // }
 }
 
 void SetHiddenItemFlag(void)
@@ -3511,23 +3514,7 @@ void CreateAbnormalWeatherEvent(void)
 // returns TRUE if the weather is for Kyogre, and FALSE if it's for Groudon.
 bool32 GetAbnormalWeatherMapNameAndType(void)
 {
-    static const u8 sAbnormalWeatherMapNumbers[] = {
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE129),
-        MAP_NUM(ROUTE129)};
+    static const u8 sAbnormalWeatherMapNumbers[] = {};
 
     u16 abnormalWeather = VarGet(VAR_ABNORMAL_WEATHER_LOCATION);
 
@@ -3542,23 +3529,7 @@ bool32 GetAbnormalWeatherMapNameAndType(void)
 bool8 AbnormalWeatherHasExpired(void)
 {
     // Duplicate array.
-    static const u8 sAbnormalWeatherMapNumbers[] = {
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE114),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE115),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE116),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE118),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE105),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE125),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE127),
-        MAP_NUM(ROUTE129),
-        MAP_NUM(ROUTE129)};
+    static const u8 sAbnormalWeatherMapNumbers[] = {};
 
     u16 steps = VarGet(VAR_ABNORMAL_WEATHER_STEP_COUNTER);
     u16 abnormalWeather = VarGet(VAR_ABNORMAL_WEATHER_LOCATION);
@@ -3587,20 +3558,21 @@ bool8 AbnormalWeatherHasExpired(void)
             }
         }
 
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_ROUTE127))
-        {
-            switch (gSaveBlock1Ptr->location.mapNum)
-            {
-            case MAP_NUM(UNDERWATER_ROUTE127):
-            case MAP_NUM(UNDERWATER_ROUTE129):
-            case MAP_NUM(UNDERWATER_ROUTE105):
-            case MAP_NUM(UNDERWATER_ROUTE125):
-                VarSet(VAR_SHOULD_END_ABNORMAL_WEATHER, 1);
-                return FALSE;
-            default:
-                break;
-            }
-        }
+        // MIGHT MODIFY
+        // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_ROUTE127))
+        // {
+        //     switch (gSaveBlock1Ptr->location.mapNum)
+        //     {
+        //     case MAP_NUM(UNDERWATER_ROUTE127):
+        //     case MAP_NUM(UNDERWATER_ROUTE129):
+        //     case MAP_NUM(UNDERWATER_ROUTE105):
+        //     case MAP_NUM(UNDERWATER_ROUTE125):
+        //         VarSet(VAR_SHOULD_END_ABNORMAL_WEATHER, 1);
+        //         return FALSE;
+        //     default:
+        //         break;
+        //     }
+        // }
 
         if (gSaveBlock1Ptr->location.mapNum == sAbnormalWeatherMapNumbers[abnormalWeather - 1] &&
             gSaveBlock1Ptr->location.mapGroup == 0)

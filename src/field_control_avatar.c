@@ -393,8 +393,6 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
         return EventScript_CableBoxResults;
     if (MetatileBehavior_IsPokeblockFeeder(metatileBehavior) == TRUE)
         return EventScript_PokeBlockFeeder;
-    if (MetatileBehavior_IsTrickHousePuzzleDoor(metatileBehavior) == TRUE)
-        return Route110_TrickHousePuzzle_EventScript_Door;
     if (MetatileBehavior_IsRegionMap(metatileBehavior) == TRUE)
         return EventScript_RegionMap;
     if (MetatileBehavior_IsPictureBookShelf(metatileBehavior) == TRUE)
@@ -581,11 +579,6 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
         if (ShouldDoWallyCall() == TRUE)
         {
             ScriptContext1_SetupScript(MauvilleCity_EventScript_RegisterWallyCall);
-            return TRUE;
-        }
-        if (ShouldDoScottFortreeCall() == TRUE)
-        {
-            ScriptContext1_SetupScript(Route119_EventScript_ScottWonAtFortreeGymCall);
             return TRUE;
         }
         if (ShouldDoRoxanneCall() == TRUE)

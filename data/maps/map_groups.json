@@ -18,23 +18,9 @@
     "gMapGroup14",
     "gMapGroup15",
     "gMapGroup16",
-    "gMapGroup17",
-    "gMapGroup18",
-    "gMapGroup19",
-    "gMapGroup20",
-    "gMapGroup21",
-    "gMapGroup22",
-    "gMapGroup23",
     "gMapGroup24",
     "gMapGroup25",
-    "gMapGroup26",
-    "gMapGroup27",
-    "gMapGroup28",
-    "gMapGroup29",
-    "gMapGroup30",
-    "gMapGroup31",
-    "gMapGroup32",
-    "gMapGroup33"
+    "gMapGroup26"
   ],
   "gMapGroup0": [
     "playground",
@@ -51,49 +37,7 @@
     "LavaridgeTown",
     "FallarborTown",
     "VerdanturfTown",
-    "PacifidlogTown",
-    "Route01",
-    "Route101",
-    "Route102",
-    "Route103",
-    "Route104",
-    "Route105",
-    "Route106",
-    "Route107",
-    "Route108",
-    "Route109",
-    "Route110",
-    "Route111",
-    "Route112",
-    "Route113",
-    "Route114",
-    "Route115",
-    "Route116",
-    "Route117",
-    "Route118",
-    "Route119",
-    "Route120",
-    "Route121",
-    "Route122",
-    "Route123",
-    "Route124",
-    "Route125",
-    "Route126",
-    "Route127",
-    "Route128",
-    "Route129",
-    "Route130",
-    "Route131",
-    "Route132",
-    "Route133",
-    "Route134",
-    "Underwater_Route124",
-    "Underwater_Route126",
-    "Underwater_Route127",
-    "Underwater_Route128",
-    "Underwater_Route129",
-    "Underwater_Route105",
-    "Underwater_Route125"
+    "PacifidlogTown"
   ],
   "gMapGroup1": [
 
@@ -273,32 +217,6 @@
     "EverGrandeCity_PokemonCenter_2F",
     "EverGrandeCity_PokemonLeague_2F"
   ],
-  "gMapGroup17": [
-    "Route104_MrBrineysHouse",
-    "Route104_PrettyPetalFlowerShop"
-  ],
-  "gMapGroup18": [
-    "Route111_WinstrateFamilysHouse",
-    "Route111_OldLadysRestStop"
-  ],
-  "gMapGroup19": [
-    "Route112_CableCarStation",
-    "MtChimney_CableCarStation"
-  ],
-  "gMapGroup20": [
-    "Route114_FossilManiacsHouse",
-    "Route114_FossilManiacsTunnel",
-    "Route114_LanettesHouse"
-  ],
-  "gMapGroup21": [
-    "Route116_TunnelersRestHouse"
-  ],
-  "gMapGroup22": [
-    "Route117_PokemonDayCare"
-  ],
-  "gMapGroup23": [
-    "Route121_SafariZoneEntrance"
-  ],
   "gMapGroup24": [
     "MeteorFalls_1F_1R",
     "MeteorFalls_1F_2R",
@@ -369,7 +287,6 @@
     "AbandonedShip_HiddenFloorRooms",
     "IslandCave",
     "AncientTomb",
-    "Underwater_Route134",
     "Underwater_SealedChamber",
     "SealedChamber_OuterRoom",
     "SealedChamber_InnerRoom",
@@ -561,41 +478,5 @@
     "NavelRock_Down11",
     "NavelRock_Bottom",
     "TrainerHill_Elevator"
-  ],
-  "gMapGroup27": [
-    "Route104_Prototype",
-    "Route104_PrototypePrettyPetalFlowerShop"
-  ],
-  "gMapGroup28": [
-    "Route109_SeashoreHouse"
-  ],
-  "gMapGroup29": [
-    "Route110_TrickHouseEntrance",
-    "Route110_TrickHouseEnd",
-    "Route110_TrickHouseCorridor",
-    "Route110_TrickHousePuzzle1",
-    "Route110_TrickHousePuzzle2",
-    "Route110_TrickHousePuzzle3",
-    "Route110_TrickHousePuzzle4",
-    "Route110_TrickHousePuzzle5",
-    "Route110_TrickHousePuzzle6",
-    "Route110_TrickHousePuzzle7",
-    "Route110_TrickHousePuzzle8",
-    "Route110_SeasideCyclingRoadNorthEntrance",
-    "Route110_SeasideCyclingRoadSouthEntrance"
-  ],
-  "gMapGroup30": [
-    "Route113_GlassWorkshop"
-  ],
-  "gMapGroup31": [
-    "Route123_BerryMastersHouse"
-  ],
-  "gMapGroup32": [
-    "Route119_WeatherInstitute_1F",
-    "Route119_WeatherInstitute_2F",
-    "Route119_House"
-  ],
-  "gMapGroup33": [
-    "Route124_DivingTreasureHuntersHouse"
   ]
 }
