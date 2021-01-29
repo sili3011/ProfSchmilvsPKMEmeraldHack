@@ -1055,9 +1055,6 @@ static void RegionMap_InitializeStateBasedOnSSTidalLocation(void)
     x = 0;
     switch (GetSSTidalLocation(&mapGroup, &mapNum, &xOnMap, &yOnMap))
     {
-    case SS_TIDAL_LOCATION_SLATEPORT:
-        gRegionMap->mapSecId = MAPSEC_SLATEPORT_CITY;
-        break;
     case SS_TIDAL_LOCATION_LILYCOVE:
         gRegionMap->mapSecId = MAPSEC_LILYCOVE_CITY;
         break;
@@ -1098,6 +1095,10 @@ u8 GetMapsecType(u16 mapSecId)
     {
     case MAPSEC_NONE:
         return MAPSECTYPE_NONE;
+    case MAPSEC_PLAYGROUND:
+        return FlagGet(FLAG_VISITED_PLAYGROUND) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
+    case MAPSEC_PETRIFACTHEIM_CITY:
+        return FlagGet(FLAG_VISITED_PETRIFACTHEIM_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_OLDALE_TOWN:
         return FlagGet(FLAG_VISITED_OLDALE_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_DEWFORD_TOWN:
@@ -1110,10 +1111,6 @@ u8 GetMapsecType(u16 mapSecId)
         return FlagGet(FLAG_VISITED_VERDANTURF_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_PACIFIDLOG_TOWN:
         return FlagGet(FLAG_VISITED_PACIFIDLOG_TOWN) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
-    case MAPSEC_PLAYGROUND:
-        return FlagGet(FLAG_VISITED_PETALBURG_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
-    case MAPSEC_SLATEPORT_CITY:
-        return FlagGet(FLAG_VISITED_SLATEPORT_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_MAUVILLE_CITY:
         return FlagGet(FLAG_VISITED_MAUVILLE_CITY) ? MAPSECTYPE_CITY_CANFLY : MAPSECTYPE_CITY_CANTFLY;
     case MAPSEC_RUSTBORO_CITY:
@@ -1832,7 +1829,7 @@ static void CreateFlyDestIcons(void)
     u16 shape;
     u8 spriteId;
 
-    canFlyFlag = FLAG_VISITED_LITTLEROOT_TOWN;
+    canFlyFlag = FLAG_VISITED_PLAYGROUND;
     for (mapSecId = MAPSEC_PLAYGROUND; mapSecId <= MAPSEC_EVER_GRANDE_CITY; mapSecId++)
     {
         GetMapSecDimensions(mapSecId, &x, &y, &width, &height);
@@ -1979,9 +1976,6 @@ static void CB_ExitFlyMap(void)
             {
                 switch (sFlyMap->regionMap.mapSecId)
                 {
-                case MAPSEC_ROUTE_01:
-                    SetWarpDestinationToHealLocation(gSaveBlock2Ptr->playerGender == MALE ? HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE : HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE);
-                    break;
                 case MAPSEC_EVER_GRANDE_CITY:
                     SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && sFlyMap->regionMap.posWithinMapSec == 0 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
                     break;

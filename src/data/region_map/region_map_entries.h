@@ -2,6 +2,7 @@
 #define GUARD_DATA_REGION_MAP_REGION_MAP_ENTRIES_H
 
 static const u8 sMapName_Playground[] = _("PLAYGROUND");
+static const u8 sMapName_PetrifactheimCity[] = _("PETRIFACTHEIM");
 static const u8 sMapName_OldaleTown[] = _("OLDALE TOWN");
 static const u8 sMapName_DewfordTown[] = _("DEWFORD TOWN");
 static const u8 sMapName_LavaridgeTown[] = _("LAVARIDGE TOWN");
@@ -9,7 +10,6 @@ static const u8 sMapName_FallarborTown[] = _("FALLARBOR TOWN");
 static const u8 sMapName_VerdanturfTown[] = _("VERDANTURF TOWN");
 static const u8 sMapName_PacifidlogTown[] = _("PACIFIDLOG TOWN");
 static const u8 sMapName_PetalburgCity[] = _("PETALBURG CITY");
-static const u8 sMapName_SlateportCity[] = _("SLATEPORT CITY");
 static const u8 sMapName_MauvilleCity[] = _("MAUVILLE CITY");
 static const u8 sMapName_RustboroCity[] = _("RUSTBORO CITY");
 static const u8 sMapName_FortreeCity[] = _("FORTREE CITY");
@@ -201,14 +201,14 @@ static const u8 sMapName_DesertUnderpass[] = _("DESERT UNDERPASS");
 static const u8 sMapName_TrainerHill[] = _("TRAINER HILL");
 
 const struct RegionMapLocation gRegionMapEntries[] = {
+    [MAPSEC_PLAYGROUND] = {1, 9, 1, 1, sMapName_Playground},
+    [MAPSEC_PETRIFACTHEIM_CITY] = {8, 10, 1, 2, sMapName_PetrifactheimCity},
     [MAPSEC_OLDALE_TOWN] = {4, 9, 1, 1, sMapName_OldaleTown},
     [MAPSEC_DEWFORD_TOWN] = {2, 14, 1, 1, sMapName_DewfordTown},
     [MAPSEC_LAVARIDGE_TOWN] = {5, 3, 1, 1, sMapName_LavaridgeTown},
     [MAPSEC_FALLARBOR_TOWN] = {3, 0, 1, 1, sMapName_FallarborTown},
     [MAPSEC_VERDANTURF_TOWN] = {4, 6, 1, 1, sMapName_VerdanturfTown},
     [MAPSEC_PACIFIDLOG_TOWN] = {17, 10, 1, 1, sMapName_PacifidlogTown},
-    [MAPSEC_PLAYGROUND] = {1, 9, 1, 1, sMapName_Playground},
-    [MAPSEC_SLATEPORT_CITY] = {8, 10, 1, 2, sMapName_SlateportCity},
     [MAPSEC_MAUVILLE_CITY] = {8, 6, 2, 1, sMapName_MauvilleCity},
     [MAPSEC_RUSTBORO_CITY] = {0, 5, 1, 2, sMapName_RustboroCity},
     [MAPSEC_FORTREE_CITY] = {12, 0, 1, 1, sMapName_FortreeCity},

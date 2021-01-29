@@ -12,6 +12,16 @@
       "blockdata_filepath": "data/layouts/playground/map.bin"
     },
     {
+      "id": "LAYOUT_PETRIFACTHEIM_CITY",
+      "name": "PetrifactheimCity_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Petalburg",
+      "border_filepath": "data/layouts/PetrifactheimCity/border.bin",
+      "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
+    },
+    {
       "id": "LAYOUT_MAUVILLE_CITY",
       "name": "MauvilleCity_Layout",
       "width": 40,

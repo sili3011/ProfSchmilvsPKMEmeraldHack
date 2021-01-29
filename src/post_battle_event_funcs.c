@@ -14,7 +14,8 @@ int GameClear(void)
 {
     int i;
     bool32 ribbonGet;
-    struct RibbonCounter {
+    struct RibbonCounter
+    {
         u8 partyIndex;
         u8 count;
     } ribbonCounts[6];
@@ -36,11 +37,6 @@ int GameClear(void)
 
     SetContinueGameWarpStatus();
 
-    if (gSaveBlock2Ptr->playerGender == MALE)
-        SetContinueGameWarpToHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE_2F);
-    else
-        SetContinueGameWarpToHealLocation(HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE_2F);
-
     ribbonGet = FALSE;
 
     for (i = 0; i < PARTY_SIZE; i++)
@@ -50,9 +46,7 @@ int GameClear(void)
         ribbonCounts[i].partyIndex = i;
         ribbonCounts[i].count = 0;
 
-        if (GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES)
-         && !GetMonData(mon, MON_DATA_SANITY_IS_EGG)
-         && !GetMonData(mon, MON_DATA_CHAMPION_RIBBON))
+        if (GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES) && !GetMonData(mon, MON_DATA_SANITY_IS_EGG) && !GetMonData(mon, MON_DATA_CHAMPION_RIBBON))
         {
             u8 val[1] = {TRUE};
             SetMonData(mon, MON_DATA_CHAMPION_RIBBON, val);
@@ -65,7 +59,7 @@ int GameClear(void)
     {
         IncrementGameStat(GAME_STAT_RECEIVED_RIBBONS);
         FlagSet(FLAG_SYS_RIBBON_GET);
-        
+
         for (i = 1; i < 6; i++)
         {
             if (ribbonCounts[i].count > ribbonCounts[0].count)

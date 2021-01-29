@@ -1032,3 +1032,5 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
     .include "data/scripts/dexnav.inc"
 
 	.include "data/maps/Route01/scripts.inc"
+
+	.include "data/maps/PetrifactheimCity/scripts.inc"
