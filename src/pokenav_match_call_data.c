@@ -392,16 +392,6 @@ static const match_call_text_data_t sWinonaTextScripts[] = {
     {MatchCall_Text_Winona4, FLAG_SYS_GAME_CLEAR, 0xFFFF},
     {NULL, 0xFFFF, 0xFFFF}};
 
-static const struct MatchCallStructTrainer sWinonaMatchCallHeader =
-    {
-        .type = MC_TYPE_LEADER,
-        .mapSec = MAPSEC_FORTREE_CITY,
-        .flag = FLAG_ENABLE_WINONA_MATCH_CALL,
-        .rematchTableIdx = REMATCH_WINONA,
-        .desc = gText_WinonaMatchCallDesc,
-        .name = NULL,
-        .textData = sWinonaTextScripts};
-
 static const match_call_text_data_t sTateLizaTextScripts[] = {
     {MatchCall_Text_TateLiza1, 0xFFFE, 0xFFFF},
     {MatchCall_Text_TateLiza2, 0xFFFF, 0xFFFF},
@@ -516,7 +506,6 @@ static const match_call_t sMatchCallHeaders[] = {
     [MC_HEADER_BRAWLY] = {.leader = &sBrawlyMatchCallHeader},
     [MC_HEADER_WATTSON] = {.leader = &sWattsonMatchCallHeader},
     [MC_HEADER_FLANNERY] = {.leader = &sFlanneryMatchCallHeader},
-    [MC_HEADER_WINONA] = {.leader = &sWinonaMatchCallHeader},
     [MC_HEADER_TATE_LIZA] = {.leader = &sTateLizaMatchCallHeader},
     [MC_HEADER_JUAN] = {.leader = &sJuanMatchCallHeader},
     [MC_HEADER_SIDNEY] = {.leader = &sSidneyMatchCallHeader},

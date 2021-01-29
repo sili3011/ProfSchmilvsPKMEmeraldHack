@@ -8,17 +8,16 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_FORTREE_CITY       (2 | (0 << 8))
-#define MAP_LILYCOVE_CITY      (3 | (0 << 8))
-#define MAP_MOSSDEEP_CITY      (4 | (0 << 8))
-#define MAP_SOOTOPOLIS_CITY    (5 | (0 << 8))
-#define MAP_EVER_GRANDE_CITY   (6 | (0 << 8))
-#define MAP_OLDALE_TOWN        (7 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (8 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (9 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (10 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (11 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (12 | (0 << 8))
+#define MAP_LILYCOVE_CITY      (2 | (0 << 8))
+#define MAP_MOSSDEEP_CITY      (3 | (0 << 8))
+#define MAP_SOOTOPOLIS_CITY    (4 | (0 << 8))
+#define MAP_EVER_GRANDE_CITY   (5 | (0 << 8))
+#define MAP_OLDALE_TOWN        (6 | (0 << 8))
+#define MAP_DEWFORD_TOWN       (7 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (8 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (9 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (10 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (11 | (0 << 8))
 
 // Map Group 1
 
@@ -85,16 +84,6 @@
 // Map Group 11
 
 // Map Group 12
-#define MAP_FORTREE_CITY_HOUSE1            (0 | (12 << 8))
-#define MAP_FORTREE_CITY_GYM               (1 | (12 << 8))
-#define MAP_FORTREE_CITY_POKEMON_CENTER_1F (2 | (12 << 8))
-#define MAP_FORTREE_CITY_POKEMON_CENTER_2F (3 | (12 << 8))
-#define MAP_FORTREE_CITY_MART              (4 | (12 << 8))
-#define MAP_FORTREE_CITY_HOUSE2            (5 | (12 << 8))
-#define MAP_FORTREE_CITY_HOUSE3            (6 | (12 << 8))
-#define MAP_FORTREE_CITY_HOUSE4            (7 | (12 << 8))
-#define MAP_FORTREE_CITY_HOUSE5            (8 | (12 << 8))
-#define MAP_FORTREE_CITY_DECORATION_SHOP   (9 | (12 << 8))
 
 // Map Group 13
 #define MAP_LILYCOVE_CITY_COVE_LILY_MOTEL_1F        (0 | (13 << 8))
