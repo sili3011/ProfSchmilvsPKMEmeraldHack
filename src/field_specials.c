@@ -1944,7 +1944,6 @@ bool8 UsedPokemonCenterWarp(void)
 {
     static const u16 sPokemonCenters[] =
         {
-            MAP_DEWFORD_TOWN_POKEMON_CENTER_1F,
             MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F,
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
             MAP_VERDANTURF_TOWN_POKEMON_CENTER_1F,
@@ -3795,7 +3794,7 @@ void GetBattlePyramidHint(void)
 // Used to avoid a potential softlock if the player respawns on Dewford with no way off
 void ResetHealLocationFromDewford(void)
 {
-    if (gSaveBlock1Ptr->lastHealLocation.mapGroup == MAP_GROUP(DEWFORD_TOWN) && gSaveBlock1Ptr->lastHealLocation.mapNum == MAP_NUM(DEWFORD_TOWN))
+    if (gSaveBlock1Ptr->lastHealLocation.mapGroup == MAP_GROUP(PLAYGROUND) && gSaveBlock1Ptr->lastHealLocation.mapNum == MAP_NUM(PLAYGROUND))
     {
         SetLastHealLocationWarp(HEAL_LOCATION_PLAYGROUND);
     }
@@ -3805,7 +3804,6 @@ bool8 InPokemonCenter(void)
 {
     static const u16 sPokemonCenters[] =
         {
-            MAP_DEWFORD_TOWN_POKEMON_CENTER_1F,
             MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F,
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
             MAP_VERDANTURF_TOWN_POKEMON_CENTER_1F,

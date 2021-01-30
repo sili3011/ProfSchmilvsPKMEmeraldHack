@@ -8,23 +8,16 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (2 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (3 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (4 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (5 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (6 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (2 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (3 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (4 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (5 | (0 << 8))
 
 // Map Group 1
 
 // Map Group 2
 
 // Map Group 3
-#define MAP_DEWFORD_TOWN_HOUSE1            (0 | (3 << 8))
-#define MAP_DEWFORD_TOWN_POKEMON_CENTER_1F (1 | (3 << 8))
-#define MAP_DEWFORD_TOWN_POKEMON_CENTER_2F (2 | (3 << 8))
-#define MAP_DEWFORD_TOWN_GYM               (3 | (3 << 8))
-#define MAP_DEWFORD_TOWN_HALL              (4 | (3 << 8))
-#define MAP_DEWFORD_TOWN_HOUSE2            (5 | (3 << 8))
 
 // Map Group 4
 #define MAP_LAVARIDGE_TOWN_HERB_SHOP         (0 | (4 << 8))

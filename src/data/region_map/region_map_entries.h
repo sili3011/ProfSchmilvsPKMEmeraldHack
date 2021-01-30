@@ -4,7 +4,6 @@
 static const u8 sMapName_Playground[] = _("PLAYGROUND");
 static const u8 sMapName_PetrifactheimCity[] = _("PETRIFACTHEIM");
 static const u8 sMapName_OldaleTown[] = _("OLDALE TOWN");
-static const u8 sMapName_DewfordTown[] = _("DEWFORD TOWN");
 static const u8 sMapName_LavaridgeTown[] = _("LAVARIDGE TOWN");
 static const u8 sMapName_FallarborTown[] = _("FALLARBOR TOWN");
 static const u8 sMapName_VerdanturfTown[] = _("VERDANTURF TOWN");
@@ -134,7 +133,6 @@ static const u8 sMapName_TrainerHill[] = _("TRAINER HILL");
 const struct RegionMapLocation gRegionMapEntries[] = {
     [MAPSEC_PLAYGROUND] = {1, 9, 1, 1, sMapName_Playground},
     [MAPSEC_PETRIFACTHEIM_CITY] = {8, 10, 1, 2, sMapName_PetrifactheimCity},
-    [MAPSEC_DEWFORD_TOWN] = {2, 14, 1, 1, sMapName_DewfordTown},
     [MAPSEC_LAVARIDGE_TOWN] = {5, 3, 1, 1, sMapName_LavaridgeTown},
     [MAPSEC_FALLARBOR_TOWN] = {3, 0, 1, 1, sMapName_FallarborTown},
     [MAPSEC_VERDANTURF_TOWN] = {4, 6, 1, 1, sMapName_VerdanturfTown},

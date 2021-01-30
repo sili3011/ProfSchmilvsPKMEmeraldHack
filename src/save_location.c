@@ -18,8 +18,6 @@ static bool32 IsCurMapInLocationList(const u16 *list)
 
 static const u16 sSaveLocationPokeCenterList[] =
     {
-        MAP_DEWFORD_TOWN_POKEMON_CENTER_1F,
-        MAP_DEWFORD_TOWN_POKEMON_CENTER_2F,
         MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F,
         MAP_LAVARIDGE_TOWN_POKEMON_CENTER_2F,
         MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
