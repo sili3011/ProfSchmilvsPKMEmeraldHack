@@ -15,7 +15,7 @@
   "connections": [
     {
       "direction": "down",
-      "offset": 0,
+      "offset": -10,
       "map": "MAP_ROUTE01"
     }
   ],
@@ -23,7 +23,13 @@
 
   ],
   "warp_events": [
-
+    {
+      "x": 1,
+      "y": 0,
+      "elevation": 0,
+      "dest_map": "MAP_PETRIFACTHEIM_CITY",
+      "dest_warp_id": 0
+    }
   ],
   "coord_events": [
 
