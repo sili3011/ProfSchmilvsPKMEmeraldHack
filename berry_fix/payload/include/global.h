@@ -477,75 +477,6 @@ struct MailStruct
     /*0x20*/ u16 itemId;
 };
 
-// Mauville Pokemon Center men
-
-// MIGHT DELETE
-struct MauvilleManCommon
-{
-    u8 id;
-};
-
-// MIGHT DELETE
-struct MauvilleManBard
-{
-    /*0x00*/ u8 id;
-    /*0x02*/ u16 songLyrics[6];
-    /*0x0E*/ u16 temporaryLyrics[6];
-    /*0x1A*/ u8 playerName[8];
-    /*0x22*/ u8 filler_2DB6[0x3];
-    /*0x25*/ u8 playerTrainerId[4];
-    /*0x29*/ bool8 hasChangedSong;
-}; /*size = 0x2C*/
-
-// MIGHT DELETE
-struct MauvilleManHipster
-{
-    u8 id;
-    bool8 alreadySpoken;
-};
-
-// MIGHT DELETE
-struct MauvilleManTrader
-{
-    u8 id;
-    u8 unk1[4];
-    u8 unk5[4][11];
-    bool8 alreadyTraded;
-};
-
-// MIGHT DELETE
-struct MauvilleManStoryteller
-{
-    u8 id;
-    bool8 alreadyRecorded;
-    u8 filler2[2];
-    u8 gameStatIDs[4];
-    u8 trainerNames[4][7];
-    u8 statValues[4][4];
-};
-
-// MIGHT DELETE
-struct MauvilleManGiddy
-{
-    /*0x00*/ u8 id;
-    /*0x01*/ u8 taleCounter;
-    /*0x02*/ u8 questionNum;
-    /*0x04*/ u16 randomWords[10];
-    /*0x18*/ u8 questionList[12];
-}; /*size = 0x2C*/
-
-// MIGHT DELETE
-union MauvilleMan
-{
-    struct MauvilleManCommon common;
-    struct MauvilleManBard bard;
-    struct MauvilleManHipster hipster;
-    struct MauvilleManTrader trader;
-    struct MauvilleManStoryteller storyteller;
-    struct MauvilleManGiddy giddy;
-    u8 filler[0x40]; // needed to pad out the struct
-};
-
 struct PokeNews
 {
     u8 kind;
@@ -717,7 +648,6 @@ struct SaveBlock1 /* 0x02025734 */
     /*0x2B4C*/ struct MailStruct mail[MAIL_COUNT];
     /*0x2D8C*/ u8 unk2D8C[4]; // What is this? Apparently it's supposed to be 64 bytes in size.
     /*0x2D90*/ u8 filler_2D90[0x4];
-    /*0x2D94*/ union MauvilleMan mauvilleMan;
     /*0x2DD4*/ struct EasyChatPair easyChatPairs[5]; //Dewford trend [0] and some other stuff
     /*0x2DFC*/ struct ContestWinner contestWinners[8];
     /*0x2EFC*/ struct ContestWinner museumPortraits[5];

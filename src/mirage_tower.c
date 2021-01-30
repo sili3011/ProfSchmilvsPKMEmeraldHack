@@ -256,7 +256,7 @@ EWRAM_DATA struct MirageTowerPulseBlend *sMirageTowerPulseBlend = NULL;
 
 static u16 gUnknown_030012A8[8];
 
-// MIGHT DELETE
+// MIGHT MODIFY
 bool8 IsMirageTowerVisible(void)
 {
     // if (!(gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE111) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE111)))
@@ -274,7 +274,7 @@ void ClearMirageTowerPulseBlend(void)
     sMirageTowerPulseBlend = NULL;
 }
 
-// MIGHT DELETE
+// MIGHT MODIFY
 void TryStartMirageTowerPulseBlendEffect(void)
 {
     if (sMirageTowerPulseBlend)
@@ -293,7 +293,7 @@ void TryStartMirageTowerPulseBlendEffect(void)
     sMirageTowerPulseBlend->taskId = CreateTask(UpdateMirageTowerPulseBlend, 0xFF);
 }
 
-// MIGHT DELETE
+// MIGHT MODIFY
 void ClearMirageTowerPulseBlendEffect(void)
 {
     // if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(ROUTE111) || gSaveBlock1Ptr->location.mapNum != MAP_NUM(ROUTE111) || !FlagGet(FLAG_MIRAGE_TOWER_VISIBLE) || sMirageTowerPulseBlend == NULL)

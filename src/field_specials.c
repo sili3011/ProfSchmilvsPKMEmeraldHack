@@ -274,21 +274,6 @@ u16 GetRecordedCyclingRoadResults(void)
     return TRUE;
 }
 
-// MIGHT DELETE
-void UpdateCyclingRoadState(void)
-{
-    // if (gLastUsedWarp.mapNum == MAP_NUM(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE) && gLastUsedWarp.mapGroup == MAP_GROUP(ROUTE110_SEASIDE_CYCLING_ROAD_SOUTH_ENTRANCE))
-    // {
-    //     return;
-    // }
-
-    if (VarGet(VAR_CYCLING_CHALLENGE_STATE) == 2 || VarGet(VAR_CYCLING_CHALLENGE_STATE) == 3)
-    {
-        VarSet(VAR_CYCLING_CHALLENGE_STATE, 0);
-        Overworld_SetSavedMusic(MUS_DUMMY);
-    }
-}
-
 void SetSSTidalFlag(void)
 {
     FlagSet(FLAG_SYS_CRUISE_MODE);
@@ -3422,6 +3407,7 @@ bool8 AbnormalWeatherHasExpired(void)
 
     if (++steps > 999)
     {
+        // MIGHT MODIFY
         // VarSet(VAR_ABNORMAL_WEATHER_STEP_COUNTER, 0);
         // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_MARINE_CAVE))
         // {
@@ -3439,7 +3425,6 @@ bool8 AbnormalWeatherHasExpired(void)
         //     }
         // }
 
-        // MIGHT MODIFY
         // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_ROUTE127))
         // {
         //     switch (gSaveBlock1Ptr->location.mapNum)

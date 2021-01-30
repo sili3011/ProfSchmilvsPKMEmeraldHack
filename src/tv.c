@@ -142,7 +142,6 @@ static void sub_80EEB98(u16 days);
 void PutFishingAdviceShowOnTheAir(void);
 u8 TV_MonDataIdxToRibbon(u8 monDataIdx);
 static void sub_80EEBF4(u8 actionIdx);
-bool8 IsPriceDiscounted(u8 newsKind);
 static void InterviewBefore_FanClubLetter(void);
 static void InterviewBefore_RecentHappenings(void);
 static void InterviewBefore_PkmnFanClubOpinions(void);
@@ -169,7 +168,6 @@ static void DoTVShowPokemonTodayFailedCapture(void);
 static void DoTVShowPokemonAngler(void);
 static void DoTVShowTheWorldOfMasters(void);
 static void DoTVShowTodaysRivalTrainer(void);
-static void DoTVShowDewfordTrendWatcherNetwork(void);
 static void DoTVShowHoennTreasureInvestigators(void);
 static void DoTVShowFindThatGamer(void);
 static void DoTVShowBreakingNewsTV(void);
@@ -2720,7 +2718,7 @@ bool8 GetPriceReduction(u8 newsKind)
     {
         if (gSaveBlock1Ptr->pokeNews[i].kind == newsKind)
         {
-            if (gSaveBlock1Ptr->pokeNews[i].state == 2 && IsPriceDiscounted(newsKind))
+            if (gSaveBlock1Ptr->pokeNews[i].state == 2)
             {
                 return TRUE;
             }
@@ -2728,12 +2726,6 @@ bool8 GetPriceReduction(u8 newsKind)
         }
     }
     return FALSE;
-}
-
-// MIGHT DELETE
-bool8 IsPriceDiscounted(u8 newsKind)
-{
-    return TRUE;
 }
 
 bool8 sub_80EF0E4(u8 newsKind)
@@ -4349,9 +4341,6 @@ void DoTVShow(void)
         case TVSHOW_TODAYS_RIVAL_TRAINER:
             DoTVShowTodaysRivalTrainer();
             break;
-        case TVSHOW_TREND_WATCHER:
-            DoTVShowDewfordTrendWatcherNetwork();
-            break;
         case TVSHOW_TREASURE_INVESTIGATORS:
             DoTVShowHoennTreasureInvestigators();
             break;
@@ -5867,63 +5856,6 @@ static void DoTVShowTodaysRivalTrainer(void)
         TVShowDone();
     }
     ShowFieldMessage(sTVTodaysRivalTrainerTextGroup[state]);
-}
-
-// MIGHT DELETE
-static void DoTVShowDewfordTrendWatcherNetwork(void)
-{
-    // TVShow *show;
-    // u8 state;
-
-    // show = &gSaveBlock1Ptr->tvShows[gSpecialVar_0x8004];
-    // gSpecialVar_Result = FALSE;
-    // state = sTVShowState;
-    // switch (state)
-    // {
-    // case 0:
-    //     CopyEasyChatWord(gStringVar1, show->trendWatcher.words[0]);
-    //     CopyEasyChatWord(gStringVar2, show->trendWatcher.words[1]);
-    //     if (show->trendWatcher.gender == MALE)
-    //     {
-    //         sTVShowState = 1;
-    //     }
-    //     else
-    //     {
-    //         sTVShowState = 2;
-    //     }
-    //     break;
-    // case 1:
-    // case 2:
-    //     CopyEasyChatWord(gStringVar1, show->trendWatcher.words[0]);
-    //     CopyEasyChatWord(gStringVar2, show->trendWatcher.words[1]);
-    //     TVShowConvertInternationalString(gStringVar3, show->trendWatcher.playerName, show->trendWatcher.language);
-    //     sTVShowState = 3;
-    //     break;
-    // case 3:
-    //     CopyEasyChatWord(gStringVar1, show->trendWatcher.words[0]);
-    //     CopyEasyChatWord(gStringVar2, show->trendWatcher.words[1]);
-    //     if (show->trendWatcher.gender == MALE)
-    //     {
-    //         sTVShowState = 4;
-    //     }
-    //     else
-    //     {
-    //         sTVShowState = 5;
-    //     }
-    //     break;
-    // case 4:
-    // case 5:
-    //     CopyEasyChatWord(gStringVar1, show->trendWatcher.words[0]);
-    //     CopyEasyChatWord(gStringVar2, show->trendWatcher.words[1]);
-    //     TVShowConvertInternationalString(gStringVar3, show->trendWatcher.playerName, show->trendWatcher.language);
-    //     sTVShowState = 6;
-    //     break;
-    // case 6:
-    //     CopyEasyChatWord(gStringVar1, show->trendWatcher.words[0]);
-    //     CopyEasyChatWord(gStringVar2, show->trendWatcher.words[1]);
-    //     TVShowDone();
-    // }
-    // ShowFieldMessage(sTVDewfordTrendWatcherNetworkTextGroup[state]);
 }
 
 static void DoTVShowHoennTreasureInvestigators(void)

@@ -3,7 +3,7 @@
   "group_order": [
     "overworldGroup",
     "petrifactheimGroup",
-    "routeInteriorGroup",
+    "poiGroup",
     "miscGroup"
   ],
   "overworldGroup": [
@@ -14,7 +14,7 @@
   "petrifactheimGroup": [
 
   ],
-  "routeInteriorGroup": [
+  "poiGroup": [
     "DesertRuins",
     "IslandCave",
     "AncientTomb",

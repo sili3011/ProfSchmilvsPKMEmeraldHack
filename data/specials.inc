@@ -108,22 +108,6 @@ gSpecials:: @ 81DBA64
 	def_special DoWateringBerryTreeAnim
 	def_special ShowEasyChatScreen
 	def_special ShowEasyChatProfile
-	def_special ScrSpecial_GetCurrentMauvilleMan
-	def_special ScrSpecial_HasBardSongBeenChanged
-	def_special ScrSpecial_SaveBardSongLyrics
-	def_special ScrSpecial_GetHipsterSpokenFlag
-	def_special ScrSpecial_SetHipsterSpokenFlag
-	def_special ScrSpecial_HipsterTeachWord
-	def_special ScrSpecial_PlayBardSong
-	def_special ScrSpecial_SetMauvilleOldManObjEventGfx
-	def_special ScrSpecial_GenerateGiddyLine
-	def_special ScrSpecial_GiddyShouldTellAnotherTale
-	def_special ScrSpecial_StorytellerGetFreeStorySlot
-	def_special ScrSpecial_StorytellerDisplayStory
-	def_special ScrSpecial_StorytellerStoryListMenu
-	def_special ScrSpecial_StorytellerUpdateStat
-	def_special ScrSpecial_StorytellerInitializeRandomStat
-	def_special ScrSpecial_HasStorytellerAlreadyRecorded
 	def_special ScrSpecial_TraderMenuGetDecoration
 	def_special ScrSpecial_GetTraderTradedFlag
 	def_special ScrSpecial_DoesPlayerHaveNoDecorations
@@ -239,7 +223,6 @@ gSpecials:: @ 81DBA64
 	def_special Special_BeginCyclingRoadChallenge
 	def_special GetPlayerAvatarBike
 	def_special FinishCyclingRoadChallenge
-	def_special UpdateCyclingRoadState
 	def_special GetLeadMonFriendshipScore
 	def_special CallFrontierUtilFunc
 	def_special CallBattleTowerFunc

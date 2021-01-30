@@ -92,7 +92,7 @@ static u16 GetRoute119WaterTileNum(s16 x, s16 y, u8 section)
     return tileNum + 1;
 }
 
-// MIGHT DELETE
+// MIGHT MODIFY
 static bool8 CheckFeebas(void)
 {
     u8 i;
