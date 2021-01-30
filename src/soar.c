@@ -641,14 +641,15 @@ static void ProcessYesNoCB2(void)
 
 static void WarpCB2(void)
 {
-	switch (sPrevMapSection)
-	{
-	case MAPSEC_EVER_GRANDE_CITY:
-		SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
-		break;
-	default:
-		SetWarpDestinationToHealLocation(sMapHealLocations[sPrevMapSection][2]);
-	}
+	// MIGHT MODIFY
+	// switch (sPrevMapSection)
+	// {
+	// case MAPSEC_EVER_GRANDE_CITY:
+	// 	SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
+	// 	break;
+	//default:
+	SetWarpDestinationToHealLocation(sMapHealLocations[sPrevMapSection][2]);
+	//}
 
 	if (!gPaletteFade.active)
 	{

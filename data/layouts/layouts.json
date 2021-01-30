@@ -22,16 +22,6 @@
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
     {
-      "id": "LAYOUT_EVER_GRANDE_CITY",
-      "name": "EverGrandeCity_Layout",
-      "width": 40,
-      "height": 80,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_EverGrande",
-      "border_filepath": "data/layouts/EverGrandeCity/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity/map.bin"
-    },
-    {
       "id": "LAYOUT_OLDALE_TOWN",
       "name": "OldaleTown_Layout",
       "width": 20,
@@ -330,66 +320,6 @@
       "secondary_tileset": "gTileset_Facility",
       "border_filepath": "data/layouts/Harbor/border.bin",
       "blockdata_filepath": "data/layouts/Harbor/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_SIDNEYS_ROOM",
-      "name": "EverGrandeCity_SidneysRoom_Layout",
-      "width": 13,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_SidneysRoom/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_SidneysRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_PHOEBES_ROOM",
-      "name": "EverGrandeCity_PhoebesRoom_Layout",
-      "width": 13,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_PhoebesRoom/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_PhoebesRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_GLACIAS_ROOM",
-      "name": "EverGrandeCity_GlaciasRoom_Layout",
-      "width": 13,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_GlaciasRoom/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_GlaciasRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_DRAKES_ROOM",
-      "name": "EverGrandeCity_DrakesRoom_Layout",
-      "width": 13,
-      "height": 14,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_DrakesRoom/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_DrakesRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_CHAMPIONS_ROOM",
-      "name": "EverGrandeCity_ChampionsRoom_Layout",
-      "width": 13,
-      "height": 13,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_ChampionsRoom/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_ChampionsRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_SHORT_HALL",
-      "name": "EverGrandeCity_ShortHall_Layout",
-      "width": 11,
-      "height": 13,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_ShortHall/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_ShortHall/map.bin"
     },
     {
       "id": "LAYOUT_CABLE_CAR_STATION",
@@ -1592,16 +1522,6 @@
       "blockdata_filepath": "data/layouts/BattleFrontier_BattleTowerBattleRoom/map.bin"
     },
     {
-      "id": "LAYOUT_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F",
-      "name": "EverGrandeCity_PokemonLeague_1F_Layout",
-      "width": 19,
-      "height": 12,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonCenter",
-      "border_filepath": "data/layouts/EverGrandeCity_PokemonLeague_1F/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_PokemonLeague_1F/map.bin"
-    },
-    {
       "id": "LAYOUT_SS_TIDAL_CORRIDOR",
       "name": "SSTidalCorridor_Layout",
       "width": 18,
@@ -1752,16 +1672,6 @@
       "blockdata_filepath": "data/layouts/FieryPath/map.bin"
     },
     {
-      "id": "LAYOUT_EVER_GRANDE_CITY_HALL_OF_FAME",
-      "name": "EverGrandeCity_HallOfFame_Layout",
-      "width": 15,
-      "height": 17,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_CableClub",
-      "border_filepath": "data/layouts/EverGrandeCity_HallOfFame/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_HallOfFame/map.bin"
-    },
-    {
       "id": "LAYOUT_MT_PYRE_EXTERIOR",
       "name": "MtPyre_Exterior_Layout",
       "width": 38,
@@ -1820,16 +1730,6 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/CaveOfOrigin_Unused_B4F_Lava/border.bin",
       "blockdata_filepath": "data/layouts/CaveOfOrigin_Unused_B4F_Lava/map.bin"
-    },
-    {
-      "id": "LAYOUT_EVER_GRANDE_CITY_HALL4",
-      "name": "EverGrandeCity_Hall4_Layout",
-      "width": 11,
-      "height": 34,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_EliteFour",
-      "border_filepath": "data/layouts/EverGrandeCity_Hall4/border.bin",
-      "blockdata_filepath": "data/layouts/EverGrandeCity_Hall4/map.bin"
     },
     {
       "id": "LAYOUT_AQUA_HIDEOUT_UNUSED_RUBY_MAP1",

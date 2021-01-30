@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "EverGrandeCity",
     "OldaleTown",
     "DewfordTown",
     "LavaridgeTown",
@@ -115,21 +114,7 @@
 
   ],
   "gMapGroup16": [
-    "EverGrandeCity_SidneysRoom",
-    "EverGrandeCity_PhoebesRoom",
-    "EverGrandeCity_GlaciasRoom",
-    "EverGrandeCity_DrakesRoom",
-    "EverGrandeCity_ChampionsRoom",
-    "EverGrandeCity_Hall1",
-    "EverGrandeCity_Hall2",
-    "EverGrandeCity_Hall3",
-    "EverGrandeCity_Hall4",
-    "EverGrandeCity_Hall5",
-    "EverGrandeCity_PokemonLeague_1F",
-    "EverGrandeCity_HallOfFame",
-    "EverGrandeCity_PokemonCenter_1F",
-    "EverGrandeCity_PokemonCenter_2F",
-    "EverGrandeCity_PokemonLeague_2F"
+    
   ],
   "gMapGroup24": [
     "MeteorFalls_1F_1R",

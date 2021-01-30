@@ -261,19 +261,21 @@ const u8 sMapHealLocations[][3] =
         {MAP_GROUP(LAVARIDGE_TOWN), MAP_NUM(LAVARIDGE_TOWN), HEAL_LOCATION_LAVARIDGE_TOWN},
         {MAP_GROUP(FALLARBOR_TOWN), MAP_NUM(FALLARBOR_TOWN), HEAL_LOCATION_FALLARBOR_TOWN},
         {MAP_GROUP(VERDANTURF_TOWN), MAP_NUM(VERDANTURF_TOWN), HEAL_LOCATION_VERDANTURF_TOWN},
-        {MAP_GROUP(PACIFIDLOG_TOWN), MAP_NUM(PACIFIDLOG_TOWN), HEAL_LOCATION_PACIFIDLOG_TOWN},
-        {MAP_GROUP(EVER_GRANDE_CITY), MAP_NUM(EVER_GRANDE_CITY), HEAL_LOCATION_EVER_GRANDE_CITY}};
+        {MAP_GROUP(PACIFIDLOG_TOWN), MAP_NUM(PACIFIDLOG_TOWN), HEAL_LOCATION_PACIFIDLOG_TOWN}};
 
-static const u8 *const sEverGrandeCityNames[] =
-    {
-        gText_PokemonLeague,
-        gText_PokemonCenter};
+// MIGHT MODIFY
+// static const u8 *const sEverGrandeCityNames[] =
+//     {
+//         gText_PokemonLeague,
+//         gText_PokemonCenter};
 
+//MIGHT MODIFY
 static const struct MultiNameFlyDest sMultiNameFlyDestinations[] =
     {
-        {.name = sEverGrandeCityNames,
-         .mapSecId = MAPSEC_EVER_GRANDE_CITY,
-         .flag = FLAG_LANDMARK_POKEMON_LEAGUE}};
+        // {.name = sEverGrandeCityNames,
+        //  .mapSecId = MAPSEC_EVER_GRANDE_CITY,
+        //  .flag = FLAG_LANDMARK_POKEMON_LEAGUE}
+};
 
 static const struct BgTemplate sFlyMapBgTemplates[] =
     {
@@ -1642,25 +1644,26 @@ static void DrawFlyDestTextWindow(void)
     if (sFlyMap->regionMap.mapSecType > MAPSECTYPE_NONE && sFlyMap->regionMap.mapSecType <= MAPSECTYPE_BATTLE_FRONTIER)
     {
         namePrinted = FALSE;
-        for (i = 0; i < ARRAY_COUNT(sMultiNameFlyDestinations); i++)
-        {
-            if (sFlyMap->regionMap.mapSecId == sMultiNameFlyDestinations[i].mapSecId)
-            {
-                if (FlagGet(sMultiNameFlyDestinations[i].flag))
-                {
-                    StringLength(sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec]);
-                    namePrinted = TRUE;
-                    ClearStdWindowAndFrameToTransparent(0, FALSE);
-                    DrawStdFrameWithCustomTileAndPalette(1, FALSE, 101, 13);
-                    AddTextPrinterParameterized(1, 1, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
-                    name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
-                    AddTextPrinterParameterized(1, 1, name, GetStringRightAlignXOffset(1, name, 96), 17, 0, NULL);
-                    ScheduleBgCopyTilemapToVram(0);
-                    gUnknown_03001180 = TRUE;
-                }
-                break;
-            }
-        }
+        // MIGHT MODIFY
+        // for (i = 0; i < ARRAY_COUNT(sMultiNameFlyDestinations); i++)
+        // {
+        //     if (sFlyMap->regionMap.mapSecId == sMultiNameFlyDestinations[i].mapSecId)
+        //     {
+        //         if (FlagGet(sMultiNameFlyDestinations[i].flag))
+        //         {
+        //             StringLength(sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec]);
+        //             namePrinted = TRUE;
+        //             ClearStdWindowAndFrameToTransparent(0, FALSE);
+        //             DrawStdFrameWithCustomTileAndPalette(1, FALSE, 101, 13);
+        //             AddTextPrinterParameterized(1, 1, sFlyMap->regionMap.mapSecName, 0, 1, 0, NULL);
+        //             name = sMultiNameFlyDestinations[i].name[sFlyMap->regionMap.posWithinMapSec];
+        //             AddTextPrinterParameterized(1, 1, name, GetStringRightAlignXOffset(1, name, 96), 17, 0, NULL);
+        //             ScheduleBgCopyTilemapToVram(0);
+        //             gUnknown_03001180 = TRUE;
+        //         }
+        //         break;
+        //     }
+        // }
         if (!namePrinted)
         {
             if (gUnknown_03001180 == TRUE)
@@ -1865,18 +1868,11 @@ static void CB_ExitFlyMap(void)
             FreeRegionMapIconResources();
             if (sFlyMap->choseFlyLocation)
             {
-                switch (sFlyMap->regionMap.mapSecId)
-                {
-                case MAPSEC_EVER_GRANDE_CITY:
-                    SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && sFlyMap->regionMap.posWithinMapSec == 0 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
-                    break;
-                default:
-                    if (sMapHealLocations[sFlyMap->regionMap.mapSecId][2] != 0)
-                        SetWarpDestinationToHealLocation(sMapHealLocations[sFlyMap->regionMap.mapSecId][2]);
-                    else
-                        SetWarpDestinationToMapWarp(sMapHealLocations[sFlyMap->regionMap.mapSecId][0], sMapHealLocations[sFlyMap->regionMap.mapSecId][1], -1);
-                    break;
-                }
+                if (sMapHealLocations[sFlyMap->regionMap.mapSecId][2] != 0)
+                    SetWarpDestinationToHealLocation(sMapHealLocations[sFlyMap->regionMap.mapSecId][2]);
+                else
+                    SetWarpDestinationToMapWarp(sMapHealLocations[sFlyMap->regionMap.mapSecId][0], sMapHealLocations[sFlyMap->regionMap.mapSecId][1], -1);
+                break;
                 ReturnToFieldFromFlyMapSelect();
             }
             else

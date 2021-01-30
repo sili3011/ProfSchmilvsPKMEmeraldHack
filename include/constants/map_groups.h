@@ -8,13 +8,12 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_EVER_GRANDE_CITY   (2 | (0 << 8))
-#define MAP_OLDALE_TOWN        (3 | (0 << 8))
-#define MAP_DEWFORD_TOWN       (4 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (5 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (6 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (7 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (8 | (0 << 8))
+#define MAP_OLDALE_TOWN        (2 | (0 << 8))
+#define MAP_DEWFORD_TOWN       (3 | (0 << 8))
+#define MAP_LAVARIDGE_TOWN     (4 | (0 << 8))
+#define MAP_FALLARBOR_TOWN     (5 | (0 << 8))
+#define MAP_VERDANTURF_TOWN    (6 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (7 | (0 << 8))
 
 // Map Group 1
 
@@ -89,21 +88,6 @@
 // Map Group 15
 
 // Map Group 16
-#define MAP_EVER_GRANDE_CITY_SIDNEYS_ROOM      (0 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_PHOEBES_ROOM      (1 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_GLACIAS_ROOM      (2 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_DRAKES_ROOM       (3 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_CHAMPIONS_ROOM    (4 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL1             (5 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL2             (6 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL3             (7 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL4             (8 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL5             (9 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F (10 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_HALL_OF_FAME      (11 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F (12 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_POKEMON_CENTER_2F (13 | (16 << 8))
-#define MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_2F (14 | (16 << 8))
 
 // Map Group 17
 #define MAP_METEOR_FALLS_1F_1R                       (0 | (17 << 8))
