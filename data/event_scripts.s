@@ -101,34 +101,7 @@ gStdScripts:: @ 81DC2A0
 	.4byte Std_10
 gStdScripts_End:: @ 81DC2CC
 
-	.include "data/maps/LavaridgeTown/scripts.inc"
-	.include "data/maps/FallarborTown/scripts.inc"
-	.include "data/maps/VerdanturfTown/scripts.inc"
 	.include "data/maps/PacifidlogTown/scripts.inc"
-	.include "data/maps/LavaridgeTown_HerbShop/scripts.inc"
-	.include "data/maps/LavaridgeTown_Gym_1F/scripts.inc"
-	.include "data/maps/LavaridgeTown_Gym_B1F/scripts.inc"
-	.include "data/maps/LavaridgeTown_House/scripts.inc"
-	.include "data/maps/LavaridgeTown_Mart/scripts.inc"
-	.include "data/maps/LavaridgeTown_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/LavaridgeTown_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/FallarborTown_Mart/scripts.inc"
-	.include "data/maps/FallarborTown_BattleTentLobby/scripts.inc"
-	.include "data/maps/FallarborTown_BattleTentCorridor/scripts.inc"
-	.include "data/maps/FallarborTown_BattleTentBattleRoom/scripts.inc"
-	.include "data/maps/FallarborTown_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/FallarborTown_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/FallarborTown_CozmosHouse/scripts.inc"
-	.include "data/maps/FallarborTown_MoveRelearnersHouse/scripts.inc"
-	.include "data/maps/VerdanturfTown_BattleTentLobby/scripts.inc"
-	.include "data/maps/VerdanturfTown_BattleTentCorridor/scripts.inc"
-	.include "data/maps/VerdanturfTown_BattleTentBattleRoom/scripts.inc"
-	.include "data/maps/VerdanturfTown_Mart/scripts.inc"
-	.include "data/maps/VerdanturfTown_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/VerdanturfTown_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/VerdanturfTown_WandasHouse/scripts.inc"
-	.include "data/maps/VerdanturfTown_FriendshipRatersHouse/scripts.inc"
-	.include "data/maps/VerdanturfTown_House/scripts.inc"
 	.include "data/maps/PacifidlogTown_PokemonCenter_1F/scripts.inc"
 	.include "data/maps/PacifidlogTown_PokemonCenter_2F/scripts.inc"
 	.include "data/maps/PacifidlogTown_House1/scripts.inc"
@@ -549,8 +522,6 @@ EventScript_HideMrBriney:: @ 82721F8
 RusturfTunnel_EventScript_SetRusturfTunnelOpen:: @ 8272216
 	removeobject LOCALID_WANDAS_BF
 	removeobject LOCALID_WANDA
-	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WANDAS_BOYFRIEND
-	clearflag FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WANDA
 	setvar VAR_RUSTURF_TUNNEL_STATE, 6
 	setflag FLAG_RUSTURF_TUNNEL_OPENED
 	return

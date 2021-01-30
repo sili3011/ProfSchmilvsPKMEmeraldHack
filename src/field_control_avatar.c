@@ -689,16 +689,6 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
             DoEscalatorWarp(metatileBehavior);
             return TRUE;
         }
-        if (MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) == TRUE)
-        {
-            DoLavaridgeGymB1FWarp();
-            return TRUE;
-        }
-        if (MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) == TRUE)
-        {
-            DoLavaridgeGym1FWarp();
-            return TRUE;
-        }
         if (MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) == TRUE)
         {
             DoTeleportTileWarp();
@@ -724,7 +714,7 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
 // MIGHT MODIFY
 static bool8 IsWarpMetatileBehavior(u16 metatileBehavior)
 {
-    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLadder(metatileBehavior) != TRUE && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridgeB1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsLavaridge1FWarp(metatileBehavior) != TRUE && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
+    if (MetatileBehavior_IsWarpDoor(metatileBehavior) != TRUE && MetatileBehavior_IsLadder(metatileBehavior) != TRUE && MetatileBehavior_IsEscalator(metatileBehavior) != TRUE && MetatileBehavior_IsNonAnimDoor(metatileBehavior) != TRUE && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE && MetatileBehavior_IsWarpOrBridge(metatileBehavior) != TRUE)
         return FALSE;
     return TRUE;
 }

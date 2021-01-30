@@ -8,10 +8,7 @@
 // Map Group 0
 #define MAP_PLAYGROUND         (0 | (0 << 8))
 #define MAP_PETRIFACTHEIM_CITY (1 | (0 << 8))
-#define MAP_LAVARIDGE_TOWN     (2 | (0 << 8))
-#define MAP_FALLARBOR_TOWN     (3 | (0 << 8))
-#define MAP_VERDANTURF_TOWN    (4 | (0 << 8))
-#define MAP_PACIFIDLOG_TOWN    (5 | (0 << 8))
+#define MAP_PACIFIDLOG_TOWN    (2 | (0 << 8))
 
 // Map Group 1
 
@@ -20,34 +17,10 @@
 // Map Group 3
 
 // Map Group 4
-#define MAP_LAVARIDGE_TOWN_HERB_SHOP         (0 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_GYM_1F            (1 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_GYM_B1F           (2 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_HOUSE             (3 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_MART              (4 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F (5 | (4 << 8))
-#define MAP_LAVARIDGE_TOWN_POKEMON_CENTER_2F (6 | (4 << 8))
 
 // Map Group 5
-#define MAP_FALLARBOR_TOWN_MART                    (0 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_BATTLE_TENT_LOBBY       (1 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_BATTLE_TENT_CORRIDOR    (2 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_BATTLE_TENT_BATTLE_ROOM (3 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F       (4 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_POKEMON_CENTER_2F       (5 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_COZMOS_HOUSE            (6 | (5 << 8))
-#define MAP_FALLARBOR_TOWN_MOVE_RELEARNERS_HOUSE   (7 | (5 << 8))
 
 // Map Group 6
-#define MAP_VERDANTURF_TOWN_BATTLE_TENT_LOBBY       (0 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_BATTLE_TENT_CORRIDOR    (1 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_BATTLE_TENT_BATTLE_ROOM (2 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_MART                    (3 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_POKEMON_CENTER_1F       (4 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_POKEMON_CENTER_2F       (5 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_WANDAS_HOUSE            (6 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_FRIENDSHIP_RATERS_HOUSE (7 | (6 << 8))
-#define MAP_VERDANTURF_TOWN_HOUSE                   (8 | (6 << 8))
 
 // Map Group 7
 #define MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F (0 | (7 << 8))

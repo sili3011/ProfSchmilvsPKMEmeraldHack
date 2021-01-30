@@ -22,36 +22,6 @@
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
     {
-      "id": "LAYOUT_LAVARIDGE_TOWN",
-      "name": "LavaridgeTown_Layout",
-      "width": 20,
-      "height": 20,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Lavaridge",
-      "border_filepath": "data/layouts/LavaridgeTown/border.bin",
-      "blockdata_filepath": "data/layouts/LavaridgeTown/map.bin"
-    },
-    {
-      "id": "LAYOUT_FALLARBOR_TOWN",
-      "name": "FallarborTown_Layout",
-      "width": 20,
-      "height": 20,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Fallarbor",
-      "border_filepath": "data/layouts/FallarborTown/border.bin",
-      "blockdata_filepath": "data/layouts/FallarborTown/map.bin"
-    },
-    {
-      "id": "LAYOUT_VERDANTURF_TOWN",
-      "name": "VerdanturfTown_Layout",
-      "width": 20,
-      "height": 20,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Mauville",
-      "border_filepath": "data/layouts/VerdanturfTown/border.bin",
-      "blockdata_filepath": "data/layouts/VerdanturfTown/map.bin"
-    },
-    {
       "id": "LAYOUT_PACIFIDLOG_TOWN",
       "name": "PacifidlogTown_Layout",
       "width": 20,
@@ -142,66 +112,6 @@
       "blockdata_filepath": "data/layouts/House4/map.bin"
     },
     {
-      "id": "LAYOUT_LAVARIDGE_TOWN_HERB_SHOP",
-      "name": "LavaridgeTown_HerbShop_Layout",
-      "width": 11,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Shop",
-      "border_filepath": "data/layouts/LavaridgeTown_HerbShop/border.bin",
-      "blockdata_filepath": "data/layouts/LavaridgeTown_HerbShop/map.bin"
-    },
-    {
-      "id": "LAYOUT_LAVARIDGE_TOWN_GYM_1F",
-      "name": "LavaridgeTown_Gym_1F_Layout",
-      "width": 17,
-      "height": 19,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_LavaridgeGym",
-      "border_filepath": "data/layouts/LavaridgeTown_Gym_1F/border.bin",
-      "blockdata_filepath": "data/layouts/LavaridgeTown_Gym_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LAVARIDGE_TOWN_GYM_B1F",
-      "name": "LavaridgeTown_Gym_B1F_Layout",
-      "width": 17,
-      "height": 19,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_LavaridgeGym",
-      "border_filepath": "data/layouts/LavaridgeTown_Gym_B1F/border.bin",
-      "blockdata_filepath": "data/layouts/LavaridgeTown_Gym_B1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_LAVARIDGE_TOWN_POKEMON_CENTER_1F",
-      "name": "LavaridgeTown_PokemonCenter_1F_Layout",
-      "width": 14,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_PokemonCenter",
-      "border_filepath": "data/layouts/LavaridgeTown_PokemonCenter_1F/border.bin",
-      "blockdata_filepath": "data/layouts/LavaridgeTown_PokemonCenter_1F/map.bin"
-    },
-    {
-      "id": "LAYOUT_FALLARBOR_TOWN_LEFTOVER_RSCONTEST_LOBBY",
-      "name": "FallarborTown_LeftoverRSContestLobby_Layout",
-      "width": 15,
-      "height": 7,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Contest",
-      "border_filepath": "data/layouts/FallarborTown_LeftoverRSContestLobby/border.bin",
-      "blockdata_filepath": "data/layouts/FallarborTown_LeftoverRSContestLobby/map.bin"
-    },
-    {
-      "id": "LAYOUT_FALLARBOR_TOWN_LEFTOVER_RSCONTEST_HALL",
-      "name": "FallarborTown_LeftoverRSContestHall_Layout",
-      "width": 21,
-      "height": 18,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_Contest",
-      "border_filepath": "data/layouts/FallarborTown_LeftoverRSContestHall/border.bin",
-      "blockdata_filepath": "data/layouts/FallarborTown_LeftoverRSContestHall/map.bin"
-    },
-    {
       "id": "LAYOUT_UNKNOWN_08428450",
       "name": "Unknown_08428450_Layout",
       "width": 1,
@@ -210,16 +120,6 @@
       "secondary_tileset": "gTileset_Contest",
       "border_filepath": "data/layouts/Unknown_08428450/border.bin",
       "blockdata_filepath": "data/layouts/Unknown_08428450/map.bin"
-    },
-    {
-      "id": "LAYOUT_VERDANTURF_TOWN_WANDAS_HOUSE",
-      "name": "VerdanturfTown_WandasHouse_Layout",
-      "width": 17,
-      "height": 8,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/VerdanturfTown_WandasHouse/border.bin",
-      "blockdata_filepath": "data/layouts/VerdanturfTown_WandasHouse/map.bin"
     },
     {
       "id": "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
@@ -1612,26 +1512,6 @@
       "blockdata_filepath": "data/layouts/SouthernIsland_Interior/map.bin"
     },
     {
-      "id": "LAYOUT_JAGGED_PASS",
-      "name": "JaggedPass_Layout",
-      "width": 30,
-      "height": 46,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Lavaridge",
-      "border_filepath": "data/layouts/JaggedPass/border.bin",
-      "blockdata_filepath": "data/layouts/JaggedPass/map.bin"
-    },
-    {
-      "id": "LAYOUT_FIERY_PATH",
-      "name": "FieryPath_Layout",
-      "width": 35,
-      "height": 38,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Lavaridge",
-      "border_filepath": "data/layouts/FieryPath/border.bin",
-      "blockdata_filepath": "data/layouts/FieryPath/map.bin"
-    },
-    {
       "id": "LAYOUT_MT_PYRE_EXTERIOR",
       "name": "MtPyre_Exterior_Layout",
       "width": 38,
@@ -1680,6 +1560,26 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/ScorchedSlab/border.bin",
       "blockdata_filepath": "data/layouts/ScorchedSlab/map.bin"
+    },
+    {
+      "id": "LAYOUT_JAGGED_PASS",
+      "name": "JaggedPass_Layout",
+      "width": 30,
+      "height": 46,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Lavaridge",
+      "border_filepath": "data/layouts/JaggedPass/border.bin",
+      "blockdata_filepath": "data/layouts/JaggedPass/map.bin"
+    },
+    {
+      "id": "LAYOUT_FIERY_PATH",
+      "name": "FieryPath_Layout",
+      "width": 35,
+      "height": 38,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Lavaridge",
+      "border_filepath": "data/layouts/FieryPath/border.bin",
+      "blockdata_filepath": "data/layouts/FieryPath/map.bin"
     },
     {
       "id": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_B4F_LAVA",
@@ -2370,16 +2270,6 @@
       "secondary_tileset": "gTileset_BattleTent",
       "border_filepath": "data/layouts/BattleTentBattleRoom/border.bin",
       "blockdata_filepath": "data/layouts/BattleTentBattleRoom/map.bin"
-    },
-    {
-      "id": "LAYOUT_VERDANTURF_TOWN_BATTLE_TENT_BATTLE_ROOM",
-      "name": "VerdanturfTown_BattleTentBattleRoom_Layout",
-      "width": 13,
-      "height": 9,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_BattleTent",
-      "border_filepath": "data/layouts/VerdanturfTown_BattleTentBattleRoom/border.bin",
-      "blockdata_filepath": "data/layouts/VerdanturfTown_BattleTentBattleRoom/map.bin"
     },
     {
       "id": "LAYOUT_MIRAGE_TOWER_4F",

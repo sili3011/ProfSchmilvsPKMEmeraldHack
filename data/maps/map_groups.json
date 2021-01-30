@@ -25,9 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "LavaridgeTown",
-    "FallarborTown",
-    "VerdanturfTown",
     "PacifidlogTown"
   ],
   "gMapGroup1": [
@@ -40,34 +37,13 @@
 
   ],
   "gMapGroup4": [
-    "LavaridgeTown_HerbShop",
-    "LavaridgeTown_Gym_1F",
-    "LavaridgeTown_Gym_B1F",
-    "LavaridgeTown_House",
-    "LavaridgeTown_Mart",
-    "LavaridgeTown_PokemonCenter_1F",
-    "LavaridgeTown_PokemonCenter_2F"
+
   ],
   "gMapGroup5": [
-    "FallarborTown_Mart",
-    "FallarborTown_BattleTentLobby",
-    "FallarborTown_BattleTentCorridor",
-    "FallarborTown_BattleTentBattleRoom",
-    "FallarborTown_PokemonCenter_1F",
-    "FallarborTown_PokemonCenter_2F",
-    "FallarborTown_CozmosHouse",
-    "FallarborTown_MoveRelearnersHouse"
+   
   ],
   "gMapGroup6": [
-    "VerdanturfTown_BattleTentLobby",
-    "VerdanturfTown_BattleTentCorridor",
-    "VerdanturfTown_BattleTentBattleRoom",
-    "VerdanturfTown_Mart",
-    "VerdanturfTown_PokemonCenter_1F",
-    "VerdanturfTown_PokemonCenter_2F",
-    "VerdanturfTown_WandasHouse",
-    "VerdanturfTown_FriendshipRatersHouse",
-    "VerdanturfTown_House"
+
   ],
   "gMapGroup7": [
     "PacifidlogTown_PokemonCenter_1F",
