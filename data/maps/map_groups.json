@@ -25,7 +25,6 @@
   "gMapGroup0": [
     "playground",
     "PetrifactheimCity",
-    "OldaleTown",
     "DewfordTown",
     "LavaridgeTown",
     "FallarborTown",
@@ -36,11 +35,7 @@
 
   ],
   "gMapGroup2": [
-    "OldaleTown_House1",
-    "OldaleTown_House2",
-    "OldaleTown_PokemonCenter_1F",
-    "OldaleTown_PokemonCenter_2F",
-    "OldaleTown_Mart"
+
   ],
   "gMapGroup3": [
     "DewfordTown_House1",
@@ -114,7 +109,7 @@
 
   ],
   "gMapGroup16": [
-    
+
   ],
   "gMapGroup24": [
     "MeteorFalls_1F_1R",

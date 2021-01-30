@@ -1944,7 +1944,6 @@ bool8 UsedPokemonCenterWarp(void)
 {
     static const u16 sPokemonCenters[] =
         {
-            MAP_OLDALE_TOWN_POKEMON_CENTER_1F,
             MAP_DEWFORD_TOWN_POKEMON_CENTER_1F,
             MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F,
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
@@ -3527,7 +3526,6 @@ u32 GetMartEmployeeObjectEventId(void)
 {
     static const u8 sPokeMarts[][3] =
         {
-            {MAP_GROUP(OLDALE_TOWN_MART), MAP_NUM(OLDALE_TOWN_MART), 1},
             {MAP_GROUP(LAVARIDGE_TOWN_MART), MAP_NUM(LAVARIDGE_TOWN_MART), 1},
             {MAP_GROUP(FALLARBOR_TOWN_MART), MAP_NUM(FALLARBOR_TOWN_MART), 1},
             {MAP_GROUP(VERDANTURF_TOWN_MART), MAP_NUM(VERDANTURF_TOWN_MART), 1},
@@ -3807,7 +3805,6 @@ bool8 InPokemonCenter(void)
 {
     static const u16 sPokemonCenters[] =
         {
-            MAP_OLDALE_TOWN_POKEMON_CENTER_1F,
             MAP_DEWFORD_TOWN_POKEMON_CENTER_1F,
             MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F,
             MAP_FALLARBOR_TOWN_POKEMON_CENTER_1F,
