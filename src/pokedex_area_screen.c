@@ -543,7 +543,6 @@ static void FindMapsWithMon(u16 species)
                 case MAP_GROUP_OVERWORLD_MONS:
                     SetAreaHasMon(sFeebasData[i][1], sFeebasData[i][2]);
                     break;
-                case MAP_GROUP_SPECIAL_MONS_1:
                 case MAP_GROUP_SPECIAL_MONS_2:
                     SetSpecialMapHasMon(sFeebasData[i][1], sFeebasData[i][2]);
                     break;
@@ -560,7 +559,6 @@ static void FindMapsWithMon(u16 species)
                 case MAP_GROUP_OVERWORLD_MONS:
                     SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                     break;
-                case MAP_GROUP_SPECIAL_MONS_1:
                 case MAP_GROUP_SPECIAL_MONS_2:
                     SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                     break;

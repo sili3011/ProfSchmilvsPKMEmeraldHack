@@ -101,43 +101,9 @@ gStdScripts:: @ 81DC2A0
 	.4byte Std_10
 gStdScripts_End:: @ 81DC2CC
 
-	.include "data/maps/MtChimney_CableCarStation/scripts.inc"
-	.include "data/maps/MeteorFalls_1F_1R/scripts.inc"
-	.include "data/maps/MeteorFalls_1F_2R/scripts.inc"
-	.include "data/maps/MeteorFalls_B1F_1R/scripts.inc"
-	.include "data/maps/MeteorFalls_B1F_2R/scripts.inc"
-	.include "data/maps/RusturfTunnel/scripts.inc"
 	.include "data/maps/DesertRuins/scripts.inc"
-	.include "data/maps/GraniteCave_1F/scripts.inc"
-	.include "data/maps/GraniteCave_B1F/scripts.inc"
-	.include "data/maps/GraniteCave_B2F/scripts.inc"
-	.include "data/maps/GraniteCave_StevensRoom/scripts.inc"
-	.include "data/maps/PetalburgWoods/scripts.inc"
-	.include "data/maps/MtChimney/scripts.inc"
 	.include "data/maps/JaggedPass/scripts.inc"
 	.include "data/maps/FieryPath/scripts.inc"
-	.include "data/maps/MtPyre_1F/scripts.inc"
-	.include "data/maps/MtPyre_2F/scripts.inc"
-	.include "data/maps/MtPyre_3F/scripts.inc"
-	.include "data/maps/MtPyre_4F/scripts.inc"
-	.include "data/maps/MtPyre_5F/scripts.inc"
-	.include "data/maps/MtPyre_6F/scripts.inc"
-	.include "data/maps/MtPyre_Exterior/scripts.inc"
-	.include "data/maps/MtPyre_Summit/scripts.inc"
-	.include "data/maps/AquaHideout_1F/scripts.inc"
-	.include "data/maps/AquaHideout_B1F/scripts.inc"
-	.include "data/maps/AquaHideout_B2F/scripts.inc"
-	.include "data/maps/Underwater_SeafloorCavern/scripts.inc"
-	.include "data/maps/SeafloorCavern_Entrance/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room1/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room2/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room3/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room4/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room5/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room6/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room7/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room8/scripts.inc"
-	.include "data/maps/SeafloorCavern_Room9/scripts.inc"
 	.include "data/maps/CaveOfOrigin_Entrance/scripts.inc"
 	.include "data/maps/CaveOfOrigin_1F/scripts.inc"
 	.include "data/maps/CaveOfOrigin_UnusedRubySapphireMap1/scripts.inc"
@@ -153,59 +119,18 @@ gStdScripts_End:: @ 81DC2CC
 	.include "data/maps/ShoalCave_LowTideLowerRoom/scripts.inc"
 	.include "data/maps/ShoalCave_HighTideEntranceRoom/scripts.inc"
 	.include "data/maps/ShoalCave_HighTideInnerRoom/scripts.inc"
-	.include "data/maps/AbandonedShip_Deck/scripts.inc"
-	.include "data/maps/AbandonedShip_Corridors_1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Rooms_1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Corridors_B1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Rooms_B1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Rooms2_B1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Underwater1/scripts.inc"
-	.include "data/maps/AbandonedShip_Room_B1F/scripts.inc"
-	.include "data/maps/AbandonedShip_Rooms2_1F/scripts.inc"
-	.include "data/maps/AbandonedShip_CaptainsOffice/scripts.inc"
-	.include "data/maps/AbandonedShip_Underwater2/scripts.inc"
-	.include "data/maps/AbandonedShip_HiddenFloorCorridors/scripts.inc"
-	.include "data/maps/AbandonedShip_HiddenFloorRooms/scripts.inc"
 	.include "data/maps/IslandCave/scripts.inc"
 	.include "data/maps/AncientTomb/scripts.inc"
-	.include "data/maps/Underwater_SealedChamber/scripts.inc"
 	.include "data/maps/SealedChamber_OuterRoom/scripts.inc"
 	.include "data/maps/SealedChamber_InnerRoom/scripts.inc"
 	.include "data/maps/ScorchedSlab/scripts.inc"
-	.include "data/maps/AquaHideout_UnusedRubyMap1/scripts.inc"
-	.include "data/maps/AquaHideout_UnusedRubyMap2/scripts.inc"
-	.include "data/maps/AquaHideout_UnusedRubyMap3/scripts.inc"
-	.include "data/maps/SkyPillar_Entrance/scripts.inc"
-	.include "data/maps/SkyPillar_Outside/scripts.inc"
-	.include "data/maps/SkyPillar_1F/scripts.inc"
-	.include "data/maps/SkyPillar_2F/scripts.inc"
-	.include "data/maps/SkyPillar_3F/scripts.inc"
-	.include "data/maps/SkyPillar_4F/scripts.inc"
 	.include "data/maps/ShoalCave_LowTideIceRoom/scripts.inc"
-	.include "data/maps/SkyPillar_5F/scripts.inc"
-	.include "data/maps/SkyPillar_Top/scripts.inc"
-	.include "data/maps/MagmaHideout_1F/scripts.inc"
-	.include "data/maps/MagmaHideout_2F_1R/scripts.inc"
-	.include "data/maps/MagmaHideout_2F_2R/scripts.inc"
-	.include "data/maps/MagmaHideout_3F_1R/scripts.inc"
-	.include "data/maps/MagmaHideout_3F_2R/scripts.inc"
-	.include "data/maps/MagmaHideout_4F/scripts.inc"
-	.include "data/maps/MagmaHideout_3F_3R/scripts.inc"
-	.include "data/maps/MagmaHideout_2F_3R/scripts.inc"
-	.include "data/maps/MirageTower_1F/scripts.inc"
-	.include "data/maps/MirageTower_2F/scripts.inc"
-	.include "data/maps/MirageTower_3F/scripts.inc"
-	.include "data/maps/MirageTower_4F/scripts.inc"
 	.include "data/maps/DesertUnderpass/scripts.inc"
-	.include "data/maps/ArtisanCave_B1F/scripts.inc"
-	.include "data/maps/ArtisanCave_1F/scripts.inc"
-	.include "data/maps/Underwater_MarineCave/scripts.inc"
 	.include "data/maps/MarineCave_Entrance/scripts.inc"
 	.include "data/maps/MarineCave_End/scripts.inc"
 	.include "data/maps/TerraCave_Entrance/scripts.inc"
 	.include "data/maps/TerraCave_End/scripts.inc"
 	.include "data/maps/AlteringCave/scripts.inc"
-	.include "data/maps/MeteorFalls_StevensCave/scripts.inc"
 	.include "data/scripts/shared_secret_base.inc"
 	.include "data/maps/BattleColosseum_2P/scripts.inc"
 	.include "data/maps/TradeCenter/scripts.inc"
@@ -366,14 +291,6 @@ EverGrandeCity_HallOfFame_EventScript_ResetEliteFour:: @ 82718CC
 	setvar VAR_ELITE_4_STATE, 0
 	return
 
-Common_EventScript_UpdateBrineyLocation:: @ 82718DE
-	goto_if_unset FLAG_RECEIVED_POKENAV, Common_EventScript_NopReturn
-	goto_if_set FLAG_DEFEATED_PETALBURG_GYM, Common_EventScript_NopReturn
-	goto_if_unset FLAG_HIDE_ROUTE_104_MR_BRINEY_BOAT, EventScript_SetBrineyLocation_House
-	goto_if_unset FLAG_HIDE_MR_BRINEY_DEWFORD_TOWN, EventScript_SetBrineyLocation_Dewford
-	goto_if_unset FLAG_HIDE_ROUTE_109_MR_BRINEY, EventScript_SetBrineyLocation_Route109
-	return
-
 EventScript_SetBrineyLocation_House:: @ 827190C
 	setvar VAR_BRINEY_LOCATION, 1
 	return
@@ -404,11 +321,6 @@ Common_ShowEasyChatScreen:: @ 8271E7C
 	fadescreen FADE_TO_BLACK
 	special ShowEasyChatScreen
 	fadescreen FADE_FROM_BLACK
-	return
-
-Common_EventScript_ReadyPetalburgGymForBattle:: @ 8271E84
-	clearflag FLAG_HIDE_PETALBURG_GYM_GREETER
-	setflag FLAG_PETALBURG_MART_EXPANDED_ITEMS
 	return
 
 Common_EventScript_BufferTrendyPhrase:: @ 8271E8B
@@ -508,13 +420,6 @@ EventScript_HideMrBriney:: @ 82721F8
 	setflag FLAG_HIDE_BRINEYS_HOUSE_MR_BRINEY
 	setflag FLAG_HIDE_BRINEYS_HOUSE_PEEKO
 	setvar VAR_BRINEY_LOCATION, 0
-	return
-
-RusturfTunnel_EventScript_SetRusturfTunnelOpen:: @ 8272216
-	removeobject LOCALID_WANDAS_BF
-	removeobject LOCALID_WANDA
-	setvar VAR_RUSTURF_TUNNEL_STATE, 6
-	setflag FLAG_RUSTURF_TUNNEL_OPENED
 	return
 
 EventScript_UnusedBoardFerry:: @ 827222B
@@ -795,6 +700,6 @@ Common_EventScript_LegendaryFlewAway:: @ 8273776
 	.include "data/maps/playground/scripts.inc"
     .include "data/scripts/dexnav.inc"
 
-	.include "data/maps/Route01/scripts.inc"
-
 	.include "data/maps/PetrifactheimCity/scripts.inc"
+
+	.include "data/maps/Route01/scripts.inc"

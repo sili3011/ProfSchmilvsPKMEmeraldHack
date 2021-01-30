@@ -307,7 +307,6 @@ gSpecials:: @ 81DBA64
 	def_special Script_FacePlayer
 	def_special Script_ClearHeldMovement
 	def_special InitRoamer
-	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
 	def_special DoContestHallWarp
 	def_special PutZigzagoonInPlayerParty

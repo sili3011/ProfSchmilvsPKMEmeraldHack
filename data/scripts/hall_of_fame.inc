@@ -19,4 +19,5 @@ EverGrandeCity_HallOfFame_EventScript_SetGameClearFlags:: @ 82717C1
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MAYS_HOUSE_RIVAL_BEDROOM
 	compare VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 0
 	return
+	end
 	

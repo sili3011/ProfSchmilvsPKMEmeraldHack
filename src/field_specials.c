@@ -1423,24 +1423,6 @@ bool8 Special_AreLeadMonEVsMaxedOut(void)
     return FALSE;
 }
 
-u8 TryUpdateRusturfTunnelState(void)
-{
-    if (!FlagGet(FLAG_RUSTURF_TUNNEL_OPENED) && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(RUSTURF_TUNNEL) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(RUSTURF_TUNNEL))
-    {
-        if (FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_ROCK_1))
-        {
-            VarSet(VAR_RUSTURF_TUNNEL_STATE, 4);
-            return TRUE;
-        }
-        else if (FlagGet(FLAG_HIDE_RUSTURF_TUNNEL_ROCK_2))
-        {
-            VarSet(VAR_RUSTURF_TUNNEL_STATE, 5);
-            return TRUE;
-        }
-    }
-    return FALSE;
-}
-
 void SetShoalItemFlag(u16 unused)
 {
     FlagSet(FLAG_SYS_SHOAL_ITEM);
@@ -3440,22 +3422,22 @@ bool8 AbnormalWeatherHasExpired(void)
 
     if (++steps > 999)
     {
-        VarSet(VAR_ABNORMAL_WEATHER_STEP_COUNTER, 0);
-        if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_MARINE_CAVE))
-        {
-            switch (gSaveBlock1Ptr->location.mapNum)
-            {
-            case MAP_NUM(UNDERWATER_MARINE_CAVE):
-            case MAP_NUM(MARINE_CAVE_ENTRANCE):
-            case MAP_NUM(MARINE_CAVE_END):
-            case MAP_NUM(TERRA_CAVE_ENTRANCE):
-            case MAP_NUM(TERRA_CAVE_END):
-                VarSet(VAR_SHOULD_END_ABNORMAL_WEATHER, 1);
-                return FALSE;
-            default:
-                break;
-            }
-        }
+        // VarSet(VAR_ABNORMAL_WEATHER_STEP_COUNTER, 0);
+        // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_MARINE_CAVE))
+        // {
+        //     switch (gSaveBlock1Ptr->location.mapNum)
+        //     {
+        //     case MAP_NUM(UNDERWATER_MARINE_CAVE):
+        //     case MAP_NUM(MARINE_CAVE_ENTRANCE):
+        //     case MAP_NUM(MARINE_CAVE_END):
+        //     case MAP_NUM(TERRA_CAVE_ENTRANCE):
+        //     case MAP_NUM(TERRA_CAVE_END):
+        //         VarSet(VAR_SHOULD_END_ABNORMAL_WEATHER, 1);
+        //         return FALSE;
+        //     default:
+        //         break;
+        //     }
+        // }
 
         // MIGHT MODIFY
         // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(UNDERWATER_ROUTE127))
