@@ -101,15 +101,6 @@ gStdScripts:: @ 81DC2A0
 	.4byte Std_10
 gStdScripts_End:: @ 81DC2CC
 
-	.include "data/maps/PacifidlogTown/scripts.inc"
-	.include "data/maps/PacifidlogTown_PokemonCenter_1F/scripts.inc"
-	.include "data/maps/PacifidlogTown_PokemonCenter_2F/scripts.inc"
-	.include "data/maps/PacifidlogTown_House1/scripts.inc"
-	.include "data/maps/PacifidlogTown_House2/scripts.inc"
-	.include "data/maps/PacifidlogTown_House3/scripts.inc"
-	.include "data/maps/PacifidlogTown_House4/scripts.inc"
-	.include "data/maps/PacifidlogTown_House5/scripts.inc"
-
 	.include "data/maps/MtChimney_CableCarStation/scripts.inc"
 	.include "data/maps/MeteorFalls_1F_1R/scripts.inc"
 	.include "data/maps/MeteorFalls_1F_2R/scripts.inc"

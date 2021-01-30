@@ -4,7 +4,6 @@
 static const u8 sMapName_Playground[] = _("PLAYGROUND");
 static const u8 sMapName_PetrifactheimCity[] = _("PETRIFACTHEIM");
 static const u8 sMapName_OldaleTown[] = _("OLDALE TOWN");
-static const u8 sMapName_PacifidlogTown[] = _("PACIFIDLOG TOWN");
 static const u8 sMapName_PetalburgCity[] = _("PETALBURG CITY");
 static const u8 sMapName_Route01[] = _("ROUTE 1");
 static const u8 sMapName_Underwater[] = _("UNDERWATER");
@@ -130,7 +129,6 @@ static const u8 sMapName_TrainerHill[] = _("TRAINER HILL");
 const struct RegionMapLocation gRegionMapEntries[] = {
     [MAPSEC_PLAYGROUND] = {1, 9, 1, 1, sMapName_Playground},
     [MAPSEC_PETRIFACTHEIM_CITY] = {8, 10, 1, 2, sMapName_PetrifactheimCity},
-    [MAPSEC_PACIFIDLOG_TOWN] = {17, 10, 1, 1, sMapName_PacifidlogTown},
     [MAPSEC_UNDERWATER_124] = {20, 3, 4, 3, sMapName_Underwater},
     [MAPSEC_UNDERWATER_126] = {20, 6, 3, 3, sMapName_Underwater},
     [MAPSEC_UNDERWATER_127] = {23, 6, 3, 3, sMapName_Underwater},

@@ -22,16 +22,6 @@
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
     {
-      "id": "LAYOUT_PACIFIDLOG_TOWN",
-      "name": "PacifidlogTown_Layout",
-      "width": 20,
-      "height": 40,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Pacifidlog",
-      "border_filepath": "data/layouts/PacifidlogTown/border.bin",
-      "blockdata_filepath": "data/layouts/PacifidlogTown/map.bin"
-    },
-    {
       "id": "LAYOUT_ROUTE01",
       "name": "Route01_Layout",
       "width": 20,
@@ -120,26 +110,6 @@
       "secondary_tileset": "gTileset_Contest",
       "border_filepath": "data/layouts/Unknown_08428450/border.bin",
       "blockdata_filepath": "data/layouts/Unknown_08428450/map.bin"
-    },
-    {
-      "id": "LAYOUT_PACIFIDLOG_TOWN_HOUSE1",
-      "name": "PacifidlogTown_House1_Layout",
-      "width": 10,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/PacifidlogTown_House1/border.bin",
-      "blockdata_filepath": "data/layouts/PacifidlogTown_House1/map.bin"
-    },
-    {
-      "id": "LAYOUT_PACIFIDLOG_TOWN_HOUSE2",
-      "name": "PacifidlogTown_House2_Layout",
-      "width": 10,
-      "height": 9,
-      "primary_tileset": "gTileset_Building",
-      "secondary_tileset": "gTileset_GenericBuilding",
-      "border_filepath": "data/layouts/PacifidlogTown_House2/border.bin",
-      "blockdata_filepath": "data/layouts/PacifidlogTown_House2/map.bin"
     },
     {
       "id": "LAYOUT_HOUSE_WITH_BED",
