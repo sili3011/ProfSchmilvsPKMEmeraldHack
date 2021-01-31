@@ -3015,4 +3015,7 @@ extern const u8 gText_PkmnForSwap[];
 extern const u8 gText_SamePkmnInPartyAlready[];
 extern const u8 gText_Cancel3[];
 
+// Skili additions
+extern const u8 gText_ActFieldMoves[];
+
 #endif // GUARD_STRINGS_H
