@@ -15,7 +15,7 @@
   "connections": [
     {
       "direction": "up",
-      "offset": 10,
+      "offset": -4,
       "map": "MAP_PETRIFACTHEIM_CITY"
     }
   ],

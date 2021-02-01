@@ -14,10 +14,10 @@
     {
       "id": "LAYOUT_PETRIFACTHEIM_CITY",
       "name": "PetrifactheimCity_Layout",
-      "width": 20,
-      "height": 20,
+      "width": 75,
+      "height": 40,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Petalburg",
+      "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/PetrifactheimCity/border.bin",
       "blockdata_filepath": "data/layouts/PetrifactheimCity/map.bin"
     },
