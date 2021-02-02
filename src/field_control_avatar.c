@@ -902,7 +902,7 @@ bool8 TryDoDiveWarp(struct MapPosition *position, u16 metatileBehavior)
             return TRUE;
         }
     }
-    else if (MetatileBehavior_IsDiveable(metatileBehavior) == TRUE)
+    else if (MetatileBehavior_IsSurfableAndNotWaterfall(metatileBehavior) == TRUE)
     {
         if (SetDiveWarpDive(position->x - 7, position->y - 7))
         {
@@ -932,7 +932,7 @@ u8 TrySetDiveWarp(void)
         if (SetDiveWarpDive(x - 7, y - 7) == TRUE)
             return 2;
     }
-    else if (IsPlayerFacingSurfableFishableWater() == TRUE)
+    else if (MetatileBehavior_IsSurfableFishableWater(metatileBehavior) == TRUE)
     {
         if (SetDiveWarpDive(x - 7, y - 7) == TRUE)
             return 3;
