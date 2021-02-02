@@ -173,9 +173,6 @@ Text_MonUsedWaterfall: @ 8290AFC
 
 EventScript_UseDive:: @ 8290B0F
 	lockall
-	checkpartymove MOVE_DIVE
-	compare VAR_RESULT, PARTY_SIZE
-	goto_if_eq EventScript_CantDive
 	bufferpartymonnick 0, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
 	setfieldeffectargument 1, 1
@@ -197,9 +194,6 @@ EventScript_EndDive:: @ 8290B58
 
 EventScript_UseDiveUnderwater:: @ 8290B5A
 	lockall
-	checkpartymove MOVE_DIVE
-	compare VAR_RESULT, PARTY_SIZE
-	goto_if_eq EventScript_CantSurface
 	bufferpartymonnick 0, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
 	setfieldeffectargument 1, 1

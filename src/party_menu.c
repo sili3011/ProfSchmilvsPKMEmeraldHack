@@ -3894,7 +3894,7 @@ static bool8 SetUpFieldMove_Ride(void)
     if (IsPlayerFacingSurfableFishableWater() == FALSE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
-        gPostMenuFieldCallback = FieldCallback_Surf;
+        gPostMenuFieldCallback = FieldCallback_Ride;
         return TRUE;
     }
     return FALSE;

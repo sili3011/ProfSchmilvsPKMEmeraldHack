@@ -11,6 +11,7 @@
 #define MAP_ROUTE01            (2 | (0 << 8))
 
 // Map Group 1
+#define MAP_UNDERWATER_GYM (0 | (1 << 8))
 
 // Map Group 2
 #define MAP_DESERT_RUINS              (0 | (2 << 8))

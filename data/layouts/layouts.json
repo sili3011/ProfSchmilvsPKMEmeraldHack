@@ -1890,6 +1890,16 @@
       "secondary_tileset": "gTileset_BattleFrontier",
       "border_filepath": "data/layouts/BattleFrontier_ScottsHouse/border.bin",
       "blockdata_filepath": "data/layouts/BattleFrontier_ScottsHouse/map.bin"
+    },
+    {
+      "id": "LAYOUT_UNDERWATER_GYM",
+      "name": "UnderwaterGYM_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Underwater",
+      "border_filepath": "data/layouts/UnderwaterGYM/border.bin",
+      "blockdata_filepath": "data/layouts/UnderwaterGYM/map.bin"
     }
   ]
 }

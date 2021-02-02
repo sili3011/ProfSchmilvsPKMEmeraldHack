@@ -67,7 +67,7 @@ playground_EventScript_CheckFountain::
 
 
 playground_EventScript_Mavera::
-	trainerbattle_single TRAINER_MAVERA, playground_EventScript_Mavera_Text_0, playground_EventScript_Mavera_Text_1
+	trainerbattle_single TRAINER_MAVERI, playground_EventScript_Mavera_Text_0, playground_EventScript_Mavera_Text_1
 	end
 
 
