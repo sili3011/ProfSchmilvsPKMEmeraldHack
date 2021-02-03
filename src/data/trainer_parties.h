@@ -6,13 +6,17 @@ static const struct TrainerMonNoItemCustomMoves sParty_Maveri[] = {
     {.iv = 255,
      .lvl = 18,
      .species = SPECIES_MANTINE,
-     .moves = {MOVE_SURF, MOVE_ICY_WIND, MOVE_WING_ATTACK, MOVE_ROOST}},
+     .moves = {MOVE_WATER_PULSE, MOVE_ICY_WIND, MOVE_WING_ATTACK, MOVE_ROOST}},
+    {.iv = 255,
+     .lvl = 20,
+     .species = SPECIES_TIRTOUGA,
+     .moves = {MOVE_SHELL_SMASH, MOVE_ROCK_TOMB, MOVE_PROTECT, MOVE_AQUA_JET}},
 };
 
 static const struct TrainerMonNoItemDefaultMoves sParty_SurfGym1[] = {
     {
         .iv = 0,
-        .lvl = 32,
+        .lvl = 15,
         .species = SPECIES_WAILMER,
     }};
 
