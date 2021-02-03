@@ -1,11 +1,13 @@
 #ifndef GUARD_WILD_ENCOUNTER_H
 #define GUARD_WILD_ENCOUNTER_H
 
-#define LAND_WILD_COUNT     12
-#define WATER_WILD_COUNT    5
-#define ROCK_WILD_COUNT     5
-#define FISH_WILD_COUNT     10
-#define HIDDEN_WILD_COUNT   3
+#include "constants/day_night.h"
+
+#define LAND_WILD_COUNT 12
+#define WATER_WILD_COUNT 5
+#define ROCK_WILD_COUNT 5
+#define FISH_WILD_COUNT 10
+#define HIDDEN_WILD_COUNT 3
 
 struct WildPokemon
 {

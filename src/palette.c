@@ -5,6 +5,7 @@
 #include "gpu_regs.h"
 #include "task.h"
 #include "constants/rgb.h"
+#include "day_night.h"
 
 enum
 {
@@ -20,24 +21,24 @@ struct PaletteStructTemplate
 {
     u16 uid;
     u16 *src;
-    u16 pst_field_8_0:1;
-    u16 pst_field_8_1:9;
-    u16 size:5;
-    u16 pst_field_9_7:1;
+    u16 pst_field_8_0 : 1;
+    u16 pst_field_8_1 : 9;
+    u16 size : 5;
+    u16 pst_field_9_7 : 1;
     u8 pst_field_A;
-    u8 srcCount:5;
-    u8 pst_field_B_5:3;
+    u8 srcCount : 5;
+    u8 pst_field_B_5 : 3;
     u8 pst_field_C;
 };
 
 struct PaletteStruct
 {
     const struct PaletteStructTemplate *base;
-    u32 ps_field_4_0:1;
-    u16 ps_field_4_1:1;
-    u32 baseDestOffset:9;
-    u16 destOffset:10;
-    u16 srcIndex:7;
+    u32 ps_field_4_0 : 1;
+    u16 ps_field_4_1 : 1;
+    u32 baseDestOffset : 9;
+    u16 destOffset : 10;
+    u16 srcIndex : 7;
     u8 ps_field_8;
     u8 ps_field_9;
 };
@@ -56,8 +57,10 @@ static void Task_BlendPalettesGradually(u8 taskId);
 
 // palette buffers require alignment with agbcc because
 // unaligned word reads are issued in BlendPalette otherwise
-ALIGNED(4) EWRAM_DATA u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE] = {0};
-ALIGNED(4) EWRAM_DATA u16 gPlttBufferFaded[PLTT_BUFFER_SIZE] = {0};
+ALIGNED(4)
+EWRAM_DATA u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE] = {0};
+ALIGNED(4)
+EWRAM_DATA u16 gPlttBufferFaded[PLTT_BUFFER_SIZE] = {0};
 EWRAM_DATA struct PaletteStruct sPaletteStructs[0x10] = {0};
 EWRAM_DATA struct PaletteFadeControl gPaletteFade = {0};
 static EWRAM_DATA u32 gFiller_2037FE0 = 0;
@@ -66,18 +69,16 @@ EWRAM_DATA u8 gPaletteDecompressionBuffer[PLTT_DECOMP_BUFFER_SIZE] = {0};
 
 static const struct PaletteStructTemplate gDummyPaletteStructTemplate = {
     .uid = 0xFFFF,
-    .pst_field_B_5 = 1
-};
+    .pst_field_B_5 = 1};
 
 static const u8 sRoundedDownGrayscaleMap[] = {
-     0,  0,  0,  0,  0,
-     5,  5,  5,  5,  5,
+    0, 0, 0, 0, 0,
+    5, 5, 5, 5, 5,
     11, 11, 11, 11, 11,
     16, 16, 16, 16, 16,
     21, 21, 21, 21, 21,
     27, 27, 27, 27, 27,
-    31, 31
-};
+    31, 31};
 
 void LoadCompressedPalette(const u32 *src, u16 offset, u16 size)
 {
@@ -586,7 +587,6 @@ static u8 UpdateFastPaletteFade(void)
 
     if (IsSoftwarePaletteFadeFinishing())
         return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
-        
 
     if (gPaletteFade.objPaletteToggle)
     {
@@ -721,7 +721,7 @@ static u8 UpdateFastPaletteFade(void)
         gPaletteFade.mode = NORMAL_FADE;
         gPaletteFade.softwareFadeFinishing = 1;
     }
-    
+
     // gPaletteFade.active cannot change since the last time it was checked. So this
     // is equivalent to `return PALETTE_FADE_STATUS_ACTIVE;`
     return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
@@ -856,8 +856,8 @@ void TintPalette_GrayScale(u16 *palette, u16 count)
 
     for (i = 0; i < count; i++)
     {
-        r = (*palette >>  0) & 0x1F;
-        g = (*palette >>  5) & 0x1F;
+        r = (*palette >> 0) & 0x1F;
+        g = (*palette >> 5) & 0x1F;
         b = (*palette >> 10) & 0x1F;
 
         gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
@@ -873,8 +873,8 @@ void TintPalette_GrayScale2(u16 *palette, u16 count)
 
     for (i = 0; i < count; i++)
     {
-        r = (*palette >>  0) & 0x1F;
-        g = (*palette >>  5) & 0x1F;
+        r = (*palette >> 0) & 0x1F;
+        g = (*palette >> 5) & 0x1F;
         b = (*palette >> 10) & 0x1F;
 
         gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
@@ -895,8 +895,8 @@ void TintPalette_SepiaTone(u16 *palette, u16 count)
 
     for (i = 0; i < count; i++)
     {
-        r = (*palette >>  0) & 0x1F;
-        g = (*palette >>  5) & 0x1F;
+        r = (*palette >> 0) & 0x1F;
+        g = (*palette >> 5) & 0x1F;
         b = (*palette >> 10) & 0x1F;
 
         gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
@@ -919,8 +919,8 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 
     for (i = 0; i < count; i++)
     {
-        r = (*palette >>  0) & 0x1F;
-        g = (*palette >>  5) & 0x1F;
+        r = (*palette >> 0) & 0x1F;
+        g = (*palette >> 5) & 0x1F;
         b = (*palette >> 10) & 0x1F;
 
         gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
@@ -940,14 +940,43 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
     }
 }
 
-#define tCoeff       data[0]
+void TintPalette_CustomToneWithCopy(const u16 *src, u16 *dest, u16 count, u16 rTone, u16 gTone, u16 bTone, bool8 excludeZeroes)
+{
+    s32 r, g, b, i;
+    u32 gray;
+
+    for (i = 0; i < count; i++, src++, dest++)
+    {
+        if (excludeZeroes && *src == RGB_BLACK)
+            continue;
+
+        r = (*src >> 0) & 0x1F;
+        g = (*src >> 5) & 0x1F;
+        b = (*src >> 10) & 0x1F;
+
+        r = (u16)((rTone * r)) >> 8;
+        g = (u16)((gTone * g)) >> 8;
+        b = (u16)((bTone * b)) >> 8;
+
+        if (r > 31)
+            r = 31;
+        if (g > 31)
+            g = 31;
+        if (b > 31)
+            b = 31;
+
+        *dest = (b << 10) | (g << 5) | (r << 0);
+    }
+}
+
+#define tCoeff data[0]
 #define tCoeffTarget data[1]
-#define tCoeffDelta  data[2]
-#define tDelay       data[3]
-#define tDelayTimer  data[4]
-#define tPalettes    5 // data[5] and data[6], set/get via Set/GetWordTaskArg
-#define tColor       data[7]
-#define tId          data[8]
+#define tCoeffDelta data[2]
+#define tDelay data[3]
+#define tDelayTimer data[4]
+#define tPalettes 5 // data[5] and data[6], set/get via Set/GetWordTaskArg
+#define tColor data[7]
+#define tId data[8]
 
 // Blend the selected palettes in a series of steps toward or away from the color.
 // Only used by the Groudon/Kyogre fight scene to flash the screen for lightning
@@ -986,9 +1015,7 @@ static bool32 IsBlendPalettesGraduallyTaskActive(u8 id)
     int i;
 
     for (i = 0; i < NUM_TASKS; i++)
-        if ((gTasks[i].isActive == TRUE) 
-            && (gTasks[i].func == Task_BlendPalettesGradually) 
-            && (gTasks[i].tId == id))
+        if ((gTasks[i].isActive == TRUE) && (gTasks[i].func == Task_BlendPalettesGradually) && (gTasks[i].tId == id))
             return TRUE;
 
     return FALSE;

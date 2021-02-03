@@ -15,7 +15,7 @@
 
 // These two are a hack to stop user input until link stuff can be
 // resolved.
-#define LINK_KEY_CODE_HANDLE_RECV_QUEUE 0x1B 
+#define LINK_KEY_CODE_HANDLE_RECV_QUEUE 0x1B
 #define LINK_KEY_CODE_HANDLE_SEND_QUEUE 0x1C
 #define LINK_KEY_CODE_UNK_7 0x1D
 #define LINK_KEY_CODE_UNK_8 0x1E
@@ -24,7 +24,7 @@
 #define MOVEMENT_MODE_FROZEN 1
 #define MOVEMENT_MODE_SCRIPTED 2
 
-#define SKIP_OBJECT_EVENT_LOAD  1
+#define SKIP_OBJECT_EVENT_LOAD 1
 
 struct InitialPlayerAvatarState
 {
@@ -56,6 +56,7 @@ extern u8 gFieldLinkPlayerCount;
 // Exported ROM declarations
 extern const struct UCoords32 gDirectionToVectors[];
 
+void ChooseAmbientCrySpecies(void);
 void DoWhiteOut(void);
 void Overworld_ResetStateAfterFly(void);
 void Overworld_ResetStateAfterTeleport(void);

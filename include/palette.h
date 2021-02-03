@@ -2,9 +2,9 @@
 #define GUARD_PALETTE_H
 
 #define gPaletteFade_selectedPalettes (gPaletteFade.multipurpose1) // normal and fast fade
-#define gPaletteFade_blendCnt         (gPaletteFade.multipurpose1) // hardware fade
-#define gPaletteFade_delay            (gPaletteFade.multipurpose2) // normal and hardware fade
-#define gPaletteFade_submode          (gPaletteFade.multipurpose2) // fast fade
+#define gPaletteFade_blendCnt (gPaletteFade.multipurpose1)         // hardware fade
+#define gPaletteFade_delay (gPaletteFade.multipurpose2)            // normal and hardware fade
+#define gPaletteFade_submode (gPaletteFade.multipurpose2)          // fast fade
 
 #define PLTT_BUFFER_SIZE 0x200
 #define PLTT_DECOMP_BUFFER_SIZE (PLTT_BUFFER_SIZE * 2)
@@ -25,21 +25,21 @@ enum
 struct PaletteFadeControl
 {
     u32 multipurpose1;
-    u8 delayCounter:6;
-    u16 y:5; // blend coefficient
-    u16 targetY:5; // target blend coefficient
-    u16 blendColor:15;
-    bool16 active:1;
-    u16 multipurpose2:6;
-    bool16 yDec:1; // whether blend coefficient is decreasing
-    bool16 bufferTransferDisabled:1;
-    u16 mode:2;
-    bool16 shouldResetBlendRegisters:1;
-    bool16 hardwareFadeFinishing:1;
-    u16 softwareFadeFinishingCounter:5;
-    bool16 softwareFadeFinishing:1;
-    bool16 objPaletteToggle:1;
-    u8 deltaY:4; // rate of change of blend coefficient
+    u8 delayCounter : 6;
+    u16 y : 5;       // blend coefficient
+    u16 targetY : 5; // target blend coefficient
+    u16 blendColor : 15;
+    bool16 active : 1;
+    u16 multipurpose2 : 6;
+    bool16 yDec : 1; // whether blend coefficient is decreasing
+    bool16 bufferTransferDisabled : 1;
+    u16 mode : 2;
+    bool16 shouldResetBlendRegisters : 1;
+    bool16 hardwareFadeFinishing : 1;
+    u16 softwareFadeFinishingCounter : 5;
+    bool16 softwareFadeFinishing : 1;
+    bool16 objPaletteToggle : 1;
+    u8 deltaY : 4; // rate of change of blend coefficient
 };
 
 extern struct PaletteFadeControl gPaletteFade;
@@ -75,5 +75,6 @@ void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
 void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 bTone);
+void TintPalette_CustomToneWithCopy(const u16 *src, u16 *dest, u16 count, u16 rTone, u16 gTone, u16 bTone, bool8 excludeZeroes);
 
 #endif // GUARD_PALETTE_H
