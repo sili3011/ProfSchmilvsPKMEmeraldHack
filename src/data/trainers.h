@@ -41,46 +41,46 @@ const struct Trainer gTrainers[] = {
             .party = {.NoItemDefaultMoves = sParty_SurfGym1},
         },
 
-    [TRAINER_GRUNT_AQUA_HIDEOUT_2] =
+    [TRAINER_SURF_GYM_2] =
         {
             .partyFlags = 0,
-            .trainerClass = TRAINER_CLASS_TEAM_AQUA,
-            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-            .trainerPic = TRAINER_PIC_AQUA_GRUNT_M,
+            .trainerClass = TRAINER_CLASS_SWIMMER_F,
+            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+            .trainerPic = TRAINER_CLASS_SWIMMER_F,
             .trainerName = _("GRUNT"),
             .items = {},
             .doubleBattle = FALSE,
-            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-            .partySize = ARRAY_COUNT(sParty_GruntAquaHideout2),
-            .party = {.NoItemDefaultMoves = sParty_GruntAquaHideout2},
+            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+            .partySize = ARRAY_COUNT(sParty_SurfGym1),
+            .party = {.NoItemDefaultMoves = sParty_SurfGym1},
         },
 
-    [TRAINER_GRUNT_AQUA_HIDEOUT_3] =
+    [TRAINER_SURF_GYM_3] =
         {
             .partyFlags = 0,
-            .trainerClass = TRAINER_CLASS_TEAM_AQUA,
-            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-            .trainerPic = TRAINER_PIC_AQUA_GRUNT_M,
+            .trainerClass = TRAINER_CLASS_SWIMMER_F,
+            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+            .trainerPic = TRAINER_CLASS_SWIMMER_F,
             .trainerName = _("GRUNT"),
             .items = {},
             .doubleBattle = FALSE,
-            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-            .partySize = ARRAY_COUNT(sParty_GruntAquaHideout3),
-            .party = {.NoItemDefaultMoves = sParty_GruntAquaHideout3},
+            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+            .partySize = ARRAY_COUNT(sParty_SurfGym1),
+            .party = {.NoItemDefaultMoves = sParty_SurfGym1},
         },
 
-    [TRAINER_GRUNT_AQUA_HIDEOUT_4] =
+    [TRAINER_SURF_GYM_4] =
         {
             .partyFlags = 0,
-            .trainerClass = TRAINER_CLASS_TEAM_AQUA,
-            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_AQUA,
-            .trainerPic = TRAINER_PIC_AQUA_GRUNT_M,
+            .trainerClass = TRAINER_CLASS_SWIMMER_F,
+            .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_SWIMMER,
+            .trainerPic = TRAINER_CLASS_SWIMMER_F,
             .trainerName = _("GRUNT"),
             .items = {},
             .doubleBattle = FALSE,
-            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE,
-            .partySize = ARRAY_COUNT(sParty_GruntAquaHideout4),
-            .party = {.NoItemDefaultMoves = sParty_GruntAquaHideout4},
+            .aiFlags = AI_SCRIPT_CHECK_BAD_MOVE | AI_SCRIPT_TRY_TO_FAINT | AI_SCRIPT_CHECK_VIABILITY,
+            .partySize = ARRAY_COUNT(sParty_SurfGym1),
+            .party = {.NoItemDefaultMoves = sParty_SurfGym1},
         },
 
     [TRAINER_GRUNT_SEAFLOOR_CAVERN_1] =

@@ -7,6 +7,21 @@ PetrifactheimCity_EventScript_SurfTrainer1::
 	end
 
 
+PetrifactheimCity_EventScript_SurfTrainer2::
+	trainerbattle_single TRAINER_SURF_GYM_2, PetrifactheimCity_EventScript_SurfTrainer1_Text_0, PetrifactheimCity_EventScript_SurfTrainer1_Text_1
+	end
+
+
+PetrifactheimCity_EventScript_SurfTrainer3::
+	trainerbattle_single TRAINER_SURF_GYM_3, PetrifactheimCity_EventScript_SurfTrainer1_Text_0, PetrifactheimCity_EventScript_SurfTrainer1_Text_1
+	end
+
+
+PetrifactheimCity_EventScript_SurfTrainer4::
+	trainerbattle_single TRAINER_SURF_GYM_4, PetrifactheimCity_EventScript_SurfTrainer1_Text_0, PetrifactheimCity_EventScript_SurfTrainer1_Text_1
+	end
+
+
 PetrifactheimCity_EventScript_Maveri::
 	trainerbattle_single TRAINER_MAVERI, PetrifactheimCity_EventScript_SurfTrainer1_Text_0, PetrifactheimCity_EventScript_SurfTrainer1_Text_1
 	end

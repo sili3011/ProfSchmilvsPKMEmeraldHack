@@ -84,7 +84,7 @@ text playground_Text_CheckFountain_Dry {
 }
 
 //MAVERI
-script playground_EventScript_Mavera {
+script playground_EventScript_Maveri {
     trainerbattle_single(TRAINER_MAVERI, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
     end
 }

@@ -3875,7 +3875,7 @@ static void FieldCallback_Surf(void)
 static void FieldCallback_Ride(void)
 {
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
-    FieldEffectStart(FLDEFF_USE_RIDE);
+    FieldEffectStart(FLDEFF_USE_SURF);
 }
 
 static bool8 SetUpFieldMove_Surf(void)

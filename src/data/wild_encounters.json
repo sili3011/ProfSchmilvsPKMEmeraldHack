@@ -87,6 +87,26 @@
         {
           "map": "MAP_PLAYGROUND",
           "base_label": "gplayground0",
+          "hidden_mons": {
+            "encounter_rate": 0,
+            "mons": [
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_CORSOLA_GALARIAN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_AERODACTYL_MEGA"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_CARBINK"
+              }
+            ]
+          },
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -151,31 +171,31 @@
                 "species": "SPECIES_HOUNDOOM_MEGA"
               }
             ]
-          },
+          }
+        },
+        {
+          "map": "MAP_ROUTE01",
+          "base_label": "gRoute01",
           "hidden_mons": {
             "encounter_rate": 0,
             "mons": [
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_CORSOLA_GALARIAN"
+                "species": "SPECIES_NONE"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_AERODACTYL_MEGA"
+                "species": "SPECIES_NONE"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_CARBINK"
+                "species": "SPECIES_NONE"
               }
             ]
-          }
-        },
-        {
-          "map": "MAP_ROUTE01",
-          "base_label": "gRoute01",
+          },
           "land_mons": {
             "encounter_rate": 20,
             "mons": [
@@ -238,26 +258,6 @@
                 "min_level": 5,
                 "max_level": 5,
                 "species": "SPECIES_EXEGGCUTE"
-              }
-            ]
-          },
-          "hidden_mons": {
-            "encounter_rate": 0,
-            "mons": [
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_NONE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_NONE"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_NONE"
               }
             ]
           }
