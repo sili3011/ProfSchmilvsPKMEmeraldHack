@@ -177,6 +177,7 @@ struct Time
     /*0x02*/ s8 hours;
     /*0x03*/ s8 minutes;
     /*0x04*/ s8 seconds;
+    /*0x05*/ s8 dayOfWeek;
 };
 
 struct Pokedex
@@ -443,7 +444,7 @@ struct ApprenticeQuestion
 struct PlayersApprentice
 {
     /*0xB0*/ u8 id;
-    /*0xB1*/ u8 lvlMode : 2; //0: Unassigned, 1: Lv 50, 2: Open Lv
+    /*0xB1*/ u8 lvlMode : 2; // 0: Unassigned, 1: Lv 50, 2: Open Lv
     /*0xB1*/ u8 questionsAnswered : 4;
     /*0xB1*/ u8 leadMonId : 2;
     /*0xB2*/ u8 party : 3;
@@ -490,6 +491,7 @@ struct SaveBlock2
     u16 optionsSound : 1;              // OPTIONS_SOUND_[MONO/STEREO]
     u16 optionsBattleStyle : 1;        // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
     u16 optionsBattleSceneOff : 1;     // whether battle animations are disabled
+    u16 daylightSavingTime : 1;        // whether daylight saving time is enabled
     u16 regionMapZoom : 1;             // whether the map is zoomed in
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
@@ -624,7 +626,7 @@ struct RecordMixing_UnknownStructSub
 {
     u32 unk0;
     u8 data[0x34];
-    //u8 data[0x38];
+    // u8 data[0x38];
 };
 
 struct RecordMixing_UnknownStruct
@@ -923,8 +925,9 @@ struct SaveBlock1
     /*0x2BC8*/ u16 easyChatBattleWon[EASY_CHAT_BATTLE_WORDS_COUNT];
     /*0x2BD4*/ u16 easyChatBattleLost[EASY_CHAT_BATTLE_WORDS_COUNT];
     /*0x2BE0*/ struct MailStruct mail[MAIL_COUNT];
-    /*0x2E20*/ u8 additionalPhrases[8];                                  // bitfield for 33 additional phrases in easy chat system
-    /*0x2e64*/ struct EasyChatPair easyChatPairs[5];                     //Dewford trend [0] and some other stuff
+    /*0x2E20*/ u8 additionalPhrases[8]; // bitfield for 33 additional phrases in easy chat system
+    /*0x2E28*/ OldMan oldMan;
+    /*0x2e64*/ struct EasyChatPair easyChatPairs[5];                     // Dewford trend [0] and some other stuff
     /*0x2e90*/ struct ContestWinner contestWinners[NUM_CONTEST_WINNERS]; // see CONTEST_WINNER_*
     /*0x3030*/ struct DayCare daycare;
     /*0x3150*/ struct LinkBattleRecords linkBattleRecords;

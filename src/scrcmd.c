@@ -8,6 +8,7 @@
 #include "contest_util.h"
 #include "contest_painting.h"
 #include "data.h"
+#include "day_night.h"
 #include "decoration.h"
 #include "decoration_inventory.h"
 #include "event_data.h"
@@ -72,24 +73,24 @@ static void CloseBrailleWindow(void);
 
 // This is defined in here so the optimizer can't see its value when compiling
 // script.c.
-void * const gNullScriptPtr = NULL;
+void *const gNullScriptPtr = NULL;
 
 static const u8 sScriptConditionTable[6][3] =
-{
-//  <  =  >
-    1, 0, 0, // <
-    0, 1, 0, // =
-    0, 0, 1, // >
-    1, 1, 0, // <=
-    0, 1, 1, // >=
-    1, 0, 1, // !=
+    {
+        //  <  =  >
+        1, 0, 0, // <
+        0, 1, 0, // =
+        0, 0, 1, // >
+        1, 1, 0, // <=
+        0, 1, 1, // >=
+        1, 0, 1, // !=
 };
 
-static u8 * const sScriptStringVars[] =
-{
-    gStringVar1,
-    gStringVar2,
-    gStringVar3,
+static u8 *const sScriptStringVars[] =
+    {
+        gStringVar1,
+        gStringVar2,
+        gStringVar3,
 };
 
 bool8 ScrCmd_nop(struct ScriptContext *ctx)
@@ -110,7 +111,7 @@ bool8 ScrCmd_end(struct ScriptContext *ctx)
 
 bool8 ScrCmd_gotonative(struct ScriptContext *ctx)
 {
-    bool8 (*addr)(void) = (bool8 (*)(void))ScriptReadWord(ctx);
+    bool8 (*addr)(void) = (bool8(*)(void))ScriptReadWord(ctx);
 
     SetupNativeScript(ctx, addr);
     return TRUE;
@@ -462,7 +463,7 @@ bool8 ScrCmd_compare_var_to_var(struct ScriptContext *ctx)
     return FALSE;
 }
 
-// Note: addvar doesn't support adding from a variable in vanilla. If you were to 
+// Note: addvar doesn't support adding from a variable in vanilla. If you were to
 // add a VarGet() to the above, make sure you change the `addvar VAR_*, -1`
 // in the contest scripts to `subvar VAR_*, 1`, else contests will break.
 bool8 ScrCmd_addvar(struct ScriptContext *ctx)
@@ -651,17 +652,17 @@ bool8 ScrCmd_fadescreenswapbuffers(struct ScriptContext *ctx)
 
     switch (mode)
     {
-        case FADE_TO_BLACK:
-        case FADE_TO_WHITE:   
-        default:
-            CpuCopy32(gPlttBufferUnfaded, gPaletteDecompressionBuffer, PLTT_DECOMP_BUFFER_SIZE);
-            FadeScreen(mode, 0);
-            break;
-        case FADE_FROM_BLACK:
-        case FADE_FROM_WHITE:
-            CpuCopy32(gPaletteDecompressionBuffer, gPlttBufferUnfaded, PLTT_DECOMP_BUFFER_SIZE);
-            FadeScreen(mode, 0);
-            break;
+    case FADE_TO_BLACK:
+    case FADE_TO_WHITE:
+    default:
+        CpuCopy32(gPlttBufferUnfaded, gPaletteDecompressionBuffer, PLTT_DECOMP_BUFFER_SIZE);
+        FadeScreen(mode, 0);
+        break;
+    case FADE_FROM_BLACK:
+    case FADE_FROM_WHITE:
+        CpuCopy32(gPaletteDecompressionBuffer, gPlttBufferUnfaded, PLTT_DECOMP_BUFFER_SIZE);
+        FadeScreen(mode, 0);
+        break;
     }
 
     SetupNativeScript(ctx, IsPaletteNotActive);
@@ -705,7 +706,8 @@ bool8 ScrCmd_gettime(struct ScriptContext *ctx)
     RtcCalcLocalTime();
     gSpecialVar_0x8000 = gLocalTime.hours;
     gSpecialVar_0x8001 = gLocalTime.minutes;
-    gSpecialVar_0x8002 = gLocalTime.seconds;
+    gSpecialVar_0x8002 = GetCurrentTimeOfDay();
+    gSpecialVar_0x8003 = gLocalTime.dayOfWeek;
     return FALSE;
 }
 
@@ -1163,7 +1165,7 @@ bool8 ScrCmd_faceplayer(struct ScriptContext *ctx)
     if (gObjectEvents[gSelectedObjectEvent].active)
     {
         ObjectEventFaceOppositeDirection(&gObjectEvents[gSelectedObjectEvent],
-          GetPlayerFacingDirection());
+                                         GetPlayerFacingDirection());
     }
     return FALSE;
 }
@@ -1877,13 +1879,13 @@ bool8 ScrCmd_setwildbattle(struct ScriptContext *ctx)
     u8 level2 = ScriptReadByte(ctx);
     u16 item2 = ScriptReadHalfword(ctx);
 
-    if(species2 == SPECIES_NONE)
+    if (species2 == SPECIES_NONE)
     {
         CreateScriptedWildMon(species, level, item);
         gIsScriptedWildDouble = FALSE;
     }
     else
-    { 
+    {
         CreateScriptedDoubleWildMon(species, level, item, species2, level2, item2);
         gIsScriptedWildDouble = TRUE;
     }
@@ -1893,7 +1895,7 @@ bool8 ScrCmd_setwildbattle(struct ScriptContext *ctx)
 
 bool8 ScrCmd_dowildbattle(struct ScriptContext *ctx)
 {
-    if(gIsScriptedWildDouble == FALSE)
+    if (gIsScriptedWildDouble == FALSE)
     {
         BattleSetup_StartScriptedWildBattle();
         ScriptContext1_Stop();
@@ -1970,7 +1972,6 @@ bool8 ScrCmd_choosecontestmon(struct ScriptContext *ctx)
     ScriptContext1_Stop();
     return TRUE;
 }
-
 
 bool8 ScrCmd_startcontest(struct ScriptContext *ctx)
 {
@@ -2250,7 +2251,7 @@ bool8 ScrCmd_checkmonobedience(struct ScriptContext *ctx)
 // See GetSavedRamScriptIfValid, which is NULL if ValidateReceivedWonderCard returns FALSE
 bool8 ScrCmd_gotoram(struct ScriptContext *ctx)
 {
-    const u8* v1 = GetSavedRamScriptIfValid();
+    const u8 *v1 = GetSavedRamScriptIfValid();
 
     if (v1)
     {

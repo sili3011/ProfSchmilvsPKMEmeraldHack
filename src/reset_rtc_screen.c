@@ -37,86 +37,82 @@ static void sub_809F048(void);
 
 // const rom data
 static const struct BgTemplate sBackgroundTemplates[] =
-{
     {
-        .bg = 0,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 0,
-        .baseTile = 0
-    }
-};
+        {.bg = 0,
+         .charBaseIndex = 0,
+         .mapBaseIndex = 31,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 0,
+         .baseTile = 0}};
 
 static const struct WindowTemplate sUnknown_08510408[] =
-{
-    {0x00, 0x01, 0x01, 0x13, 0x09, 0x0f, 0x0155},
-    {0x00, 0x02, 0x0f, 0x1b, 0x04, 0x0f, 0x00e9},
-    DUMMY_WIN_TEMPLATE
-};
+    {
+        {0x00, 0x01, 0x01, 0x13, 0x09, 0x0f, 0x0155},
+        {0x00, 0x02, 0x0f, 0x1b, 0x04, 0x0f, 0x00e9},
+        DUMMY_WIN_TEMPLATE};
 
 static const struct WindowTemplate sUnknown_08510420 = {0x00, 0x04, 0x09, 0x15, 0x02, 0x0f, 0x00bf};
 
 static const struct ResetRtcStruct sUnknown_08510428[5] =
-{
     {
-        .dataIndex = 3,
-        .minVal = 1,
-        .maxVal = 9999,
-        .left = 0,
-        .right = 2,
-        .unk8 = 0,
-    },
-    {
-        .dataIndex = 4,
-        .minVal = 0,
-        .maxVal = 23,
-        .left = 1,
-        .right = 3,
-        .unk8 = 0,
-    },
-    {
-        .dataIndex = 5,
-        .minVal = 0,
-        .maxVal = 59,
-        .left = 2,
-        .right = 4,
-        .unk8 = 0,
-    },
-    {
-        .dataIndex = 6,
-        .minVal = 0,
-        .maxVal = 59,
-        .left = 3,
-        .right = 5,
-        .unk8 = 0,
-    },
-    {
-        .dataIndex = 7,
-        .minVal = 0,
-        .maxVal = 0,
-        .left = 4,
-        .right = 0,
-        .unk8 = 6,
-    },
+        {
+            .dataIndex = 3,
+            .minVal = 1,
+            .maxVal = 9999,
+            .left = 0,
+            .right = 2,
+            .unk8 = 0,
+        },
+        {
+            .dataIndex = 4,
+            .minVal = 0,
+            .maxVal = 23,
+            .left = 1,
+            .right = 3,
+            .unk8 = 0,
+        },
+        {
+            .dataIndex = 5,
+            .minVal = 0,
+            .maxVal = 59,
+            .left = 2,
+            .right = 4,
+            .unk8 = 0,
+        },
+        {
+            .dataIndex = 6,
+            .minVal = 0,
+            .maxVal = 59,
+            .left = 3,
+            .right = 5,
+            .unk8 = 0,
+        },
+        {
+            .dataIndex = 7,
+            .minVal = 0,
+            .maxVal = 0,
+            .left = 4,
+            .right = 0,
+            .unk8 = 6,
+        },
 };
 
 static const struct OamData sOamData_08510464 =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(8x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(8x8),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
+    {
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .mosaic = 0,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(8x8),
+        .x = 0,
+        .matrixNum = 0,
+        .size = SPRITE_SIZE(8x8),
+        .tileNum = 0,
+        .priority = 0,
+        .paletteNum = 0,
+        .affineParam = 0,
 };
 
 static const u8 sResetRtcScreen_DownArrowGfx[] = INCBIN_U8("graphics/misc/reset_rtc_screen_downarrow.4bpp");
@@ -124,50 +120,48 @@ static const u8 sResetRtcScreen_RightArrowGfx[] = INCBIN_U8("graphics/misc/reset
 static const u16 sResetRtcScreen_ArrowPal[] = INCBIN_U16("graphics/misc/reset_rtc_screen_arrow.gbapal");
 
 static const struct SpriteFrameImage sSpriteImageTable_85104B4[] =
-{
-    obj_frame_tiles(sResetRtcScreen_DownArrowGfx),
-    obj_frame_tiles(sResetRtcScreen_RightArrowGfx)
-};
+    {
+        obj_frame_tiles(sResetRtcScreen_DownArrowGfx),
+        obj_frame_tiles(sResetRtcScreen_RightArrowGfx)};
 
 const struct SpritePalette gSpritePalette_RtcArrow =
-{
-    sResetRtcScreen_ArrowPal, 0x1000
-};
+    {
+        sResetRtcScreen_ArrowPal, 0x1000};
 
 static const union AnimCmd sSpriteAnim_85104CC[] =
-{
-    ANIMCMD_FRAME(0, 30),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(0, 30),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sSpriteAnim_85104D4[] =
-{
-    ANIMCMD_FRAME(0, 30, .vFlip = TRUE),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(0, 30, .vFlip = TRUE),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd sSpriteAnim_85104DC[] =
-{
-    ANIMCMD_FRAME(1, 30),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(1, 30),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd *const sSpriteAnimTable_85104E4[] =
-{
-    sSpriteAnim_85104CC,
-    sSpriteAnim_85104D4,
-    sSpriteAnim_85104DC,
+    {
+        sSpriteAnim_85104CC,
+        sSpriteAnim_85104D4,
+        sSpriteAnim_85104DC,
 };
 
 const struct SpriteTemplate gSpriteTemplate_RtcArrow =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = 0x1000,
-    .oam = &sOamData_08510464,
-    .anims = sSpriteAnimTable_85104E4,
-    .images = sSpriteImageTable_85104B4,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = 0x1000,
+        .oam = &sOamData_08510464,
+        .anims = sSpriteAnimTable_85104E4,
+        .images = sSpriteImageTable_85104B4,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 // code
@@ -598,7 +592,8 @@ static void Task_ResetRtcScreen(u8 taskId)
                     gLocalTime.days,
                     gLocalTime.hours,
                     gLocalTime.minutes,
-                    gLocalTime.seconds);
+                    gLocalTime.seconds,
+                    gLocalTime.dayOfWeek);
                 gSaveBlock2Ptr->lastBerryTreeUpdate = gLocalTime;
                 VarSet(VAR_DAYS, gLocalTime.days);
                 DisableResetRTC();

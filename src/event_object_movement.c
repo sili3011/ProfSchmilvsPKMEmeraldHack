@@ -2,6 +2,7 @@
 #include "malloc.h"
 #include "battle_pyramid.h"
 #include "berry.h"
+#include "day_night.h"
 #include "decoration.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -109,7 +110,7 @@ static u16 GetObjectEventFlagIdByObjectEventId(u8);
 static void UpdateObjectEventVisibility(struct ObjectEvent *, struct Sprite *);
 static void MakeObjectTemplateFromObjectEventTemplate(struct ObjectEventTemplate *, struct SpriteTemplate *, const struct SubspriteTable **);
 static void GetObjectEventMovingCameraOffset(s16 *, s16 *);
-//static struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8, u8, u8);
+// static struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8, u8, u8);
 static void LoadObjectEventPalette(u16);
 static void RemoveObjectEventIfOutsideView(struct ObjectEvent *);
 static void sub_808E1B8(u8, s16, s16);
@@ -682,10 +683,10 @@ const u8 gFaceDirectionAnimNums[] = {
     [DIR_NORTH] = 1,
     [DIR_WEST] = 2,
     [DIR_EAST] = 3,
-    [DIR_SOUTHWEST] = 2, //0,
-    [DIR_SOUTHEAST] = 3, //0,
-    [DIR_NORTHWEST] = 2, //1,
-    [DIR_NORTHEAST] = 3, //1,
+    [DIR_SOUTHWEST] = 2, // 0,
+    [DIR_SOUTHEAST] = 3, // 0,
+    [DIR_NORTHWEST] = 2, // 1,
+    [DIR_NORTHEAST] = 3, // 1,
 };
 const u8 gMoveDirectionAnimNums[] = {
     [DIR_NONE] = 4,
@@ -749,10 +750,10 @@ const u8 gAcroWheelieDirectionAnimNums[] = {
     [DIR_NORTH] = 21,
     [DIR_WEST] = 22,
     [DIR_EAST] = 23,
-    [DIR_SOUTHWEST] = 22, //20,
-    [DIR_SOUTHEAST] = 23, //20,
-    [DIR_NORTHWEST] = 22, //21,
-    [DIR_NORTHEAST] = 23, //21,
+    [DIR_SOUTHWEST] = 22, // 20,
+    [DIR_SOUTHEAST] = 23, // 20,
+    [DIR_NORTHWEST] = 22, // 21,
+    [DIR_NORTHEAST] = 23, // 21,
 };
 const u8 gUnrefAnimNums_08375633[] = {
     [DIR_NONE] = 24,
@@ -771,10 +772,10 @@ const u8 gAcroEndWheelieDirectionAnimNums[] = {
     [DIR_NORTH] = 29,
     [DIR_WEST] = 30,
     [DIR_EAST] = 31,
-    [DIR_SOUTHWEST] = 30, //28,
-    [DIR_SOUTHEAST] = 31, //28,
-    [DIR_NORTHWEST] = 30, //29,
-    [DIR_NORTHEAST] = 31, //29,
+    [DIR_SOUTHWEST] = 30, // 28,
+    [DIR_SOUTHEAST] = 31, // 28,
+    [DIR_NORTHWEST] = 30, // 29,
+    [DIR_NORTHEAST] = 31, // 29,
 };
 const u8 gAcroUnusedActionDirectionAnimNums[] = {
     [DIR_NONE] = 32,
@@ -793,10 +794,10 @@ const u8 gAcroWheeliePedalDirectionAnimNums[] = {
     [DIR_NORTH] = 37,
     [DIR_WEST] = 38,
     [DIR_EAST] = 39,
-    [DIR_SOUTHWEST] = 38, //36,
-    [DIR_SOUTHEAST] = 39, //36,
-    [DIR_NORTHWEST] = 38, //37,
-    [DIR_NORTHEAST] = 39, //37,
+    [DIR_SOUTHWEST] = 38, // 36,
+    [DIR_SOUTHEAST] = 39, // 36,
+    [DIR_NORTHWEST] = 38, // 37,
+    [DIR_NORTHEAST] = 39, // 37,
 };
 const u8 gFishingDirectionAnimNums[] = {
     [DIR_NONE] = 0,
@@ -2056,7 +2057,7 @@ void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
 {
     u8 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
 
-    LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, 16 * paletteSlot + 0x100, 0x20);
+    LoadPaletteDayNight(sObjectEventSpritePalettes[paletteIndex].data, 16 * paletteSlot + 0x100, 0x20);
 }
 
 void PatchObjectPaletteRange(const u16 *paletteTags, u8 minSlot, u8 maxSlot)
@@ -4793,33 +4794,33 @@ u8 GetSidewaysStairsCollision(struct ObjectEvent *objectEvent, u8 dir, u8 curren
 
     if (MetatileBehavior_IsSidewaysStairsLeftSide(nextBehavior))
     {
-        //moving ONTO left side stair
+        // moving ONTO left side stair
         if (dir == DIR_WEST && currentBehavior != nextBehavior)
-            return collision; //moving onto top part of left-stair going left, so no diagonal
+            return collision; // moving onto top part of left-stair going left, so no diagonal
         else
             return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // move diagonally
     }
     else if (MetatileBehavior_IsSidewaysStairsRightSide(nextBehavior))
     {
-        //moving ONTO right side stair
+        // moving ONTO right side stair
         if (dir == DIR_EAST && currentBehavior != nextBehavior)
-            return collision; //moving onto top part of right-stair going right, so no diagonal
+            return collision; // moving onto top part of right-stair going right, so no diagonal
         else
             return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;
     }
     else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currentBehavior))
     {
-        //moving OFF of any left side stair
+        // moving OFF of any left side stair
         if (dir == DIR_WEST && nextBehavior != currentBehavior)
-            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; //moving off of left stairs onto non-stair -> move diagonal
+            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // moving off of left stairs onto non-stair -> move diagonal
         else
-            return collision; //moving off of left side stair to east -> move east
+            return collision; // moving off of left side stair to east -> move east
     }
     else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currentBehavior))
     {
-        //moving OFF of any right side stair
+        // moving OFF of any right side stair
         if (dir == DIR_EAST && nextBehavior != currentBehavior)
-            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT; //moving off right stair onto non-stair -> move diagonal
+            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT; // moving off right stair onto non-stair -> move diagonal
         else
             return collision;
     }
@@ -4854,7 +4855,7 @@ static bool8 ObjectEventOnLeftSideStair(struct ObjectEvent *objectEvent, s16 x, 
         MoveCoords(DIR_SOUTH, &x, &y);
         return DoesObjectCollideWithObjectAt(objectEvent, x, y);
     default:
-        return FALSE; //north/south taken care of in GetVanillaCollision
+        return FALSE; // north/south taken care of in GetVanillaCollision
     }
 }
 
@@ -4869,7 +4870,7 @@ static bool8 ObjectEventOnRightSideStair(struct ObjectEvent *objectEvent, s16 x,
         MoveCoords(DIR_NORTH, &x, &y);
         return DoesObjectCollideWithObjectAt(objectEvent, x, y);
     default:
-        return FALSE; //north/south taken care of in GetVanillaCollision
+        return FALSE; // north/south taken care of in GetVanillaCollision
     }
 }
 
@@ -4882,26 +4883,26 @@ u8 GetCollisionAtCoords(struct ObjectEvent *objectEvent, s16 x, s16 y, u32 dir)
 
     objectEvent->directionOverwrite = DIR_NONE;
 
-    //sideways stairs checks
+    // sideways stairs checks
     if (MetatileBehavior_IsSidewaysStairsLeftSideTop(nextBehavior) && dir == DIR_EAST)
-        return COLLISION_IMPASSABLE; //moving onto left-side top edge east from regular ground -> nope
+        return COLLISION_IMPASSABLE; // moving onto left-side top edge east from regular ground -> nope
     else if (MetatileBehavior_IsSidewaysStairsRightSideTop(nextBehavior) && dir == DIR_WEST)
-        return COLLISION_IMPASSABLE; //moving onto left-side top edge east from regular ground -> nope
+        return COLLISION_IMPASSABLE; // moving onto left-side top edge east from regular ground -> nope
     else if (MetatileBehavior_IsSidewaysStairsRightSideBottom(nextBehavior) && (dir == DIR_EAST || dir == DIR_SOUTH))
-        return COLLISION_IMPASSABLE; //moving into right-side bottom edge from regular ground -> nah
+        return COLLISION_IMPASSABLE; // moving into right-side bottom edge from regular ground -> nah
     else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(nextBehavior) && (dir == DIR_WEST || dir == DIR_SOUTH))
-        return COLLISION_IMPASSABLE; //moving onto left-side bottom edge from regular ground -> nah
+        return COLLISION_IMPASSABLE; // moving onto left-side bottom edge from regular ground -> nah
     else if ((MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior)) && dir == DIR_NORTH)
-        return COLLISION_IMPASSABLE; //trying to move north off of top-most tile onto same level doesn't work
+        return COLLISION_IMPASSABLE; // trying to move north off of top-most tile onto same level doesn't work
     else if (!(MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior)) && dir == DIR_SOUTH && (MetatileBehavior_IsSidewaysStairsLeftSideTop(nextBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(nextBehavior)))
-        return COLLISION_IMPASSABLE; //trying to move south onto top stair tile at same level from non-stair -> no
+        return COLLISION_IMPASSABLE; // trying to move south onto top stair tile at same level from non-stair -> no
     else if (!(MetatileBehavior_IsSidewaysStairsLeftSideBottom(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideBottom(currentBehavior)) && dir == DIR_NORTH && (MetatileBehavior_IsSidewaysStairsLeftSideBottom(nextBehavior) || MetatileBehavior_IsSidewaysStairsRightSideBottom(nextBehavior)))
-        return COLLISION_IMPASSABLE; //trying to move north onto top stair tile at same level from non-stair -> no
+        return COLLISION_IMPASSABLE; // trying to move north onto top stair tile at same level from non-stair -> no
 
     // regular checks
     collision = GetVanillaCollision(objectEvent, x, y, dir);
 
-    //sideways stairs checks
+    // sideways stairs checks
     collision = GetSidewaysStairsCollision(objectEvent, dir, currentBehavior, nextBehavior, collision);
     switch (collision)
     {
@@ -5129,10 +5130,10 @@ static u8 TryUpdateMovementActionOnStairs(struct ObjectEvent *objectEvent, u8 mo
 {
 #if FOLLOW_ME_IMPLEMENTED
     if (objectEvent->isPlayer || objectEvent->localId == GetFollowerLocalId())
-        return movementActionId; //handled separately
+        return movementActionId; // handled separately
 #else
     if (objectEvent->isPlayer)
-        return movementActionId; //handled separately
+        return movementActionId; // handled separately
 #endif
 
     if (!ObjectMovingOnRockStairs(objectEvent, objectEvent->movementDirection))

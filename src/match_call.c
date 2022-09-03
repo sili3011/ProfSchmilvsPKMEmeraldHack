@@ -4,6 +4,7 @@
 #include "battle_setup.h"
 #include "bg.h"
 #include "data.h"
+#include "day_night.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "field_player_avatar.h"

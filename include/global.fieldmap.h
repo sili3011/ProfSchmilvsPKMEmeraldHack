@@ -31,6 +31,7 @@ struct Tileset
     /*0x0c*/ u16 *metatiles;
     /*0x10*/ u16 *metatileAttributes;
     /*0x14*/ TilesetCB callback;
+    /*0x18*/ struct PaletteOverride *paletteOverrides;
 };
 
 struct MapLayout
@@ -59,8 +60,8 @@ struct ObjectEventTemplate
     /*0x06*/ s16 y;
     /*0x08*/ u8 elevation;
     /*0x09*/ u8 movementType;
-    /*0x0A*/ u16 movementRangeX:4;
-             u16 movementRangeY:4;
+    /*0x0A*/ u16 movementRangeX : 4;
+    u16 movementRangeY : 4;
     /*0x0C*/ u16 trainerType;
     /*0x0E*/ u16 trainerRange_berryTreeId;
     /*0x10*/ const u8 *script;
@@ -90,9 +91,11 @@ struct BgEvent
     u16 x, y;
     u8 elevation;
     u8 kind; // The "kind" field determines how to access bgUnion union below.
-    union {
+    union
+    {
         u8 *script;
-        struct {
+        struct
+        {
             u16 item;
             u16 hiddenItemId;
         } hiddenItem;
@@ -144,45 +147,44 @@ struct MapHeader
 };
 
 // Flags for gMapHeader.flags, as defined in the map_header_flags macro
-#define MAP_ALLOW_CYCLING      (1 << 0)
-#define MAP_ALLOW_ESCAPING     (1 << 1) // Escape Rope and Dig
-#define MAP_ALLOW_RUNNING      (1 << 2)
-#define MAP_SHOW_MAP_NAME      (1 << 3)
-#define UNUSED_MAP_FLAGS       (1 << 4 | 1 << 5 | 1 << 6 | 1 << 7)
+#define MAP_ALLOW_CYCLING (1 << 0)
+#define MAP_ALLOW_ESCAPING (1 << 1) // Escape Rope and Dig
+#define MAP_ALLOW_RUNNING (1 << 2)
+#define MAP_SHOW_MAP_NAME (1 << 3)
+#define UNUSED_MAP_FLAGS (1 << 4 | 1 << 5 | 1 << 6 | 1 << 7)
 
-#define SHOW_MAP_NAME_ENABLED  ((gMapHeader.flags & (MAP_SHOW_MAP_NAME | UNUSED_MAP_FLAGS)) == MAP_SHOW_MAP_NAME)
-
+#define SHOW_MAP_NAME_ENABLED ((gMapHeader.flags & (MAP_SHOW_MAP_NAME | UNUSED_MAP_FLAGS)) == MAP_SHOW_MAP_NAME)
 
 struct ObjectEvent
 {
-    /*0x00*/ u32 active:1;
-             u32 singleMovementActive:1;
-             u32 triggerGroundEffectsOnMove:1;
-             u32 triggerGroundEffectsOnStop:1;
-             u32 disableCoveringGroundEffects:1;
-             u32 landingJump:1;
-             u32 heldMovementActive:1;
-             u32 heldMovementFinished:1;
-    /*0x01*/ u32 frozen:1;
-             u32 facingDirectionLocked:1;
-             u32 disableAnim:1;
-             u32 enableAnim:1;
-             u32 inanimate:1;
-             u32 invisible:1;
-             u32 offScreen:1;
-             u32 trackedByCamera:1;
-    /*0x02*/ u32 isPlayer:1;
-             u32 hasReflection:1;
-             u32 inShortGrass:1;
-             u32 inShallowFlowingWater:1;
-             u32 inSandPile:1;
-             u32 inHotSprings:1;
-             u32 hasShadow:1;
-             u32 spriteAnimPausedBackup:1;
-    /*0x03*/ u32 spriteAffineAnimPausedBackup:1;
-             u32 disableJumpLandingGroundEffect:1;
-             u32 fixedPriority:1;
-             u32 hideReflection:1;
+    /*0x00*/ u32 active : 1;
+    u32 singleMovementActive : 1;
+    u32 triggerGroundEffectsOnMove : 1;
+    u32 triggerGroundEffectsOnStop : 1;
+    u32 disableCoveringGroundEffects : 1;
+    u32 landingJump : 1;
+    u32 heldMovementActive : 1;
+    u32 heldMovementFinished : 1;
+    /*0x01*/ u32 frozen : 1;
+    u32 facingDirectionLocked : 1;
+    u32 disableAnim : 1;
+    u32 enableAnim : 1;
+    u32 inanimate : 1;
+    u32 invisible : 1;
+    u32 offScreen : 1;
+    u32 trackedByCamera : 1;
+    /*0x02*/ u32 isPlayer : 1;
+    u32 hasReflection : 1;
+    u32 inShortGrass : 1;
+    u32 inShallowFlowingWater : 1;
+    u32 inSandPile : 1;
+    u32 inHotSprings : 1;
+    u32 hasShadow : 1;
+    u32 spriteAnimPausedBackup : 1;
+    /*0x03*/ u32 spriteAffineAnimPausedBackup : 1;
+    u32 disableJumpLandingGroundEffect : 1;
+    u32 fixedPriority : 1;
+    u32 hideReflection : 1;
     /*0x04*/ u8 spriteId;
     /*0x05*/ u8 graphicsId;
     /*0x06*/ u8 movementType;
@@ -190,15 +192,15 @@ struct ObjectEvent
     /*0x08*/ u8 localId;
     /*0x09*/ u8 mapNum;
     /*0x0A*/ u8 mapGroup;
-    /*0x0B*/ u8 currentElevation:4;
-             u8 previousElevation:4;
+    /*0x0B*/ u8 currentElevation : 4;
+    u8 previousElevation : 4;
     /*0x0C*/ struct Coords16 initialCoords;
     /*0x10*/ struct Coords16 currentCoords;
     /*0x14*/ struct Coords16 previousCoords;
-    /*0x18*/ u16 facingDirection:4; // current direction?
-             u16 movementDirection:4;
-             u16 rangeX:4;
-             u16 rangeY:4;
+    /*0x18*/ u16 facingDirection : 4; // current direction?
+    u16 movementDirection : 4;
+    u16 rangeX : 4;
+    u16 rangeY : 4;
     /*0x1A*/ u8 fieldEffectSpriteId;
     /*0x1B*/ u8 warpArrowSpriteId;
     /*0x1C*/ u8 movementActionId;
@@ -220,10 +222,10 @@ struct ObjectEventGraphicsInfo
     /*0x06*/ u16 size;
     /*0x08*/ s16 width;
     /*0x0A*/ s16 height;
-    /*0x0C*/ u8 paletteSlot:4;
-             u8 shadowSize:2;
-             u8 inanimate:1;
-             u8 disableReflectionPaletteLoad:1;
+    /*0x0C*/ u8 paletteSlot : 4;
+    u8 shadowSize : 2;
+    u8 inanimate : 1;
+    u8 disableReflectionPaletteLoad : 1;
     /*0x0D*/ u8 tracks;
     /*0x10*/ const struct OamData *oam;
     /*0x14*/ const struct SubspriteTable *subspriteTables;
@@ -232,7 +234,8 @@ struct ObjectEventGraphicsInfo
     /*0x20*/ const union AffineAnimCmd *const *affineAnims;
 };
 
-enum {
+enum
+{
     PLAYER_AVATAR_STATE_NORMAL,
     PLAYER_AVATAR_STATE_MACH_BIKE,
     PLAYER_AVATAR_STATE_ACRO_BIKE,
@@ -244,17 +247,17 @@ enum {
     PLAYER_AVATAR_STATE_RIDING
 };
 
-#define PLAYER_AVATAR_FLAG_ON_FOOT     (1 << 0)
-#define PLAYER_AVATAR_FLAG_MACH_BIKE   (1 << 1)
-#define PLAYER_AVATAR_FLAG_ACRO_BIKE   (1 << 2)
-#define PLAYER_AVATAR_FLAG_SURFING     (1 << 3)
-#define PLAYER_AVATAR_FLAG_UNDERWATER  (1 << 4)
-#define PLAYER_AVATAR_FLAG_5           (1 << 5)
+#define PLAYER_AVATAR_FLAG_ON_FOOT (1 << 0)
+#define PLAYER_AVATAR_FLAG_MACH_BIKE (1 << 1)
+#define PLAYER_AVATAR_FLAG_ACRO_BIKE (1 << 2)
+#define PLAYER_AVATAR_FLAG_SURFING (1 << 3)
+#define PLAYER_AVATAR_FLAG_UNDERWATER (1 << 4)
+#define PLAYER_AVATAR_FLAG_5 (1 << 5)
 #define PLAYER_AVATAR_FLAG_FORCED_MOVE (1 << 6)
-#define PLAYER_AVATAR_FLAG_DASH        (1 << 7)
-#define PLAYER_AVATAR_FLAG_RIDING      (1 << 8)
+#define PLAYER_AVATAR_FLAG_DASH (1 << 7)
+#define PLAYER_AVATAR_FLAG_RIDING (1 << 8)
 
-#define PLAYER_AVATAR_FLAG_BIKE        (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)
+#define PLAYER_AVATAR_FLAG_BIKE (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)
 
 enum
 {
@@ -307,29 +310,29 @@ enum
 struct PlayerAvatar
 {
     /*0x00*/ u8 flags;
-    /*0x01*/ u8 transitionFlags; // used to be named bike, but its definitely not that. seems to be some transition flags
-    /*0x02*/ u8 runningState; // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
+    /*0x01*/ u8 transitionFlags;     // used to be named bike, but its definitely not that. seems to be some transition flags
+    /*0x02*/ u8 runningState;        // this is a static running state. 00 is not moving, 01 is turn direction, 02 is moving.
     /*0x03*/ u8 tileTransitionState; // this is a transition running state: 00 is not moving, 01 is transition between tiles, 02 means you are on the frame in which you have centered on a tile but are about to keep moving, even if changing directions. 2 is also used for a ledge hop, since you are transitioning.
     /*0x04*/ u8 spriteId;
-    /*0x05*/ u8 objectEventId:7;
-             u8 creeping:1;
+    /*0x05*/ u8 objectEventId : 7;
+    u8 creeping : 1;
     /*0x06*/ bool8 preventStep;
     /*0x07*/ u8 gender;
-    /*0x08*/ u8 acroBikeState; // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
-    /*0x09*/ u8 newDirBackup; // during bike movement, the new direction as opposed to player's direction is backed up here.
+    /*0x08*/ u8 acroBikeState;    // 00 is normal, 01 is turning, 02 is standing wheelie, 03 is hopping wheelie
+    /*0x09*/ u8 newDirBackup;     // during bike movement, the new direction as opposed to player's direction is backed up here.
     /*0x0A*/ u8 bikeFrameCounter; // on the mach bike, when this value is 1, the bike is moving but not accelerating yet for 1 tile. on the acro bike, this acts as a timer for acro bike.
     /*0x0B*/ u8 bikeSpeed;
     // acro bike only
-    /*0x0C*/ u32 directionHistory; // up/down/left/right history is stored in each nybble, but using the field directions and not the io inputs.
+    /*0x0C*/ u32 directionHistory;     // up/down/left/right history is stored in each nybble, but using the field directions and not the io inputs.
     /*0x10*/ u32 abStartSelectHistory; // same as above but for A + B + start + select only
-    // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
+                                       // these two are timer history arrays which [0] is the active timer for acro bike. every element is backed up to the next element upon update.
     /*0x14*/ u8 dirTimerHistory[8];
     /*0x1C*/ u8 abStartSelectTimerHistory[8];
 };
 
 struct Camera
 {
-    bool8 active:1;
+    bool8 active : 1;
     s32 x;
     s32 y;
 };

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "battle_pyramid.h"
 #include "bg.h"
+#include "day_night.h"
 #include "fieldmap.h"
 #include "fldeff.h"
 #include "fldeff_misc.h"
@@ -18,10 +19,10 @@
 
 struct ConnectionFlags
 {
-    u8 south:1;
-    u8 north:1;
-    u8 west:1;
-    u8 east:1;
+    u8 south : 1;
+    u8 north : 1;
+    u8 west : 1;
+    u8 east : 1;
 };
 
 EWRAM_DATA static u16 gBackupMapData[MAX_MAP_DATA_SIZE] = {0};
@@ -42,7 +43,7 @@ static void FillWestConnection(struct MapHeader const *mapHeader, struct MapHead
 static void FillEastConnection(struct MapHeader const *mapHeader, struct MapHeader const *connectedMapHeader, s32 offset);
 static void InitBackupMapLayoutConnections(struct MapHeader *mapHeader);
 static void LoadSavedMapView(void);
-static bool8 SkipCopyingMetatileFromSavedMap(u16* mapMetatilePtr, u16 mapWidth, u8 yMode);
+static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapMetatilePtr, u16 mapWidth, u8 yMode);
 
 struct MapHeader const *const GetMapHeaderFromConnection(struct MapConnection *connection)
 {
@@ -260,7 +261,6 @@ static void FillNorthConnection(struct MapHeader const *mapHeader, struct MapHea
             connectedMapHeader,
             x2, y2,
             width, /*height*/ 7);
-
     }
 }
 
@@ -359,9 +359,9 @@ union Block
 {
     struct
     {
-        u16 block:10;
-        u16 collision:2;
-        u16 elevation:4;
+        u16 block : 10;
+        u16 collision : 2;
+        u16 elevation : 4;
     } block;
     u16 value;
 };
@@ -372,8 +372,7 @@ u8 MapGridGetZCoordAt(int x, int y)
     int i;
     u16 *border;
 
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         block = gBackupMapLayout.map[x + gBackupMapLayout.width * y];
     }
@@ -400,8 +399,7 @@ u8 MapGridIsImpassableAt(int x, int y)
     int i;
     u16 *border;
 
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         block = gBackupMapLayout.map[x + gBackupMapLayout.width * y];
     }
@@ -429,8 +427,7 @@ u32 MapGridGetMetatileIdAt(int x, int y)
     u16 *border;
     u16 block2;
 
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         block = gBackupMapLayout.map[x + gBackupMapLayout.width * y];
     }
@@ -471,8 +468,7 @@ u8 MapGridGetMetatileLayerTypeAt(int x, int y)
 void MapGridSetMetatileIdAt(int x, int y, u16 metatile)
 {
     int i;
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         i = x + y * gBackupMapLayout.width;
         gBackupMapLayout.map[i] = (gBackupMapLayout.map[i] & METATILE_ELEVATION_MASK) | (metatile & ~METATILE_ELEVATION_MASK);
@@ -482,8 +478,7 @@ void MapGridSetMetatileIdAt(int x, int y, u16 metatile)
 void MapGridSetMetatileEntryAt(int x, int y, u16 metatile)
 {
     int i;
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         i = x + gBackupMapLayout.width * y;
         gBackupMapLayout.map[i] = metatile;
@@ -542,7 +537,6 @@ static bool32 SavedMapViewIsEmpty(void)
     for (i = 0; i < ARRAY_COUNT(gSaveBlock1Ptr->mapView); i++)
         marker |= gSaveBlock1Ptr->mapView[i];
 #endif
-
 
     if (marker == 0)
         return TRUE;
@@ -656,8 +650,7 @@ int GetMapBorderIdAt(int x, int y)
     struct MapLayout const *mapLayout;
     u16 block, block2;
     int i, j;
-    if (x >= 0 && x < gBackupMapLayout.width
-     && y >= 0 && y < gBackupMapLayout.height)
+    if (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
     {
         i = gBackupMapLayout.width;
         i *= y;
@@ -901,11 +894,7 @@ struct MapConnection *GetConnectionAtCoords(s16 x, s16 y)
         for (i = 0; i < count; i++, connection++)
         {
             direction = connection->direction;
-            if ((direction == CONNECTION_DIVE || direction == CONNECTION_EMERGE)
-             || (direction == CONNECTION_NORTH && y > 6)
-             || (direction == CONNECTION_SOUTH && y < gMapHeader.mapLayout->height + 7)
-             || (direction == CONNECTION_WEST && x > 6)
-             || (direction == CONNECTION_EAST && x < gMapHeader.mapLayout->width + 7))
+            if ((direction == CONNECTION_DIVE || direction == CONNECTION_EMERGE) || (direction == CONNECTION_NORTH && y > 6) || (direction == CONNECTION_SOUTH && y < gMapHeader.mapLayout->height + 7) || (direction == CONNECTION_WEST && x > 6) || (direction == CONNECTION_EAST && x < gMapHeader.mapLayout->width + 7))
             {
                 continue;
             }
@@ -954,7 +943,7 @@ void MapGridSetMetatileImpassabilityAt(int x, int y, bool32 impassable)
     }
 }
 
-static bool8 SkipCopyingMetatileFromSavedMap(u16* mapMetatilePtr, u16 mapWidth, u8 yMode)
+static bool8 SkipCopyingMetatileFromSavedMap(u16 *mapMetatilePtr, u16 mapWidth, u8 yMode)
 {
     if (yMode == 0xFF)
         return FALSE;
@@ -993,12 +982,10 @@ static void CopyTilesetToVramUsingHeap(struct Tileset const *tileset, u16 numTil
 
 void nullsub_3(u16 a0, u16 a1)
 {
-
 }
 
 void nullsub_90(void)
 {
-
 }
 
 void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
@@ -1009,18 +996,21 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
     {
         if (tileset->isSecondary == FALSE)
         {
+            gPaletteOverrides[0] = tileset->paletteOverrides;
             LoadPalette(&black, destOffset, 2);
-            LoadPalette(((u16*)tileset->palettes) + 1, destOffset + 1, size - 2);
+            LoadPaletteDayNight(((u16 *)tileset->palettes) + 1, destOffset + 1, size - 2);
             nullsub_3(destOffset + 1, (size - 2) >> 1);
         }
         else if (tileset->isSecondary == TRUE)
         {
-            LoadPalette(((u16*)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), destOffset, size);
+            gPaletteOverrides[1] = tileset->paletteOverrides;
+            LoadPaletteDayNight(((u16 *)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), destOffset, size);
             nullsub_3(destOffset, size >> 1);
         }
         else
         {
-            LoadCompressedPalette((u32*)tileset->palettes, destOffset, size);
+            gPaletteOverrides[2] = tileset->paletteOverrides;
+            LoadCompressedPaletteDayNight((u32 *)tileset->palettes, destOffset, size);
             nullsub_3(destOffset, size >> 1);
         }
     }

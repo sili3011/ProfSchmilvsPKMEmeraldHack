@@ -1,5 +1,6 @@
 #include "global.h"
 #include "wild_encounter.h"
+#include "day_night.h"
 #include "pokemon.h"
 #include "metatile_behavior.h"
 #include "fieldmap.h"
@@ -46,7 +47,7 @@ EWRAM_DATA static u32 sFeebasRngValue = 0;
 
 #include "data/wild_encounters.h"
 
-//Special Feebas-related data.
+// Special Feebas-related data.
 const struct WildPokemon gWildFeebasRoute119Data = {20, 25, SPECIES_FEEBAS};
 
 const u16 gRoute119WaterTileData[] =
