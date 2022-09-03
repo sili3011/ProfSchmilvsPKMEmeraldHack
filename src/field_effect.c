@@ -1329,7 +1329,7 @@ static void FieldCallback_Fly_2(void)
     u8 taskId;
     FadeInFromBlack();
     taskId = CreateTask(Task_UseFly, 0);
-    gTasks[taskId].data[0] = 1; //do landing anim only
+    gTasks[taskId].data[0] = 1; // do landing anim only
     ScriptContext2_Enable();
     FreezeObjectEvents();
     gFieldCallback = NULL;
@@ -3143,7 +3143,7 @@ static void SpriteCB_NPCFlyOut(struct Sprite *sprite)
 // Task data for Task_FlyOut/FlyIn
 #define tState data[0]
 #define tMonId data[1]
-#define tBirdSpriteId data[1] //re-used
+#define tBirdSpriteId data[1] // re-used
 #define tTimer data[2]
 #define tAvatarFlags data[15]
 

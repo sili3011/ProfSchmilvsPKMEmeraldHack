@@ -1337,7 +1337,7 @@ s16 ConvertScaleParam(s16 scale)
 #ifdef UBFIX
     if (scale == 0)
         return 0;
-#endif //UBFIX
+#endif // UBFIX
     return val / scale;
 }
 

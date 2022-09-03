@@ -133,26 +133,26 @@ static void LoadPaletteOverrides(void)
         hour = (gDNPeriodOverride - 1) / TINT_PERIODS_PER_HOUR;
 #endif
 
-    for (i = 0; i < ARRAY_COUNT(gPaletteOverrides); i++)
-    {
-        const struct PaletteOverride *curr = gPaletteOverrides[i];
-        if (curr != NULL)
-        {
-            while (curr->slot != PALOVER_LIST_TERM && curr->palette != NULL)
-            {
-                if ((curr->startHour < curr->endHour && hour >= curr->startHour && hour < curr->endHour) ||
-                    (curr->startHour > curr->endHour && (hour >= curr->startHour || hour < curr->endHour)))
-                {
-                    for (j = 0, src = curr->palette, dest = gPlttBufferUnfaded + (curr->slot * 16); j < 16; j++, src++, dest++)
-                    {
-                        if (*src != RGB_BLACK)
-                            *dest = *src;
-                    }
-                }
-                curr++;
-            }
-        }
-    }
+    //     for (i = 0; i < ARRAY_COUNT(gPaletteOverrides); i++)
+    //     {
+    //         const struct PaletteOverride *curr = gPaletteOverrides[i];
+    //         if (curr != NULL)
+    //         {
+    //             while (curr->slot != PALOVER_LIST_TERM && curr->palette != NULL)
+    //             {
+    //                 if ((curr->startHour < curr->endHour && hour >= curr->startHour && hour < curr->endHour) ||
+    //                     (curr->startHour > curr->endHour && (hour >= curr->startHour || hour < curr->endHour)))
+    //                 {
+    //                     for (j = 0, src = curr->palette, dest = gPlttBufferUnfaded + (curr->slot * 16); j < 16; j++, src++, dest++)
+    //                     {
+    //                         if (*src != RGB_BLACK)
+    //                             *dest = *src;
+    //                     }
+    //                 }
+    //                 curr++;
+    //             }
+    //         }
+    //     }
 }
 
 static bool8 ShouldTintOverworld(void)
