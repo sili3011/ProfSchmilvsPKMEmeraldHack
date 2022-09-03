@@ -208,10 +208,17 @@ static void SpriteCB_FieldMoveMonSlideOffscreen(struct Sprite *);
 
 static void Task_SurfFieldEffect(u8);
 static void SurfFieldEffect_Init(struct Task *);
-static void SurfFieldEffect_FieldMovePose(struct Task *);
 static void SurfFieldEffect_ShowMon(struct Task *);
 static void SurfFieldEffect_JumpOnSurfBlob(struct Task *);
 static void SurfFieldEffect_End(struct Task *);
+
+static void Task_RideFieldEffect(u8);
+static void RideFieldEffect_Init(struct Task *);
+static void RideFieldEffect_ShowMon(struct Task *);
+static void RideFieldEffect_JumpOnRideBlob(struct Task *);
+static void RideFieldEffect_End(struct Task *);
+
+static void SurfRideFieldEffect_FieldMovePose(struct Task *);
 
 static void SpriteCB_NPCFlyOut(struct Sprite *);
 
@@ -2984,7 +2991,7 @@ u8 FldEff_UseSurf(void)
 
 void (*const sSurfFieldEffectFuncs[])(struct Task *) = {
     SurfFieldEffect_Init,
-    SurfFieldEffect_FieldMovePose,
+    SurfRideFieldEffect_FieldMovePose,
     SurfFieldEffect_ShowMon,
     SurfFieldEffect_JumpOnSurfBlob,
     SurfFieldEffect_End,
@@ -3004,18 +3011,6 @@ static void SurfFieldEffect_Init(struct Task *task)
     PlayerGetDestCoords(&task->tDestX, &task->tDestY);
     MoveCoords(gObjectEvents[gPlayerAvatar.objectEventId].movementDirection, &task->tDestX, &task->tDestY);
     task->tState++;
-}
-
-static void SurfFieldEffect_FieldMovePose(struct Task *task)
-{
-    struct ObjectEvent *objectEvent;
-    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
-    if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
-    {
-        SetPlayerAvatarFieldMove();
-        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
-        task->tState++;
-    }
 }
 
 static void SurfFieldEffect_ShowMon(struct Task *task)
@@ -3061,6 +3056,100 @@ static void SurfFieldEffect_End(struct Task *task)
         ScriptContext2_Disable();
         FieldEffectActiveListRemove(FLDEFF_USE_SURF);
         DestroyTask(FindTaskIdByFunc(Task_SurfFieldEffect));
+    }
+}
+
+// START RIDE
+
+u8 FldEff_UseRide(void)
+{
+    u8 taskId = CreateTask(Task_RideFieldEffect, 0xff);
+    gTasks[taskId].tMonId = gFieldEffectArguments[0];
+    Overworld_ClearSavedMusic();
+    Overworld_ChangeMusicTo(MUS_SURF); // TODO: ride music
+    return FALSE;
+}
+
+void (*const sRideFieldEffectFuncs[])(struct Task *) = {
+    RideFieldEffect_Init,
+    SurfRideFieldEffect_FieldMovePose,
+    RideFieldEffect_ShowMon,
+    RideFieldEffect_JumpOnRideBlob,
+    RideFieldEffect_End,
+};
+
+static void Task_RideFieldEffect(u8 taskId)
+{
+    sRideFieldEffectFuncs[gTasks[taskId].tState](&gTasks[taskId]);
+}
+
+static void RideFieldEffect_Init(struct Task *task)
+{
+    ScriptContext2_Enable();
+    FreezeObjectEvents();
+    gPlayerAvatar.preventStep = TRUE;
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_RIDING);
+    PlayerGetDestCoords(&task->tDestX, &task->tDestY);
+    MoveCoords(gObjectEvents[gPlayerAvatar.objectEventId].movementDirection, &task->tDestX, &task->tDestY);
+    task->tState++;
+}
+
+static void RideFieldEffect_ShowMon(struct Task *task)
+{
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (ObjectEventCheckHeldMovementStatus(objectEvent))
+    {
+        gFieldEffectArguments[0] = task->tMonId | 0x80000000;
+        FieldEffectStart(FLDEFF_FIELD_MOVE_SHOW_MON_INIT);
+        task->tState++;
+    }
+}
+
+static void RideFieldEffect_JumpOnRideBlob(struct Task *task)
+{
+    struct ObjectEvent *objectEvent;
+    if (!FieldEffectActiveListContains(FLDEFF_FIELD_MOVE_SHOW_MON))
+    {
+        objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+        ObjectEventSetGraphicsId(objectEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_RIDING));
+        ObjectEventClearHeldMovementIfFinished(objectEvent);
+        ObjectEventSetHeldMovement(objectEvent, GetJumpSpecialMovementAction(objectEvent->movementDirection));
+        gFieldEffectArguments[0] = task->tDestX;
+        gFieldEffectArguments[1] = task->tDestY;
+        gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
+        objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB); // TODO: add a ride blob
+        task->tState++;
+    }
+}
+
+static void RideFieldEffect_End(struct Task *task)
+{
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (ObjectEventClearHeldMovementIfFinished(objectEvent))
+    {
+        gPlayerAvatar.preventStep = FALSE;
+        gPlayerAvatar.flags &= ~PLAYER_AVATAR_FLAG_5;
+        ObjectEventSetHeldMovement(objectEvent, GetFaceDirectionMovementAction(objectEvent->movementDirection));
+        UnfreezeObjectEvents();
+        ScriptContext2_Disable();
+        FieldEffectActiveListRemove(FLDEFF_USE_RIDE);
+        DestroyTask(FindTaskIdByFunc(Task_RideFieldEffect));
+    }
+}
+
+// END RIDE
+
+static void SurfRideFieldEffect_FieldMovePose(struct Task *task)
+{
+    struct ObjectEvent *objectEvent;
+    objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
+    if (!ObjectEventIsMovementOverridden(objectEvent) || ObjectEventClearHeldMovementIfFinished(objectEvent))
+    {
+        SetPlayerAvatarFieldMove();
+        ObjectEventSetHeldMovement(objectEvent, MOVEMENT_ACTION_START_ANIM_IN_DIRECTION);
+        task->tState++;
     }
 }
 

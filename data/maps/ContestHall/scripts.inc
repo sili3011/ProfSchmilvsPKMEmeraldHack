@@ -75,7 +75,6 @@ ContestHall_EventScript_Contest:: @ 823B829
 
 ContestHall_EventScript_SetContestObjects:: @ 823B834
 	special LoadLinkContestPlayerPalettes
-	hideobjectat OBJ_EVENT_ID_PLAYER, MAP_LITTLEROOT_TOWN
 	call ContestHall_EventScript_CreateAudience
 	end
 
@@ -410,51 +409,5 @@ ContestHall_EventScript_CreateWirelessContestAudience:: @ 823BD86
 ContestHall_EventScript_SetExitWarp:: @ 823BE44
 	special ClearLinkContestFlags
 	switch VAR_CONTEST_TYPE
-	case CONTEST_TYPE_NPC_NORMAL, ContestHall_EventScript_SetExitWarpNormalContest
-	case CONTEST_TYPE_NPC_SUPER, ContestHall_EventScript_SetExitWarpSuperContest
-	case CONTEST_TYPE_NPC_HYPER, ContestHall_EventScript_SetExitWarpHyperContest
-	case CONTEST_TYPE_NPC_MASTER, ContestHall_EventScript_SetExitWarpMasterContest
-	case CONTEST_TYPE_LINK, ContestHall_EventScript_SetExitWarpLinkContest
 	return
-
-ContestHall_EventScript_SetExitWarpNormalContest:: @ 823BE84
-	warp MAP_LILYCOVE_CITY_CONTEST_LOBBY, 255, 14, 4
-	waitstate
-	end
-
-ContestHall_EventScript_SetExitWarpSuperContest:: @ 823BE8E
-	warp MAP_LILYCOVE_CITY_CONTEST_LOBBY, 255, 14, 4
-	waitstate
-	end
-
-ContestHall_EventScript_SetExitWarpHyperContest:: @ 823BE98
-	warp MAP_LILYCOVE_CITY_CONTEST_LOBBY, 255, 14, 4
-	waitstate
-	end
-
-ContestHall_EventScript_SetExitWarpMasterContest:: @ 823BEA2
-	warp MAP_LILYCOVE_CITY_CONTEST_LOBBY, 255, 14, 4
-	waitstate
-	end
-
-ContestHall_EventScript_SetExitWarpLinkContest:: @ 823BEAC
-	warp MAP_LILYCOVE_CITY_CONTEST_LOBBY, 255, 15, 4
-	waitstate
-	end
-
-LilycoveCity_ContestLobby_EventScript_SetPlayerGfx:: @ 823BEB6
-	checkplayergender
-	compare VAR_RESULT, MALE
-	goto_if_eq LilycoveCity_ContestLobby_EventScript_SetPlayerGfxBrendan
-	compare VAR_RESULT, FEMALE
-	goto_if_eq LilycoveCity_ContestLobby_EventScript_SetPlayerGfxMay
-	return
-
-LilycoveCity_ContestLobby_EventScript_SetPlayerGfxBrendan:: @ 823BECE
-	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL
-	return
-
-LilycoveCity_ContestLobby_EventScript_SetPlayerGfxMay:: @ 823BED4
-	setvar VAR_OBJ_GFX_ID_3, OBJ_EVENT_GFX_RIVAL_MAY_NORMAL
-	return
-
+	

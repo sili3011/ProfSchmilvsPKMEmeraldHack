@@ -257,6 +257,7 @@ const u8 gText_TheBattle[] = _("the battle");
 const u8 gText_ThePokemonList[] = _("the POKéMON LIST");
 const u8 gText_TheShop[] = _("the shop");
 const u8 gText_ThePC[] = _("the PC");
+const u8 gText_ActFieldMoves[] = _("ACT");
 
 const u8 *const gReturnToXStringsTable[] =
     {
@@ -613,9 +614,6 @@ const u8 gText_Winona[] = _("WINONA");
 const u8 gText_Phoebe[] = _("PHOEBE");
 const u8 gText_Glacia[] = _("GLACIA");
 const u8 gText_Petalburg[] = _("PETALBURG");
-const u8 gText_Slateport[] = _("SLATEPORT");
-const u8 gText_Littleroot[] = _("LITTLEROOT"); // Unused. Given the context, Briney may at one point have been able to sail the player here
-const u8 gText_Lilycove[] = _("LILYCOVE");     // Unused. Given the context, Briney may at one point have been able to sail the player here
 const u8 gText_Dewford[] = _("DEWFORD");
 const u8 gText_Enter2[] = _("ENTER");
 const u8 gText_Info2[] = _("INFO");
@@ -863,8 +861,6 @@ const u8 gText_HPUp1000[] = _("HP UP{CLEAR_TO 0x63}{SIZE 0}1,000");
 const u8 gText_PPUp3000[] = _("PP UP{CLEAR_TO 0x63}{SIZE 0}3,000");
 const u8 gText_RankingHall[] = _("RANKING HALL");
 const u8 gText_ExchangeService[] = _("EXCHANGE SERVICE");
-const u8 gText_LilycoveCity[] = _("LILYCOVE CITY");
-const u8 gText_SlateportCity[] = _("SLATEPORT CITY");
 const u8 gText_CaveOfOrigin[] = _("CAVE OF ORIGIN");
 const u8 gText_MtPyre[] = _("MT. PYRE");
 const u8 gText_SkyPillar[] = _("SKY PILLAR");

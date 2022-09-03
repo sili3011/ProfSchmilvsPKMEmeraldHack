@@ -103,7 +103,6 @@ static const u16 sMovingRegionMapSections[3] =
 
 static const u16 sFeebasData[][3] =
     {
-        {SPECIES_FEEBAS, MAP_GROUP(ROUTE119), MAP_NUM(ROUTE119)},
         {NUM_SPECIES}};
 
 static const u16 sLandmarkData[][2] =
@@ -545,7 +544,6 @@ static void FindMapsWithMon(u16 species)
                 case MAP_GROUP_OVERWORLD_MONS:
                     SetAreaHasMon(sFeebasData[i][1], sFeebasData[i][2]);
                     break;
-                case MAP_GROUP_SPECIAL_MONS_1:
                 case MAP_GROUP_SPECIAL_MONS_2:
                     SetSpecialMapHasMon(sFeebasData[i][1], sFeebasData[i][2]);
                     break;
@@ -562,7 +560,6 @@ static void FindMapsWithMon(u16 species)
                 case MAP_GROUP_OVERWORLD_MONS:
                     SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                     break;
-                case MAP_GROUP_SPECIAL_MONS_1:
                 case MAP_GROUP_SPECIAL_MONS_2:
                     SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
                     break;

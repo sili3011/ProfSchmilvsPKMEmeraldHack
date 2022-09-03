@@ -1,7 +1,6 @@
 Roulette_EventScript_Table1:: @ 82A5AB1
 	checkitem ITEM_COIN_CASE, 1
 	compare VAR_RESULT, FALSE
-	goto_if_eq MauvilleCity_GameCorner_EventScript_NoCoinCase
 	setvar VAR_0x8004, 0
 	getpricereduction POKENEWS_GAME_CORNER
 	compare VAR_RESULT, FALSE
@@ -13,7 +12,6 @@ Roulette_EventScript_Table1:: @ 82A5AB1
 Roulette_EventScript_Table2:: @ 82A5ADF
 	checkitem ITEM_COIN_CASE, 1
 	compare VAR_RESULT, FALSE
-	goto_if_eq MauvilleCity_GameCorner_EventScript_NoCoinCase
 	setvar VAR_0x8004, 1
 	getpricereduction POKENEWS_GAME_CORNER
 	compare VAR_RESULT, FALSE

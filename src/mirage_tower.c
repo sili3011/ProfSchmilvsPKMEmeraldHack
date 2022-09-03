@@ -19,7 +19,8 @@
 #include "constants/songs.h"
 #include "constants/metatile_labels.h"
 
-struct MirageTowerPulseBlend {
+struct MirageTowerPulseBlend
+{
     u8 taskId;
     struct PulseBlend pulseBlend;
 };
@@ -73,12 +74,12 @@ static void IncrementCeilingCrumbleFinishedCount(void);
 static void WaitCeilingCrumble(u8 taskId);
 static void FinishCeilingCrumbleTask(u8 taskId);
 static void CreateCeilingCrumbleSprites(void);
-static void MoveCeilingCrumbleSprite(struct Sprite* sprite);
+static void MoveCeilingCrumbleSprite(struct Sprite *sprite);
 static void DoMirageTowerDisintegration(u8 taskId);
 static void InitMirageTowerShake(u8 taskId);
 static void DoFossilFallAndSink(u8 taskId);
 static void sub_81BF248(struct Sprite *);
-static void sub_81BF2B8(u8* a, u16 b, u8 c, u8 d, u8 e);
+static void sub_81BF2B8(u8 *a, u16 b, u8 c, u8 d, u8 e);
 
 // rodata
 static const u8 sBlankTile_Gfx[32] = {0};
@@ -90,77 +91,75 @@ static const u8 sMirageTowerCrumbles_Gfx[] = INCBIN_U8("graphics/misc/mirage_tow
 static const u16 sMirageTowerCrumbles_Palette[] = INCBIN_U16("graphics/misc/mirage_tower_crumbles.gbapal");
 
 const s16 sCeilingCrumblePositions[][3] =
-{
-    {  0,  10,  65},
-    { 17,   3,  50},
-    {-12,   0,  75},
-    { 10,  15,  90},
-    {  7,   8,  65},
-    {-18,   5,  75},
-    { 22, -10,  55},
-    {-24,  -4,  65},
+    {
+        {0, 10, 65},
+        {17, 3, 50},
+        {-12, 0, 75},
+        {10, 15, 90},
+        {7, 8, 65},
+        {-18, 5, 75},
+        {22, -10, 55},
+        {-24, -4, 65},
 };
 
 const struct SpriteSheet gMirageTowerCeilingCrumbleSpriteSheets[] =
-{
-    {sMirageTowerCrumbles_Gfx, 0x0080, 4000},
-    {NULL}
-};
+    {
+        {sMirageTowerCrumbles_Gfx, 0x0080, 4000},
+        {NULL}};
 
 static const struct MetatileCoords sInvisibleMirageTowerMetatiles[] =
-{
-    {18, 53, METATILE_Mauville_DeepSand_Center},
-    {19, 53, METATILE_Mauville_DeepSand_Center},
-    {20, 53, METATILE_Mauville_DeepSand_Center},
-    {18, 54, METATILE_Mauville_DeepSand_Center},
-    {19, 54, METATILE_Mauville_DeepSand_Center},
-    {20, 54, METATILE_Mauville_DeepSand_Center},
-    {18, 55, METATILE_Mauville_DeepSand_Center},
-    {19, 55, METATILE_Mauville_DeepSand_Center},
-    {20, 55, METATILE_Mauville_DeepSand_Center},
-    {18, 56, METATILE_Mauville_DeepSand_Center},
-    {19, 56, METATILE_Mauville_DeepSand_Center},
-    {20, 56, METATILE_Mauville_DeepSand_Center},
-    {18, 57, METATILE_Mauville_DeepSand_BottomMid},
-    {19, 57, METATILE_Mauville_DeepSand_BottomMid},
-    {20, 57, METATILE_Mauville_DeepSand_BottomMid},
-    {18, 58, METATILE_General_SandPit_Center},
-    {19, 58, METATILE_General_SandPit_Center},
-    {20, 58, METATILE_General_SandPit_Center},
+    {
+        {18, 53, METATILE_Mauville_DeepSand_Center},
+        {19, 53, METATILE_Mauville_DeepSand_Center},
+        {20, 53, METATILE_Mauville_DeepSand_Center},
+        {18, 54, METATILE_Mauville_DeepSand_Center},
+        {19, 54, METATILE_Mauville_DeepSand_Center},
+        {20, 54, METATILE_Mauville_DeepSand_Center},
+        {18, 55, METATILE_Mauville_DeepSand_Center},
+        {19, 55, METATILE_Mauville_DeepSand_Center},
+        {20, 55, METATILE_Mauville_DeepSand_Center},
+        {18, 56, METATILE_Mauville_DeepSand_Center},
+        {19, 56, METATILE_Mauville_DeepSand_Center},
+        {20, 56, METATILE_Mauville_DeepSand_Center},
+        {18, 57, METATILE_Mauville_DeepSand_BottomMid},
+        {19, 57, METATILE_Mauville_DeepSand_BottomMid},
+        {20, 57, METATILE_Mauville_DeepSand_BottomMid},
+        {18, 58, METATILE_General_SandPit_Center},
+        {19, 58, METATILE_General_SandPit_Center},
+        {20, 58, METATILE_General_SandPit_Center},
 };
 
 static const union AnimCmd gSpriteAnim_8617DEC[] =
-{
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 1),
+        ANIMCMD_END,
 };
 
 static const struct OamData gOamData_8617DF4 =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(16x16),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 3,
-    .affineParam = 0,
+    {
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .mosaic = 0,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(16x16),
+        .x = 0,
+        .matrixNum = 0,
+        .size = SPRITE_SIZE(16x16),
+        .tileNum = 0,
+        .priority = 0,
+        .paletteNum = 3,
+        .affineParam = 0,
 };
 
 static const union AnimCmd *const gSpriteAnimTable_8617DFC[] =
-{
-    gSpriteAnim_8617DEC,
+    {
+        gSpriteAnim_8617DEC,
 };
 
 static const struct SpriteTemplate gUnknown_08617E00 =
-{
-    0xFFFF, 0xFFFF, &gOamData_8617DF4, gSpriteAnimTable_8617DFC, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy
-};
+    {
+        0xFFFF, 0xFFFF, &gOamData_8617DF4, gSpriteAnimTable_8617DFC, NULL, gDummySpriteAffineAnimTable, SpriteCallbackDummy};
 
 const struct PulseBlendSettings gMirageTowerPulseBlendSettings = {
     .blendColor = RGB(27, 25, 16),
@@ -175,31 +174,31 @@ const struct PulseBlendSettings gMirageTowerPulseBlendSettings = {
 };
 
 static const union AnimCmd sCeilingCrumble2AnimCmd[] =
-{
-    ANIMCMD_FRAME(0, 12),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(0, 12),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd *const sCeilingCrumble2AnimCmds[] =
-{
-    sCeilingCrumble2AnimCmd,
+    {
+        sCeilingCrumble2AnimCmd,
 };
 
 static const struct OamData sCeilingCrumble2OamData =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(8x8),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(8x8),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
+    {
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .mosaic = 0,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(8x8),
+        .x = 0,
+        .matrixNum = 0,
+        .size = SPRITE_SIZE(8x8),
+        .tileNum = 0,
+        .priority = 0,
+        .paletteNum = 0,
+        .affineParam = 0,
 };
 
 static const struct SpriteTemplate sCeilingCrumbleSpriteTemplate2 = {
@@ -209,35 +208,34 @@ static const struct SpriteTemplate sCeilingCrumbleSpriteTemplate2 = {
     .anims = sCeilingCrumble2AnimCmds,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = MoveCeilingCrumbleSprite
-};
+    .callback = MoveCeilingCrumbleSprite};
 
 static const union AnimCmd sCeilingCrumble1AnimCmd[] =
-{
-    ANIMCMD_FRAME(0, 12),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(0, 12),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd *const sCeilingCrumble1AnimCmds[] =
-{
-    sCeilingCrumble1AnimCmd,
+    {
+        sCeilingCrumble1AnimCmd,
 };
 
 static const struct OamData sCeilingCrumble1OamData =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(16x16),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0,
+    {
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .mosaic = 0,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(16x16),
+        .x = 0,
+        .matrixNum = 0,
+        .size = SPRITE_SIZE(16x16),
+        .tileNum = 0,
+        .priority = 0,
+        .paletteNum = 0,
+        .affineParam = 0,
 };
 
 static const struct SpriteTemplate sCeilingCrumbleSpriteTemplate1 = {
@@ -247,11 +245,10 @@ static const struct SpriteTemplate sCeilingCrumbleSpriteTemplate1 = {
     .anims = sCeilingCrumble1AnimCmds,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = MoveCeilingCrumbleSprite
-};
+    .callback = MoveCeilingCrumbleSprite};
 
-EWRAM_DATA static u8* sMirageTowerGfxBuffer = NULL;
-EWRAM_DATA static u8* sMirageTowerTilemapBuffer = NULL;
+EWRAM_DATA static u8 *sMirageTowerGfxBuffer = NULL;
+EWRAM_DATA static u8 *sMirageTowerTilemapBuffer = NULL;
 EWRAM_DATA static struct Struct203CF0C *sUnknown_0203CF0C = NULL;
 EWRAM_DATA static struct Struct203CF10 *sUnknown_0203CF10 = NULL;
 EWRAM_DATA static struct BgRegOffsets *sBgShakeOffsets = NULL;
@@ -259,10 +256,11 @@ EWRAM_DATA struct MirageTowerPulseBlend *sMirageTowerPulseBlend = NULL;
 
 static u16 gUnknown_030012A8[8];
 
+// MIGHT MODIFY
 bool8 IsMirageTowerVisible(void)
 {
-    if (!(gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE111) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE111)))
-        return FALSE;
+    // if (!(gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE111) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE111)))
+    //     return FALSE;
     return FlagGet(FLAG_MIRAGE_TOWER_VISIBLE);
 }
 
@@ -276,6 +274,7 @@ void ClearMirageTowerPulseBlend(void)
     sMirageTowerPulseBlend = NULL;
 }
 
+// MIGHT MODIFY
 void TryStartMirageTowerPulseBlendEffect(void)
 {
     if (sMirageTowerPulseBlend)
@@ -284,10 +283,8 @@ void TryStartMirageTowerPulseBlendEffect(void)
         return;
     }
 
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(ROUTE111)
-     || gSaveBlock1Ptr->location.mapNum != MAP_NUM(ROUTE111)
-     || !FlagGet(FLAG_MIRAGE_TOWER_VISIBLE))
-        return;
+    // if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(ROUTE111) || gSaveBlock1Ptr->location.mapNum != MAP_NUM(ROUTE111) || !FlagGet(FLAG_MIRAGE_TOWER_VISIBLE))
+    //     return;
 
     sMirageTowerPulseBlend = AllocZeroed(sizeof(*sMirageTowerPulseBlend));
     InitPulseBlend(&sMirageTowerPulseBlend->pulseBlend);
@@ -296,13 +293,11 @@ void TryStartMirageTowerPulseBlendEffect(void)
     sMirageTowerPulseBlend->taskId = CreateTask(UpdateMirageTowerPulseBlend, 0xFF);
 }
 
+// MIGHT MODIFY
 void ClearMirageTowerPulseBlendEffect(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(ROUTE111)
-     || gSaveBlock1Ptr->location.mapNum   != MAP_NUM(ROUTE111)
-     || !FlagGet(FLAG_MIRAGE_TOWER_VISIBLE)
-     || sMirageTowerPulseBlend == NULL)
-        return;
+    // if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(ROUTE111) || gSaveBlock1Ptr->location.mapNum != MAP_NUM(ROUTE111) || !FlagGet(FLAG_MIRAGE_TOWER_VISIBLE) || sMirageTowerPulseBlend == NULL)
+    //     return;
 
     if (FuncIsActiveTask(UpdateMirageTowerPulseBlend))
         DestroyTask(sMirageTowerPulseBlend->taskId);
@@ -447,11 +442,11 @@ static void CreateCeilingCrumbleSprites(void)
     }
 }
 
-static void MoveCeilingCrumbleSprite(struct Sprite* sprite)
+static void MoveCeilingCrumbleSprite(struct Sprite *sprite)
 {
     sprite->data[1] += 2;
     sprite->pos2.y = sprite->data[1] / 2;
-    if(((sprite->pos1.y) + (sprite->pos2.y)) >  sCeilingCrumblePositions[sprite->data[0]][2])
+    if (((sprite->pos1.y) + (sprite->pos2.y)) > sCeilingCrumblePositions[sprite->data[0]][2])
     {
         DestroySprite(sprite);
         IncrementCeilingCrumbleFinishedCount();
@@ -662,16 +657,16 @@ static void DoFossilFallAndSink(u8 taskId)
         sUnknown_0203CF0C->frameImage->size = ROOT_FOSSIL_GFX_LENGTH;
         break;
     case 4:
-        {
-            struct SpriteTemplate fossilTemplate;
+    {
+        struct SpriteTemplate fossilTemplate;
 
-            fossilTemplate = gUnknown_08617E00;
-            fossilTemplate.images = (struct SpriteFrameImage *)(sUnknown_0203CF0C->frameImage);
-            sUnknown_0203CF0C->spriteId = CreateSprite(&fossilTemplate, 128, -16, 1);
-            gSprites[sUnknown_0203CF0C->spriteId].centerToCornerVecX = 0;
-            gSprites[sUnknown_0203CF0C->spriteId].data[0] = gSprites[sUnknown_0203CF0C->spriteId].pos1.x;
-            gSprites[sUnknown_0203CF0C->spriteId].data[1] = 1;
-        }
+        fossilTemplate = gUnknown_08617E00;
+        fossilTemplate.images = (struct SpriteFrameImage *)(sUnknown_0203CF0C->frameImage);
+        sUnknown_0203CF0C->spriteId = CreateSprite(&fossilTemplate, 128, -16, 1);
+        gSprites[sUnknown_0203CF0C->spriteId].centerToCornerVecX = 0;
+        gSprites[sUnknown_0203CF0C->spriteId].data[0] = gSprites[sUnknown_0203CF0C->spriteId].pos1.x;
+        gSprites[sUnknown_0203CF0C->spriteId].data[1] = 1;
+    }
     case 5:
         for (i = 0; i < ROOT_FOSSIL_GFX_RANDOMIZER_LENGTH; i++)
             sUnknown_0203CF0C->unkC[i] = i;
@@ -691,7 +686,8 @@ static void DoFossilFallAndSink(u8 taskId)
         if (gSprites[sUnknown_0203CF0C->spriteId].callback != SpriteCallbackDummy)
             return;
         DestroySprite(&gSprites[sUnknown_0203CF0C->spriteId]);
-        FREE_AND_SET_NULL(sUnknown_0203CF0C->unkC);;
+        FREE_AND_SET_NULL(sUnknown_0203CF0C->unkC);
+        ;
         FREE_AND_SET_NULL(sUnknown_0203CF0C->frameImage);
         FREE_AND_SET_NULL(sUnknown_0203CF0C->frameImageTiles);
         FREE_AND_SET_NULL(sUnknown_0203CF0C);
@@ -724,7 +720,7 @@ static void sub_81BF248(struct Sprite *sprite)
     }
 }
 
-static void sub_81BF2B8(u8* a, u16 b, u8 c, u8 d, u8 e)
+static void sub_81BF2B8(u8 *a, u16 b, u8 c, u8 d, u8 e)
 {
     u8 r5, r4, r0, r2;
     u16 var, var2;
@@ -741,20 +737,20 @@ static void sub_81BF2B8(u8* a, u16 b, u8 c, u8 d, u8 e)
     r2_1 = r2 & 7;
     gUnknown_030012A8[2] = r4 & 7; //should be using r4_1, but that doesn't match
     gUnknown_030012A8[3] = r2 & 7; //"
-    
+
     r0 = r2 / 8;
     r5 = r4 / 8;
-    
+
     gUnknown_030012A8[4] = r2 / 8; //should be using r0, but that doesn't match
     gUnknown_030012A8[5] = r4 / 8; //should be using r5, but that doesn't match
 
     var = (d / 8) * (r5 * 64) + (r0 * 64);
     gUnknown_030012A8[6] = var;
-    
+
     var2 = var + ((r4_1 * 8) + r2_1);
     var2 /= 2;
     gUnknown_030012A8[7] = var + ((r4_1 * 8) + r2_1); //should be using var2 with var2 being divided afterwards, but that doesn't match
-    
+
     b2 = ((b % 2) ^ 1);
     c2 = (c << (b2 << 2)) | 15 << (((b2 ^ 1) << 2));
     a[var2 + (e * 32)] &= c2;

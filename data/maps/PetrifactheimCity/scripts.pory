@@ -1,0 +1,28 @@
+mapscripts PetrifactheimCity_MapScripts {}
+
+// GYM TRAINERS
+// 
+script PetrifactheimCity_EventScript_SurfTrainer1 {
+    trainerbattle_single(TRAINER_SURF_GYM_1, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
+    end
+}
+
+script PetrifactheimCity_EventScript_SurfTrainer2 {
+    trainerbattle_single(TRAINER_SURF_GYM_2, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
+    end
+}
+
+script PetrifactheimCity_EventScript_SurfTrainer3 {
+    trainerbattle_single(TRAINER_SURF_GYM_3, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
+    end
+}
+
+script PetrifactheimCity_EventScript_SurfTrainer4 {
+    trainerbattle_single(TRAINER_SURF_GYM_4, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
+    end
+}
+
+script PetrifactheimCity_EventScript_Maveri {
+    trainerbattle_single(TRAINER_MAVERI, "Surf is my favorite move!", "Guess I ll sleep with the fishes today...")
+    end
+}

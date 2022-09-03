@@ -7,7 +7,6 @@
 #include "script.h"
 #include "lottery_corner.h"
 #include "play_time.h"
-#include "mauville_old_man.h"
 #include "match_call.h"
 #include "lilycove_lady.h"
 #include "load_save.h"
@@ -60,10 +59,9 @@ EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
 
 // const rom data
 static const struct ContestWinner sContestWinnerPicDummy =
-{
-    .monName = _(""),
-    .trainerName = _("")
-};
+    {
+        .monName = _(""),
+        .trainerName = _("")};
 
 // code
 void SetTrainerId(u32 trainerId, u8 *dst)
@@ -191,7 +189,6 @@ void NewGameInitData(void)
     ClearPokeblocks();
     ClearDecorationInventories();
     InitEasyChatPhrases();
-    SetMauvilleOldMan();
     InitDewfordTrend();
     ResetFanClub();
     ResetLotteryCorner();
@@ -207,7 +204,7 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-    
+
     memset(gSaveBlock1Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock1Ptr->dexNavSearchLevels));
     gSaveBlock1Ptr->dexNavChain = 0;
 }

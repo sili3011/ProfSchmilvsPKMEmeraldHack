@@ -108,22 +108,6 @@ gSpecials:: @ 81DBA64
 	def_special DoWateringBerryTreeAnim
 	def_special ShowEasyChatScreen
 	def_special ShowEasyChatProfile
-	def_special ScrSpecial_GetCurrentMauvilleMan
-	def_special ScrSpecial_HasBardSongBeenChanged
-	def_special ScrSpecial_SaveBardSongLyrics
-	def_special ScrSpecial_GetHipsterSpokenFlag
-	def_special ScrSpecial_SetHipsterSpokenFlag
-	def_special ScrSpecial_HipsterTeachWord
-	def_special ScrSpecial_PlayBardSong
-	def_special ScrSpecial_SetMauvilleOldManObjEventGfx
-	def_special ScrSpecial_GenerateGiddyLine
-	def_special ScrSpecial_GiddyShouldTellAnotherTale
-	def_special ScrSpecial_StorytellerGetFreeStorySlot
-	def_special ScrSpecial_StorytellerDisplayStory
-	def_special ScrSpecial_StorytellerStoryListMenu
-	def_special ScrSpecial_StorytellerUpdateStat
-	def_special ScrSpecial_StorytellerInitializeRandomStat
-	def_special ScrSpecial_HasStorytellerAlreadyRecorded
 	def_special ScrSpecial_TraderMenuGetDecoration
 	def_special ScrSpecial_GetTraderTradedFlag
 	def_special ScrSpecial_DoesPlayerHaveNoDecorations
@@ -227,7 +211,6 @@ gSpecials:: @ 81DBA64
 	def_special ShowPokedexRatingMessage
 	def_special DoPCTurnOnEffect
 	def_special DoPCTurnOffEffect
-	def_special SetDeptStoreFloor
 	def_special DoLotteryCornerComputerEffect
 	def_special EndLotteryCornerComputerEffect
 	def_special ChooseMonForMoveRelearner
@@ -240,7 +223,6 @@ gSpecials:: @ 81DBA64
 	def_special Special_BeginCyclingRoadChallenge
 	def_special GetPlayerAvatarBike
 	def_special FinishCyclingRoadChallenge
-	def_special UpdateCyclingRoadState
 	def_special GetLeadMonFriendshipScore
 	def_special CallFrontierUtilFunc
 	def_special CallBattleTowerFunc
@@ -308,7 +290,6 @@ gSpecials:: @ 81DBA64
 	def_special Script_FacePlayer
 	def_special Script_ClearHeldMovement
 	def_special InitRoamer
-	def_special TryUpdateRusturfTunnelState
 	def_special IsGrassTypeInParty
 	def_special DoContestHallWarp
 	def_special PutZigzagoonInPlayerParty
@@ -343,8 +324,6 @@ gSpecials:: @ 81DBA64
 	def_special MoveOutOfSecretBaseFromOutside
 	def_special LoadPlayerBag
 	def_special Script_FadeOutMapMusic
-	def_special SetPacifidlogTMReceivedDay
-	def_special GetDaysUntilPacifidlogTMAvailable
 	def_special HasAllHoennMons
 	def_special MonOTNameNotPlayer
 	def_special BufferLottoTicketNumber
@@ -441,7 +420,6 @@ gSpecials:: @ 81DBA64
 	def_special IsDodrioInParty
 	def_special ShowDodrioBerryPickingRecords
 	def_special OffsetCameraForBattle
-	def_special GetDeptStoreDefaultFloorChoice
 	def_special BufferVarsForIVRater
 	def_special LinkContestWaitForConnection
 	def_special GetWirelessCommType

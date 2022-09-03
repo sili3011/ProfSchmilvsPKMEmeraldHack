@@ -741,7 +741,6 @@ extern const u8 gText_IcePunch48BP[];
 extern const u8 gText_ThunderPunch48BP[];
 extern const u8 gText_FirePunch48BP[];
 
-extern const u8 gText_SlateportCity[];
 extern const u8 gText_BattleFrontier[];
 extern const u8 gText_SouthernIsland[];
 extern const u8 gText_NavelRock[];
@@ -1056,7 +1055,6 @@ extern const u8 gText_PokenavRibbons_RibbonCheckButtons[];
 extern const u8 gText_Number2[];
 
 extern const u8 gText_Petalburg[];
-extern const u8 gText_Slateport[];
 extern const u8 gText_Enter2[];
 extern const u8 gText_Info2[];
 extern const u8 gText_WhatsAContest[];
@@ -1207,7 +1205,6 @@ extern const u8 gText_50CoinsAndPrice[];
 extern const u8 gText_500CoinsAndPrice[];
 extern const u8 gText_Excellent2[];
 extern const u8 gText_NotSoGood[];
-extern const u8 gText_LilycoveCity[];
 extern const u8 gText_Right[];
 extern const u8 gText_Left[];
 extern const u8 gText_RedShard[];
@@ -3027,5 +3024,8 @@ extern const u8 gText_Summary2[];
 extern const u8 gText_PkmnForSwap[];
 extern const u8 gText_SamePkmnInPartyAlready[];
 extern const u8 gText_Cancel3[];
+
+// Skili additions
+extern const u8 gText_ActFieldMoves[];
 
 #endif // GUARD_STRINGS_H

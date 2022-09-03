@@ -47,7 +47,7 @@ EWRAM_DATA static u32 sFeebasRngValue = 0;
 
 #include "data/wild_encounters.h"
 
-//Special Feebas-related data.
+// Special Feebas-related data.
 const struct WildPokemon gWildFeebasRoute119Data = {20, 25, SPECIES_FEEBAS};
 
 const u16 gRoute119WaterTileData[] =
@@ -93,6 +93,7 @@ static u16 GetRoute119WaterTileNum(s16 x, s16 y, u8 section)
     return tileNum + 1;
 }
 
+// MIGHT MODIFY
 static bool8 CheckFeebas(void)
 {
     u8 i;
@@ -102,38 +103,39 @@ static bool8 CheckFeebas(void)
     u8 route119Section = 0;
     u16 waterTileNum;
 
-    if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE119) && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE119))
-    {
-        GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
-        x -= 7;
-        y -= 7;
+    // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ROUTE119)
+    //  && gSaveBlock1Ptr->location.mapNum == MAP_NUM(ROUTE119))
+    // {
+    //     GetXYCoordsOneStepInFrontOfPlayer(&x, &y);
+    //     x -= 7;
+    //     y -= 7;
 
-        if (y >= gRoute119WaterTileData[3 * 0 + 0] && y <= gRoute119WaterTileData[3 * 0 + 1])
-            route119Section = 0;
-        if (y >= gRoute119WaterTileData[3 * 1 + 0] && y <= gRoute119WaterTileData[3 * 1 + 1])
-            route119Section = 1;
-        if (y >= gRoute119WaterTileData[3 * 2 + 0] && y <= gRoute119WaterTileData[3 * 2 + 1])
-            route119Section = 2;
+    //     if (y >= gRoute119WaterTileData[3 * 0 + 0] && y <= gRoute119WaterTileData[3 * 0 + 1])
+    //         route119Section = 0;
+    //     if (y >= gRoute119WaterTileData[3 * 1 + 0] && y <= gRoute119WaterTileData[3 * 1 + 1])
+    //         route119Section = 1;
+    //     if (y >= gRoute119WaterTileData[3 * 2 + 0] && y <= gRoute119WaterTileData[3 * 2 + 1])
+    //         route119Section = 2;
 
-        if (Random() % 100 > 49) // 50% chance of encountering Feebas
-            return FALSE;
+    //     if (Random() % 100 > 49) // 50% chance of encountering Feebas
+    //         return FALSE;
 
-        FeebasSeedRng(gSaveBlock1Ptr->easyChatPairs[0].unk2);
-        for (i = 0; i != NUM_FEEBAS_SPOTS;)
-        {
-            feebasSpots[i] = FeebasRandom() % 447;
-            if (feebasSpots[i] == 0)
-                feebasSpots[i] = 447;
-            if (feebasSpots[i] < 1 || feebasSpots[i] >= 4)
-                i++;
-        }
-        waterTileNum = GetRoute119WaterTileNum(x, y, route119Section);
-        for (i = 0; i < NUM_FEEBAS_SPOTS; i++)
-        {
-            if (waterTileNum == feebasSpots[i])
-                return TRUE;
-        }
-    }
+    //     FeebasSeedRng(gSaveBlock1Ptr->easyChatPairs[0].unk2);
+    //     for (i = 0; i != NUM_FEEBAS_SPOTS;)
+    //     {
+    //         feebasSpots[i] = FeebasRandom() % 447;
+    //         if (feebasSpots[i] == 0)
+    //             feebasSpots[i] = 447;
+    //         if (feebasSpots[i] < 1 || feebasSpots[i] >= 4)
+    //             i++;
+    //     }
+    //     waterTileNum = GetRoute119WaterTileNum(x, y, route119Section);
+    //     for (i = 0; i < NUM_FEEBAS_SPOTS; i++)
+    //     {
+    //         if (waterTileNum == feebasSpots[i])
+    //             return TRUE;
+    //     }
+    // }
     return FALSE;
 }
 
@@ -530,11 +532,6 @@ static bool8 DoGlobalWildEncounterDiceRoll(void)
 
 static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
 {
-    if (gSaveBlock1Ptr->location.mapGroup != MAP_GROUP(SOOTOPOLIS_CITY) || gSaveBlock1Ptr->location.mapNum != MAP_NUM(SOOTOPOLIS_CITY))
-    {
-        return FALSE;
-    }
-
     return FlagGet(FLAG_LEGENDARIES_IN_SOOTOPOLIS);
 }
 
@@ -629,9 +626,7 @@ bool8 StandardWildEncounter(u16 currMetaTileBehavior, u16 previousMetaTileBehavi
         }
         else if (MetatileBehavior_IsWaterWildEncounter(currMetaTileBehavior) == TRUE || (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING) && MetatileBehavior_IsBridge(currMetaTileBehavior) == TRUE))
         {
-            if (AreLegendariesInSootopolisPreventingEncounters() == TRUE)
-                return FALSE;
-            else if (gWildMonHeaders[headerId].waterMonsInfo == NULL)
+            if (gWildMonHeaders[headerId].waterMonsInfo == NULL)
                 return FALSE;
             else if (previousMetaTileBehavior != currMetaTileBehavior && !DoGlobalWildEncounterDiceRoll())
                 return FALSE;
@@ -755,8 +750,6 @@ bool8 SweetScentWildEncounter(void)
         }
         else if (MetatileBehavior_IsWaterWildEncounter(MapGridGetMetatileBehaviorAt(x, y)) == TRUE)
         {
-            if (AreLegendariesInSootopolisPreventingEncounters() == TRUE)
-                return FALSE;
             if (gWildMonHeaders[headerId].waterMonsInfo == NULL)
                 return FALSE;
 

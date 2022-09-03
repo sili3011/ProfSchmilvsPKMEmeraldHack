@@ -444,7 +444,7 @@ struct ApprenticeQuestion
 struct PlayersApprentice
 {
     /*0xB0*/ u8 id;
-    /*0xB1*/ u8 lvlMode : 2; //0: Unassigned, 1: Lv 50, 2: Open Lv
+    /*0xB1*/ u8 lvlMode : 2; // 0: Unassigned, 1: Lv 50, 2: Open Lv
     /*0xB1*/ u8 questionsAnswered : 4;
     /*0xB1*/ u8 leadMonId : 2;
     /*0xB2*/ u8 party : 3;
@@ -622,76 +622,11 @@ struct MailStruct
     /*0x20*/ u16 itemId;
 };
 
-struct MauvilleManCommon
-{
-    u8 id;
-};
-
-struct MauvilleManBard
-{
-    /*0x00*/ u8 id;
-    /*0x02*/ u16 songLyrics[BARD_SONG_LENGTH];
-    /*0x0E*/ u16 temporaryLyrics[BARD_SONG_LENGTH];
-    /*0x1A*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
-    /*0x22*/ u8 filler_2DB6[0x3];
-    /*0x25*/ u8 playerTrainerId[TRAINER_ID_LENGTH];
-    /*0x29*/ bool8 hasChangedSong;
-    /*0x2A*/ u8 language;
-}; /*size = 0x2C*/
-
-struct MauvilleManStoryteller
-{
-    u8 id;
-    bool8 alreadyRecorded;
-    u8 filler2[2];
-    u8 gameStatIDs[NUM_STORYTELLER_TALES];
-    u8 trainerNames[NUM_STORYTELLER_TALES][PLAYER_NAME_LENGTH];
-    u8 statValues[NUM_STORYTELLER_TALES][4];
-    u8 language[NUM_STORYTELLER_TALES];
-};
-
-struct MauvilleManGiddy
-{
-    /*0x00*/ u8 id;
-    /*0x01*/ u8 taleCounter;
-    /*0x02*/ u8 questionNum;
-    /*0x04*/ u16 randomWords[10];
-    /*0x18*/ u8 questionList[8];
-    /*0x20*/ u8 language;
-}; /*size = 0x2C*/
-
-struct MauvilleManHipster
-{
-    u8 id;
-    bool8 alreadySpoken;
-    u8 language;
-};
-
-struct MauvilleOldManTrader
-{
-    u8 id;
-    u8 decorations[NUM_TRADER_ITEMS];
-    u8 playerNames[NUM_TRADER_ITEMS][11];
-    u8 alreadyTraded;
-    u8 language[NUM_TRADER_ITEMS];
-};
-
-typedef union OldMan
-{
-    struct MauvilleManCommon common;
-    struct MauvilleManBard bard;
-    struct MauvilleManGiddy giddy;
-    struct MauvilleManHipster hipster;
-    struct MauvilleOldManTrader trader;
-    struct MauvilleManStoryteller storyteller;
-    u8 filler[0x40];
-} OldMan;
-
 struct RecordMixing_UnknownStructSub
 {
     u32 unk0;
     u8 data[0x34];
-    //u8 data[0x38];
+    // u8 data[0x38];
 };
 
 struct RecordMixing_UnknownStruct
@@ -992,7 +927,7 @@ struct SaveBlock1
     /*0x2BE0*/ struct MailStruct mail[MAIL_COUNT];
     /*0x2E20*/ u8 additionalPhrases[8]; // bitfield for 33 additional phrases in easy chat system
     /*0x2E28*/ OldMan oldMan;
-    /*0x2e64*/ struct EasyChatPair easyChatPairs[5];                     //Dewford trend [0] and some other stuff
+    /*0x2e64*/ struct EasyChatPair easyChatPairs[5];                     // Dewford trend [0] and some other stuff
     /*0x2e90*/ struct ContestWinner contestWinners[NUM_CONTEST_WINNERS]; // see CONTEST_WINNER_*
     /*0x3030*/ struct DayCare daycare;
     /*0x3150*/ struct LinkBattleRecords linkBattleRecords;
