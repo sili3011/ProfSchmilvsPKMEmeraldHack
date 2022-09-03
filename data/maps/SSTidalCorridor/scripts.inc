@@ -7,28 +7,8 @@ SSTidalCorridor_MapScripts:: @ 823BFCF
 
 SSTidalCorridor_OnFrame: @ 823BFD5
 	map_script_2 VAR_SS_TIDAL_SCOTT_STATE, 0, SSTidalCorridor_EventScript_ScottScene
-	map_script_2 VAR_SS_TIDAL_STATE, SS_TIDAL_BOARD_SLATEPORT, SSTidalCorridor_EventScript_DepartSlateportForLilycove
-	map_script_2 VAR_SS_TIDAL_STATE, SS_TIDAL_BOARD_LILYCOVE, SSTidalCorridor_EventScript_DepartLilycoveForSlateport
-	map_script_2 VAR_SS_TIDAL_STATE, SS_TIDAL_EXIT_CURRENTS_RIGHT, SSTidalCorridor_EventScript_HalfwayToLilycove
 	map_script_2 VAR_SS_TIDAL_STATE, SS_TIDAL_EXIT_CURRENTS_LEFT, SSTidalCorridor_EventScript_ArrivedInSlateport
 	.2byte 0
-
-SSTidalCorridor_EventScript_DepartSlateportForLilycove:: @ 823BFFF
-	special SetSSTidalFlag
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_DEPART_SLATEPORT
-	lockall
-	playse SE_DING_DONG
-	msgbox SSTidal_Text_FastCurrentsHopeYouEnjoyVoyage, MSGBOX_DEFAULT
-	releaseall
-	end
-
-SSTidalCorridor_EventScript_DepartLilycoveForSlateport:: @ 823C015
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_DEPART_LILYCOVE
-	lockall
-	playse SE_DING_DONG
-	msgbox SSTidal_Text_HopeYouEnjoyVoyage, MSGBOX_DEFAULT
-	releaseall
-	end
 
 SSTidalRooms_EventScript_HalfwayToSlateport:: @ 823C028
 	special SetSSTidalFlag
@@ -36,29 +16,6 @@ SSTidalRooms_EventScript_HalfwayToSlateport:: @ 823C028
 	playse SE_DING_DONG
 	msgbox SSTidal_Text_FastCurrentsHopeYouEnjoyVoyage, MSGBOX_DEFAULT
 	return
-
-SSTidalRooms_EventScript_ArrivedInLilycove:: @ 823C03C
-	special ResetSSTidalFlag
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_LAND_LILYCOVE
-	playse SE_DING_DONG
-	msgbox SSTidal_Text_MadeLandInLilycove, MSGBOX_DEFAULT
-	return
-
-SSTidalCorridor_EventScript_ReachedStepCount:: @ 823C050
-	compare VAR_SS_TIDAL_STATE, SS_TIDAL_DEPART_SLATEPORT
-	goto_if_eq SSTidalCorridor_EventScript_HalfwayToLilycove
-	compare VAR_SS_TIDAL_STATE, SS_TIDAL_HALFWAY_SLATEPORT
-	goto_if_eq SSTidalCorridor_EventScript_ArrivedInSlateport
-	end
-
-SSTidalCorridor_EventScript_HalfwayToLilycove:: @ 823C067
-	special ResetSSTidalFlag
-	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_HALFWAY_LILYCOVE
-	lockall
-	playse SE_DING_DONG
-	msgbox SSTidal_Text_HopeYouEnjoyVoyage, MSGBOX_DEFAULT
-	releaseall
-	end
 
 SSTidalCorridor_EventScript_ArrivedInSlateport:: @ 823C07D
 	special ResetSSTidalFlag
@@ -74,14 +31,6 @@ SSTidalRooms_EventScript_ArrivedInSlateport:: @ 823C093
 	setvar VAR_SS_TIDAL_STATE, SS_TIDAL_LAND_SLATEPORT
 	playse SE_DING_DONG
 	msgbox SSTidal_Text_MadeLandInSlateport, MSGBOX_DEFAULT
-	return
-
-SSTidalRooms_EventScript_ProgessCruiseAfterBed:: @ 823C0A7
-	switch VAR_SS_TIDAL_STATE
-	case SS_TIDAL_DEPART_SLATEPORT, SSTidalRooms_EventScript_ArrivedInLilycove
-	case SS_TIDAL_HALFWAY_LILYCOVE, SSTidalRooms_EventScript_ArrivedInLilycove
-	case SS_TIDAL_DEPART_LILYCOVE, SSTidalRooms_EventScript_HalfwayToSlateport
-	case SS_TIDAL_HALFWAY_SLATEPORT, SSTidalRooms_EventScript_ArrivedInSlateport
 	return
 
 SSTidalCorridor_EventScript_Briney:: @ 823C0D9
@@ -117,29 +66,8 @@ SSTidalCorridor_EventScript_Cabin4Sign:: @ 823C110
 SSTidalCorridor_EventScript_ExitSailor:: @ 823C119
 	lock
 	faceplayer
-	compare VAR_SS_TIDAL_STATE, SS_TIDAL_LAND_LILYCOVE
-	goto_if_eq SSTidalCorridor_EventScript_ExitLilycove
 	compare VAR_SS_TIDAL_STATE, SS_TIDAL_LAND_SLATEPORT
-	goto_if_eq SSTidalCorridor_EventScript_ExitSlateport
 	msgbox SSTidalCorridor_Text_CanRestInCabin2, MSGBOX_DEFAULT
-	release
-	end
-
-SSTidalCorridor_EventScript_ExitLilycove:: @ 823C13B
-	setrespawn HEAL_LOCATION_LILYCOVE_CITY
-	msgbox SSTidalCorridor_Text_WeveArrived, MSGBOX_DEFAULT
-	call_if_set FLAG_RECEIVED_TM49, SSTidalCorridor_EventScript_HideSnatchGiver
-	warp MAP_LILYCOVE_CITY_HARBOR, 255, 8, 11
-	waitstate
-	release
-	end
-
-SSTidalCorridor_EventScript_ExitSlateport:: @ 823C15A
-	setrespawn HEAL_LOCATION_SLATEPORT_CITY
-	msgbox SSTidalCorridor_Text_WeveArrived, MSGBOX_DEFAULT
-	call_if_set FLAG_RECEIVED_TM49, SSTidalCorridor_EventScript_HideSnatchGiver
-	warp MAP_SLATEPORT_CITY_HARBOR, 255, 8, 11
-	waitstate
 	release
 	end
 
@@ -291,10 +219,6 @@ SSTidal_Text_HopeYouEnjoyVoyage: @ 823C4E3
 
 SSTidal_Text_MadeLandInSlateport: @ 823C50F
 	.string "We have made land in SLATEPORT CITY.\n"
-	.string "Thank you for sailing with us.$"
-
-SSTidal_Text_MadeLandInLilycove: @ 823C553
-	.string "We have made land in LILYCOVE CITY.\n"
 	.string "Thank you for sailing with us.$"
 
 SSTidalCorridor_Text_CanRestInCabin2: @ 823C596

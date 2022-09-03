@@ -61,45 +61,42 @@ static u16 sRandMonSetId;
 
 // const rom data
 void static (*const sVerdanturfTentFuncs[])(void) =
-{
-    [VERDANTURF_TENT_FUNC_INIT]               = InitVerdanturfTentChallenge,
-    [VERDANTURF_TENT_FUNC_GET_PRIZE]          = GetVerdanturfTentPrize,
-    [VERDANTURF_TENT_FUNC_SET_PRIZE]          = SetVerdanturfTentPrize,
-    [VERDANTURF_TENT_FUNC_SET_OPPONENT_GFX]   = SetVerdanturfTentTrainerGfx,
-    [VERDANTURF_TENT_FUNC_GET_OPPONENT_INTRO] = BufferVerdanturfTentTrainerIntro,
-    [VERDANTURF_TENT_FUNC_SAVE]               = SaveVerdanturfTentChallenge,
-    [VERDANTURF_TENT_FUNC_SET_RANDOM_PRIZE]   = SetRandomVerdanturfTentPrize,
-    [VERDANTURF_TENT_FUNC_GIVE_PRIZE]         = GiveVerdanturfTentPrize
-};
+    {
+        [VERDANTURF_TENT_FUNC_INIT] = InitVerdanturfTentChallenge,
+        [VERDANTURF_TENT_FUNC_GET_PRIZE] = GetVerdanturfTentPrize,
+        [VERDANTURF_TENT_FUNC_SET_PRIZE] = SetVerdanturfTentPrize,
+        [VERDANTURF_TENT_FUNC_SET_OPPONENT_GFX] = SetVerdanturfTentTrainerGfx,
+        [VERDANTURF_TENT_FUNC_GET_OPPONENT_INTRO] = BufferVerdanturfTentTrainerIntro,
+        [VERDANTURF_TENT_FUNC_SAVE] = SaveVerdanturfTentChallenge,
+        [VERDANTURF_TENT_FUNC_SET_RANDOM_PRIZE] = SetRandomVerdanturfTentPrize,
+        [VERDANTURF_TENT_FUNC_GIVE_PRIZE] = GiveVerdanturfTentPrize};
 
 static const u16 sVerdanturfTentRewards[] = {ITEM_NEST_BALL};
 
 void static (*const sFallarborTentFuncs[])(void) =
-{
-    [FALLARBOR_TENT_FUNC_INIT]              = InitFallarborTentChallenge,
-    [FALLARBOR_TENT_FUNC_GET_PRIZE]         = GetFallarborTentPrize,
-    [FALLARBOR_TENT_FUNC_SET_PRIZE]         = SetFallarborTentPrize,
-    [FALLARBOR_TENT_FUNC_SAVE]              = SaveFallarborTentChallenge,
-    [FALLARBOR_TENT_FUNC_SET_RANDOM_PRIZE]  = SetRandomFallarborTentPrize,
-    [FALLARBOR_TENT_FUNC_GIVE_PRIZE]        = GiveFallarborTentPrize,
-    [FALLARBOR_TENT_FUNC_GET_OPPONENT_NAME] = BufferFallarborTentTrainerName
-};
+    {
+        [FALLARBOR_TENT_FUNC_INIT] = InitFallarborTentChallenge,
+        [FALLARBOR_TENT_FUNC_GET_PRIZE] = GetFallarborTentPrize,
+        [FALLARBOR_TENT_FUNC_SET_PRIZE] = SetFallarborTentPrize,
+        [FALLARBOR_TENT_FUNC_SAVE] = SaveFallarborTentChallenge,
+        [FALLARBOR_TENT_FUNC_SET_RANDOM_PRIZE] = SetRandomFallarborTentPrize,
+        [FALLARBOR_TENT_FUNC_GIVE_PRIZE] = GiveFallarborTentPrize,
+        [FALLARBOR_TENT_FUNC_GET_OPPONENT_NAME] = BufferFallarborTentTrainerName};
 
 static const u16 sFallarborTentRewards[] = {ITEM_HYPER_POTION};
 
 void static (*const sSlateportTentFuncs[])(void) =
-{
-    [SLATEPORT_TENT_FUNC_INIT]                   = InitSlateportTentChallenge,
-    [SLATEPORT_TENT_FUNC_GET_PRIZE]              = GetSlateportTentPrize,
-    [SLATEPORT_TENT_FUNC_SET_PRIZE]              = SetSlateportTentPrize,
-    [SLATEPORT_TENT_FUNC_SAVE]                   = SaveSlateportTentChallenge,
-    [SLATEPORT_TENT_FUNC_SET_RANDOM_PRIZE]       = SetRandomSlateportTentPrize,
-    [SLATEPORT_TENT_FUNC_GIVE_PRIZE]             = GiveSlateportTentPrize,
-    [SLATEPORT_TENT_FUNC_SELECT_RENT_MONS]       = SelectInitialRentalMons,
-    [SLATEPORT_TENT_FUNC_SWAP_RENT_MONS]         = SwapRentalMons,
-    [SLATEPORT_TENT_FUNC_GENERATE_OPPONENT_MONS] = GenerateOpponentMons,
-    [SLATEPORT_TENT_FUNC_GENERATE_RENTAL_MONS]   = GenerateInitialRentalMons
-};
+    {
+        [SLATEPORT_TENT_FUNC_INIT] = InitSlateportTentChallenge,
+        [SLATEPORT_TENT_FUNC_GET_PRIZE] = GetSlateportTentPrize,
+        [SLATEPORT_TENT_FUNC_SET_PRIZE] = SetSlateportTentPrize,
+        [SLATEPORT_TENT_FUNC_SAVE] = SaveSlateportTentChallenge,
+        [SLATEPORT_TENT_FUNC_SET_RANDOM_PRIZE] = SetRandomSlateportTentPrize,
+        [SLATEPORT_TENT_FUNC_GIVE_PRIZE] = GiveSlateportTentPrize,
+        [SLATEPORT_TENT_FUNC_SELECT_RENT_MONS] = SelectInitialRentalMons,
+        [SLATEPORT_TENT_FUNC_SWAP_RENT_MONS] = SwapRentalMons,
+        [SLATEPORT_TENT_FUNC_GENERATE_OPPONENT_MONS] = GenerateOpponentMons,
+        [SLATEPORT_TENT_FUNC_GENERATE_RENTAL_MONS] = GenerateInitialRentalMons};
 
 static const u16 sSlateportTentRewards[] = {ITEM_FULL_HEAL};
 
@@ -280,12 +277,6 @@ static void SelectInitialRentalMons(void)
 static void SwapRentalMons(void)
 {
     DoBattleFactorySwapScreen();
-}
-
-bool8 InSlateportBattleTent(void)
-{
-    return gMapHeader.regionMapSectionId == MAPSEC_SLATEPORT_CITY
-           && (gMapHeader.mapLayoutId == LAYOUT_BATTLE_TENT_CORRIDOR || gMapHeader.mapLayoutId == LAYOUT_BATTLE_TENT_BATTLE_ROOM);
 }
 
 static void GenerateInitialRentalMons(void)

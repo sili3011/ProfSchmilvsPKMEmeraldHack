@@ -258,6 +258,7 @@ static bool8 CanLearnTutorMove(u16, u8);
 static u16 GetTutorMove(u8);
 static bool8 ShouldUseChooseMonText(void);
 static void SetPartyMonFieldSelectionActions(struct Pokemon *, u8);
+static void SetPartyMonActSelectionActions(struct Pokemon *, u8);
 static u8 GetPartyMenuActionsTypeInBattle(struct Pokemon *);
 static u8 GetPartySlotEntryStatus(s8);
 static void Task_UpdateHeldItemSprite(u8);
@@ -401,6 +402,7 @@ static void CursorCb_Trade1(u8);
 static void CursorCb_Trade2(u8);
 static void CursorCb_Toss(u8);
 static void CursorCb_FieldMove(u8);
+static void CursorCb_Act(u8);
 static bool8 SetUpFieldMove_Surf(void);
 static bool8 SetUpFieldMove_Ride(void);
 static bool8 SetUpFieldMove_Fly(void);
@@ -2458,6 +2460,9 @@ static u8 DisplaySelectionWindow(u8 windowType)
     case SELECTWINDOW_ACTIONS:
         SetWindowTemplateFields(&window, 2, 19, 19 - (sPartyMenuInternal->numActions * 2), 10, sPartyMenuInternal->numActions * 2, 14, 0x2E9);
         break;
+    case SELECTWINDOW_ACT:
+        SetWindowTemplateFields(&window, 2, 19, 19 - (sPartyMenuInternal->numActions * 2), 10, sPartyMenuInternal->numActions * 2, 14, 0x2E9);
+        break;
     case SELECTWINDOW_ITEM:
         window = sItemGiveTakeWindowTemplate;
         break;
@@ -2521,6 +2526,10 @@ static void SetPartyMonSelectionActions(struct Pokemon *mons, u8 slotId, u8 acti
     {
         SetPartyMonFieldSelectionActions(mons, slotId);
     }
+    else if (action == ACTIONS_ACT)
+    {
+        SetPartyMonActSelectionActions(mons, slotId);
+    }
     else
     {
         sPartyMenuInternal->numActions = sPartyMenuActionCounts[action];
@@ -2541,29 +2550,14 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
 
     // PUT FIELD MOVE CONDITIONS HERE
 
-    // CUT
-    if (CanSpeciesLearnTMHM(species, ITEM_HM01_CUT - ITEM_TM01_FOCUS_PUNCH))
-    {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 0 + MENU_FIELD_MOVES);
-    }
-
-    // FLASH
-    if (CanSpeciesLearnTMHM(species, ITEM_HM05_FLASH - ITEM_TM01_FOCUS_PUNCH))
-    {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
-    }
-
-    // ROCKSMASH
-    if (CanSpeciesLearnTMHM(species, ITEM_HM06_ROCK_SMASH - ITEM_TM01_FOCUS_PUNCH))
-    {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 2 + MENU_FIELD_MOVES);
-    }
+    // ACT
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MEUN_ACT_FIELD_MOVES);
 
     // STRENGTH
-    if (CanSpeciesLearnTMHM(species, ITEM_HM04_STRENGTH - ITEM_TM01_FOCUS_PUNCH))
-    {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 3 + MENU_FIELD_MOVES);
-    }
+    // if (CanSpeciesLearnTMHM(species, ITEM_HM04_STRENGTH - ITEM_TM01_FOCUS_PUNCH))
+    // {
+    //     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 3 + MENU_FIELD_MOVES);
+    // }
 
     // SURF
     if (CanSpeciesLearnTMHM(species, ITEM_HM03_SURF - ITEM_TM01_FOCUS_PUNCH))
@@ -2592,7 +2586,7 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     // DIG
     if (CanSpeciesLearnTMHM(species, ITEM_TM28_DIG - ITEM_TM01_FOCUS_PUNCH))
     {
-        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 8 + MENU_FIELD_MOVES);
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 9 + MENU_FIELD_MOVES);
     }
 
     // RIDE
@@ -2609,6 +2603,38 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_MAIL);
         else
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
+    }
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
+}
+
+static void SetPartyMonActSelectionActions(struct Pokemon *mons, u8 slotId)
+{
+    u8 i, j;
+    u16 species;
+
+    sPartyMenuInternal->numActions = 0;
+    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
+
+    species = GetMonData(&mons[slotId], MON_DATA_SPECIES);
+
+    // PUT FIELD MOVE CONDITIONS HERE
+
+    // CUT
+    if (CanSpeciesLearnTMHM(species, ITEM_HM01_CUT - ITEM_TM01_FOCUS_PUNCH))
+    {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 0 + MENU_FIELD_MOVES);
+    }
+
+    // FLASH
+    if (CanSpeciesLearnTMHM(species, ITEM_HM05_FLASH - ITEM_TM01_FOCUS_PUNCH))
+    {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
+    }
+
+    // ROCKSMASH
+    if (CanSpeciesLearnTMHM(species, ITEM_HM06_ROCK_SMASH - ITEM_TM01_FOCUS_PUNCH))
+    {
+        AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 2 + MENU_FIELD_MOVES);
     }
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
 }
@@ -2656,6 +2682,9 @@ static u8 GetPartyMenuActionsType(struct Pokemon *mon)
         break;
     case PARTY_MENU_TYPE_STORE_PYRAMID_HELD_ITEMS:
         actionType = ACTIONS_TAKEITEM_TOSS;
+        break;
+    case PARTY_MENU_TYPE_ACT:
+        actionType = ACTIONS_ACT;
         break;
     // The following have no selection actions (i.e. they exit immediately upon selection)
     // PARTY_MENU_TYPE_CONTEST
@@ -3045,6 +3074,11 @@ static void CursorCb_Cancel1(u8 taskId)
         DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON_2);
     else
         DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON);
+    // if (gPartyMenu.menuType == PARTY_MENU_TYPE_ACT)
+    // {
+    //     SetPartyMonSelectionActions(gPlayerParty, gPartyMenu.slotId, ACTIONS_NONE);
+    //     DisplaySelectionWindow(SELECTWINDOW_ACTIONS);
+    // }
     gTasks[taskId].func = Task_HandleChooseMonInput;
 }
 
@@ -3065,6 +3099,16 @@ static void CursorCb_Give(u8 taskId)
     PlaySE(SE_SELECT);
     sPartyMenuInternal->exitCallback = CB2_SelectBagItemToGive;
     Task_ClosePartyMenu(taskId);
+}
+
+static void CursorCb_Act(u8 taskId)
+{
+    PlaySE(SE_SELECT);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+    SetPartyMonSelectionActions(gPlayerParty, gPartyMenu.slotId, ACTIONS_ACT);
+    DisplaySelectionWindow(SELECTWINDOW_ACT);
+    DisplayPartyMenuStdMessage(PARTY_MSG_DO_WHAT_WITH_MON);
 }
 
 static void CB2_SelectBagItemToGive(void)
@@ -3831,7 +3875,7 @@ static void FieldCallback_Surf(void)
 static void FieldCallback_Ride(void)
 {
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
-    FieldEffectStart(FLDEFF_USE_RIDE);
+    FieldEffectStart(FLDEFF_USE_SURF);
 }
 
 static bool8 SetUpFieldMove_Surf(void)
@@ -3850,7 +3894,7 @@ static bool8 SetUpFieldMove_Ride(void)
     if (IsPlayerFacingSurfableFishableWater() == FALSE)
     {
         gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
-        gPostMenuFieldCallback = FieldCallback_Surf;
+        gPostMenuFieldCallback = FieldCallback_Ride;
         return TRUE;
     }
     return FALSE;

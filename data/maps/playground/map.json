@@ -3,7 +3,7 @@
   "name": "playground",
   "layout": "LAYOUT_PLAYGROUND",
   "music": "MUS_ABANDONED_SHIP",
-  "region_map_section": "MAPSEC_NONE",
+  "region_map_section": "MAPSEC_PLAYGROUND",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_CITY",
@@ -50,7 +50,7 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "4",
-      "script": "playground_EventScript_Mavera",
+      "script": "playground_EventScript_Maveri",
       "flag": "0"
     },
     {
@@ -99,6 +99,13 @@
       "y": 4,
       "elevation": 0,
       "dest_map": "MAP_PLAYGROUND",
+      "dest_warp_id": 0
+    },
+    {
+      "x": 30,
+      "y": 8,
+      "elevation": 0,
+      "dest_map": "MAP_ROUTE01",
       "dest_warp_id": 0
     }
   ],

@@ -56,14 +56,14 @@ static u8 windid2;
 extern const u8 sMapHealLocations[][3];
 
 static const struct WindowTemplate sPopupWindowTemplate =
-{
-	0, // BG number
-	1, // tilemap left coordinate
-	1, // tilemap top coordinate
-	12, // width
-	2, // height
-	15, // palette number
-	BG0_TILEMAP_OFFSET / 0x800, // BG screen base block
+	{
+		0,							// BG number
+		1,							// tilemap left coordinate
+		1,							// tilemap top coordinate
+		12,							// width
+		2,							// height
+		15,							// palette number
+		BG0_TILEMAP_OFFSET / 0x800, // BG screen base block
 };
 
 // For now, just use the region map graphics
@@ -88,31 +88,31 @@ static const u32 sEonMaySpriteTiles2[] = INCBIN_U32("graphics/soar/latios_may.4b
 static const u32 sEonMaySpritePaletteData2[] = INCBIN_U32("graphics/soar/latios_may.gbapal.lz");
 
 static const struct OamData sEonSpriteOamData =
-{
-	.y = 0,
-	.affineMode = 3,
-	.objMode = 0,
-	.mosaic = 0,
-	.bpp = 0,
-	.shape = 1,
-	.x = 0,
-	.matrixNum = 0,
-	.size = 3,
-	.tileNum = 0,
-	.priority = 0,
-	.paletteNum = 0,
-	.affineParam = 0,
+	{
+		.y = 0,
+		.affineMode = 3,
+		.objMode = 0,
+		.mosaic = 0,
+		.bpp = 0,
+		.shape = 1,
+		.x = 0,
+		.matrixNum = 0,
+		.size = 3,
+		.tileNum = 0,
+		.priority = 0,
+		.paletteNum = 0,
+		.affineParam = 0,
 };
 
 static const struct SpriteTemplate sEonSpriteTemplate =
-{
-	.tileTag = GFX_TAG_EON,
-	.paletteTag = GFX_TAG_EON,
-	.oam = &sEonSpriteOamData,
-	.anims = gDummySpriteAnimTable,
-	.images = NULL,
-	.affineAnims = NULL,
-	.callback = SpriteCallbackDummy,
+	{
+		.tileTag = GFX_TAG_EON,
+		.paletteTag = GFX_TAG_EON,
+		.oam = &sEonSpriteOamData,
+		.anims = gDummySpriteAnimTable,
+		.images = NULL,
+		.affineAnims = NULL,
+		.callback = SpriteCallbackDummy,
 };
 
 //
@@ -125,38 +125,43 @@ static const u32 sShadowSpriteTiles[] = INCBIN_U32("graphics/soar/shadow.4bpp.lz
 static const struct CompressedSpriteSheet sShadowSpriteSheet = {
 	.data = sShadowSpriteTiles,
 	.size = 1024,
-	.tag = GFX_TAG_SHADOW
-};
+	.tag = GFX_TAG_SHADOW};
 
 static const struct OamData sShadowSpriteOamData =
-{
-	.y = 0,
-	.affineMode = 0,
-	.objMode = 2,
-	.mosaic = 0,
-	.bpp = 0,
-	.shape = 1,
-	.x = 0,
-	.matrixNum = 0,
-	.size = 3,
-	.tileNum = 16,
-	.priority = 0,
-	.paletteNum = 0,
-	.affineParam = 0,
+	{
+		.y = 0,
+		.affineMode = 0,
+		.objMode = 2,
+		.mosaic = 0,
+		.bpp = 0,
+		.shape = 1,
+		.x = 0,
+		.matrixNum = 0,
+		.size = 3,
+		.tileNum = 16,
+		.priority = 0,
+		.paletteNum = 0,
+		.affineParam = 0,
 };
 
 static const struct SpriteTemplate sShadowSpriteTemplate =
-{
-	.tileTag = GFX_TAG_SHADOW,
-	.paletteTag = GFX_TAG_SHADOW,
-	.oam = &sShadowSpriteOamData,
-	.anims = gDummySpriteAnimTable,
-	.images = NULL,
-	.affineAnims = NULL,
-	.callback = SpriteCallbackDummy,
+	{
+		.tileTag = GFX_TAG_SHADOW,
+		.paletteTag = GFX_TAG_SHADOW,
+		.oam = &sShadowSpriteOamData,
+		.anims = gDummySpriteAnimTable,
+		.images = NULL,
+		.affineAnims = NULL,
+		.callback = SpriteCallbackDummy,
 };
 
-static const struct { u8 left; u8 top; u8 right; u8 bottom; } sPopupWindowRect = { 0, 0, 15, 3 };
+static const struct
+{
+	u8 left;
+	u8 top;
+	u8 right;
+	u8 bottom;
+} sPopupWindowRect = {0, 0, 15, 3};
 
 static s32 sPlayerPosX;
 static s32 sPlayerPosY;
@@ -170,7 +175,7 @@ static u8 sShadowSpriteId;
 
 #define Q_8_7(iPart, fPart) (((iPart) << 8) | (fPart))
 #define IPART(n) ((n) >> 8)
-#define FPART(n) ((n) & 0xFFFF)
+#define FPART(n) ((n)&0xFFFF)
 
 static const u8 sEonFluteUseMessage[] = _("{PLAYER} used the EON FLUTE.{PAUSE_UNTIL_PRESS}");
 
@@ -233,10 +238,11 @@ void ItemUseOnFieldCB_EonFlute(u8 taskId)
 
 static void LoadEonGraphics(void)
 {
-	struct CompressedSpriteSheet sEonSpriteSheet = { .size = 1024,.tag = GFX_TAG_EON };
-	struct CompressedSpritePalette sEonSpritePalette = { .tag = GFX_TAG_EON };
+	struct CompressedSpriteSheet sEonSpriteSheet = {.size = 1024, .tag = GFX_TAG_EON};
+	struct CompressedSpritePalette sEonSpritePalette = {.tag = GFX_TAG_EON};
 
-	if (FlagGet(FLAG_EON_LATI)) {
+	if (FlagGet(FLAG_EON_LATI))
+	{
 		sEonSpriteSheet.data = sEonBrendanSpriteTiles;
 		sEonSpritePalette.data = sEonBrendanSpritePaletteData;
 
@@ -246,7 +252,8 @@ static void LoadEonGraphics(void)
 			sEonSpritePalette.data = sEonMaySpritePaletteData;
 		}
 	}
-	else {
+	else
+	{
 		sEonSpriteSheet.data = sEonBrendanSpriteTiles2;
 		sEonSpritePalette.data = sEonBrendanSpritePaletteData2;
 
@@ -323,12 +330,7 @@ static void CB2_LoadSoarGraphics(void)
 
 		// Set up video regs
 		REG_DISPCNT = DISPCNT_MODE_1 | DISPCNT_BG2_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP;
-		REG_BG2CNT = BGCNT_PRIORITY(0)
-			| BGCNT_256COLOR
-			| BGCNT_CHARBASE(BG2_IMAGE_OFFSET / 0x4000)
-			| BGCNT_SCREENBASE(BG2_TILEMAP_OFFSET / 0x800)
-			| BGCNT_AFF1024x1024
-			| BGCNT_WRAP;
+		REG_BG2CNT = BGCNT_PRIORITY(0) | BGCNT_256COLOR | BGCNT_CHARBASE(BG2_IMAGE_OFFSET / 0x4000) | BGCNT_SCREENBASE(BG2_TILEMAP_OFFSET / 0x800) | BGCNT_AFF1024x1024 | BGCNT_WRAP;
 
 		// Start palette fade
 		BeginNormalPaletteFade(0xFFFFFFFF, 0, 16, 0, 0);
@@ -375,9 +377,9 @@ static void SoarHBlankCallback(void)
 	int lam, lcf, lsf, lxr, lyr;
 	u32 currScanline = REG_VCOUNT - 1;
 
-	if (currScanline > 159)  // We're in vblank. Nothing to do.
+	if (currScanline > 159) // We're in vblank. Nothing to do.
 		return;
-	if (currScanline < 32)  // draw gradient for sky
+	if (currScanline < 32) // draw gradient for sky
 	{
 		REG_DISPCNT &= ~DISPCNT_BG2_ON;
 		REG_BLDCNT = bldcntFog;
@@ -398,24 +400,24 @@ static void SoarHBlankCallback(void)
 		REG_BLDCNT = 0;
 	}
 
-	lam = sPlayerPosZ * ((1 << 16) / (currScanline - 32)) >> 12;  // .8*.16 /.12 = 20.12
-	lcf = lam * cosYaw >> 8;                     // .12*.8 /.8 = .12
-	lsf = lam * sinYaw >> 8;                     // .12*.8 /.8 = .12
+	lam = sPlayerPosZ * ((1 << 16) / (currScanline - 32)) >> 12; // .8*.16 /.12 = 20.12
+	lcf = lam * cosYaw >> 8;									 // .12*.8 /.8 = .12
+	lsf = lam * sinYaw >> 8;									 // .12*.8 /.8 = .12
 
 	REG_BG2PA = lcf >> 4;
 	REG_BG2PC = lsf >> 4;
 
 	// Offsets
-	// Note that the lxr shifts down first! 
+	// Note that the lxr shifts down first!
 
 	// horizontal offset
 	lxr = 120 * (lcf >> 4);
-	lyr = (M7_D*lsf) >> 4;
+	lyr = (M7_D * lsf) >> 4;
 	REG_BG2X = sPlayerPosX - lxr + lyr;
 
 	// vertical offset
 	lxr = 120 * (lsf >> 4);
-	lyr = (M7_D*lcf) >> 4;
+	lyr = (M7_D * lcf) >> 4;
 	REG_BG2Y = sPlayerPosY - lxr - lyr;
 }
 
@@ -433,14 +435,14 @@ static void UpdateEonSpriteRotation(struct Sprite *sprite)
 {
 	switch (sprite->spBarrelRollDir)
 	{
-	case 0:  // no barrel roll
+	case 0: // no barrel roll
 		if (sprite->spTiltAngle < sprite->spDestAngle)
 			sprite->spTiltAngle += TILT_STEP;
 		else if (sprite->spTiltAngle > sprite->spDestAngle)
 			sprite->spTiltAngle -= TILT_STEP;
 		break;
-	case 1:  // increase angle
-		if (sprite->spTiltAngle < TILT_MIN)  // rotation is past 180 degrees
+	case 1:									// increase angle
+		if (sprite->spTiltAngle < TILT_MIN) // rotation is past 180 degrees
 		{
 			sprite->spTiltAngle += ROLL_TILT_STEP;
 			if (sprite->spTiltAngle >= TILT_MIN)
@@ -449,8 +451,8 @@ static void UpdateEonSpriteRotation(struct Sprite *sprite)
 		}
 		sprite->spTiltAngle += ROLL_TILT_STEP;
 		break;
-	case -1:  // decrease angle
-		if (sprite->spTiltAngle > TILT_MAX)  // rotation is past 180 degrees
+	case -1:								// decrease angle
+		if (sprite->spTiltAngle > TILT_MAX) // rotation is past 180 degrees
 		{
 			sprite->spTiltAngle -= ROLL_TILT_STEP;
 			if (sprite->spTiltAngle <= TILT_MAX)
@@ -514,9 +516,9 @@ static void ExitSoar(void)
 #define MIN_Z Q_8_7(4, 0)
 #define MAX_Z Q_8_7(50, 0)
 #define MIN_X Q_8_7(0, 0)
-#define MAX_X Q_8_7(30*8, 0)
+#define MAX_X Q_8_7(30 * 8, 0)
 #define MIN_Y Q_8_7(0, 0)
-#define MAX_Y Q_8_7(20*8, 0)
+#define MAX_Y Q_8_7(20 * 8, 0)
 
 static void CB2_HandleInput(void)
 {
@@ -599,15 +601,14 @@ static void CB2_HandleInput(void)
 }
 
 static const struct WindowTemplate sYesNo_WindowTemplates =
-{
-	.bg = 0,
-	.tilemapLeft = 21,
-	.tilemapTop = 9,
-	.width = 5,
-	.height = 4,
-	.paletteNum = 15,
-	.baseBlock = 0x125
-};
+	{
+		.bg = 0,
+		.tilemapLeft = 21,
+		.tilemapTop = 9,
+		.width = 5,
+		.height = 4,
+		.paletteNum = 15,
+		.baseBlock = 0x125};
 
 static void PromptLandCB2(void)
 {
@@ -640,23 +641,15 @@ static void ProcessYesNoCB2(void)
 
 static void WarpCB2(void)
 {
-	switch (sPrevMapSection) {
-	case MAPSEC_SOUTHERN_ISLAND:
-		SetWarpDestinationToHealLocation(HEAL_LOCATION_SOUTHERN_ISLAND_EXTERIOR);
-		break;
-	case MAPSEC_BATTLE_FRONTIER:
-		SetWarpDestinationToHealLocation(HEAL_LOCATION_BATTLE_FRONTIER_OUTSIDE_EAST);
-		break;
-	case MAPSEC_LITTLEROOT_TOWN:
-		SetWarpDestinationToHealLocation(gSaveBlock2Ptr->playerGender == MALE ? HEAL_LOCATION_LITTLEROOT_TOWN_BRENDANS_HOUSE : HEAL_LOCATION_LITTLEROOT_TOWN_MAYS_HOUSE);
-		break;
-	case MAPSEC_EVER_GRANDE_CITY:
-		SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
-		break;
-	default:
-		SetWarpDestinationToHealLocation(sMapHealLocations[sPrevMapSection][2]);
-
-	}
+	// MIGHT MODIFY
+	// switch (sPrevMapSection)
+	// {
+	// case MAPSEC_EVER_GRANDE_CITY:
+	// 	SetWarpDestinationToHealLocation(FlagGet(FLAG_LANDMARK_POKEMON_LEAGUE) && (IPART(sPlayerPosY) / 8) == 10 ? HEAL_LOCATION_EVER_GRANDE_CITY_POKEMON_LEAGUE : HEAL_LOCATION_EVER_GRANDE_CITY);
+	// 	break;
+	//default:
+	SetWarpDestinationToHealLocation(sMapHealLocations[sPrevMapSection][2]);
+	//}
 
 	if (!gPaletteFade.active)
 	{

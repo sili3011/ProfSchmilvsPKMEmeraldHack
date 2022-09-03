@@ -31,36 +31,12 @@ BattleFrontier_OutsideWest_EventScript_FerryAttendant:: @ 823D3F0
 BattleFrontier_OutsideWest_EventScript_ChooseFerryDestination:: @ 823D416
 	multichoicedefault 18, 6, MULTI_SSTIDAL_BATTLE_FRONTIER, 2, 0
 	switch VAR_RESULT
-	case 0, BattleFrontier_OutsideWest_EventScript_FerryToSlateport
-	case 1, BattleFrontier_OutsideWest_EventScript_FerryToLilycove
 	case 2, BattleFrontier_OutsideWest_EventScript_CancelFerrySelect
 	case MULTI_B_PRESSED, BattleFrontier_OutsideWest_EventScript_CancelFerrySelect
 	end
 
 BattleFrontier_OutsideWest_EventScript_NoSSTicket:: @ 823D44E
 	msgbox BattleFrontier_OutsideWest_Text_MustHaveTicketToBoard, MSGBOX_DEFAULT
-	release
-	end
-
-BattleFrontier_OutsideWest_EventScript_FerryToSlateport:: @ 823D458
-	msgbox BattleFrontier_OutsideWest_Text_SlateportItIs, MSGBOX_YESNO
-	compare VAR_RESULT, NO
-	goto_if_eq BattleFrontier_OutsideWest_EventScript_ChooseNewFerryDestination
-	msgbox BattleFrontier_OutsideWest_Text_PleaseBoardFerry, MSGBOX_DEFAULT
-	call BattleFrontier_OutsideWest_EventScript_BoardFerry
-	warp MAP_SLATEPORT_CITY_HARBOR, 255, 8, 11
-	waitstate
-	release
-	end
-
-BattleFrontier_OutsideWest_EventScript_FerryToLilycove:: @ 823D483
-	msgbox BattleFrontier_OutsideWest_Text_LilycoveItIs, MSGBOX_YESNO
-	compare VAR_RESULT, NO
-	goto_if_eq BattleFrontier_OutsideWest_EventScript_ChooseNewFerryDestination
-	msgbox BattleFrontier_OutsideWest_Text_PleaseBoardFerry, MSGBOX_DEFAULT
-	call BattleFrontier_OutsideWest_EventScript_BoardFerry
-	warp MAP_LILYCOVE_CITY_HARBOR, 255, 8, 11
-	waitstate
 	release
 	end
 
@@ -353,10 +329,7 @@ BattleFrontier_OutsideWest_Text_WhereWouldYouLikeToGo: @ 823D89D
 
 BattleFrontier_OutsideWest_Text_SlateportItIs: @ 823D8F2
 	.string "SLATEPORT CITY it is, then!$"
-
-BattleFrontier_OutsideWest_Text_LilycoveItIs: @ 823D90E
-	.string "LILYCOVE CITY it is, then!$"
-
+	
 BattleFrontier_OutsideWest_Text_SailWithUsAnotherTime: @ 823D929
 	.string "Please sail with us another time!$"
 

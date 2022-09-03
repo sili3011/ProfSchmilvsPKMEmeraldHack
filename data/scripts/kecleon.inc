@@ -51,19 +51,16 @@ EventScript_Kecleon:: @ 8272336
 	checkitem ITEM_DEVON_SCOPE, 1
 	compare VAR_RESULT, 1
 	goto_if_eq EventScript_AskUseDevonScope
-	msgbox Kecleon_Text_SomethingUnseeable, MSGBOX_DEFAULT
 	release
 	end
 
 EventScript_AskUseDevonScope:: @ 8272350
-	msgbox Kecleon_Text_WantToUseDevonScope, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq EventScript_BattleKecleon
 	release
 	end
 
 EventScript_BattleKecleon:: @ 8272365
-	msgbox Kecleon_Text_UseDevonScopeMonAttacked, MSGBOX_DEFAULT
 	closemessage
 	applymovement VAR_LAST_TALKED, Common_Movement_FacePlayer
 	waitmovement 0
