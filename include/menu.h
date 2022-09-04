@@ -9,18 +9,18 @@
 #define MENU_NOTHING_CHOSEN -2
 #define MENU_B_PRESSED -1
 
-#define MENU_CURSOR_DELTA_NONE   0
-#define MENU_CURSOR_DELTA_UP    -1
-#define MENU_CURSOR_DELTA_DOWN   1
-#define MENU_CURSOR_DELTA_LEFT  -1
-#define MENU_CURSOR_DELTA_RIGHT  1
+#define MENU_CURSOR_DELTA_NONE 0
+#define MENU_CURSOR_DELTA_UP -1
+#define MENU_CURSOR_DELTA_DOWN 1
+#define MENU_CURSOR_DELTA_LEFT -1
+#define MENU_CURSOR_DELTA_RIGHT 1
 
-#define MENU_INFO_ICON_TYPE      (NUMBER_OF_MON_TYPES + 1)
-#define MENU_INFO_ICON_POWER     (NUMBER_OF_MON_TYPES + 2)
-#define MENU_INFO_ICON_ACCURACY  (NUMBER_OF_MON_TYPES + 3)
-#define MENU_INFO_ICON_PP        (NUMBER_OF_MON_TYPES + 4)
-#define MENU_INFO_ICON_EFFECT    (NUMBER_OF_MON_TYPES + 5)
-#define MENU_INFO_ICON_BALL_RED  (NUMBER_OF_MON_TYPES + 6)
+#define MENU_INFO_ICON_TYPE (NUMBER_OF_MON_TYPES + 1)
+#define MENU_INFO_ICON_POWER (NUMBER_OF_MON_TYPES + 2)
+#define MENU_INFO_ICON_ACCURACY (NUMBER_OF_MON_TYPES + 3)
+#define MENU_INFO_ICON_PP (NUMBER_OF_MON_TYPES + 4)
+#define MENU_INFO_ICON_EFFECT (NUMBER_OF_MON_TYPES + 5)
+#define MENU_INFO_ICON_BALL_RED (NUMBER_OF_MON_TYPES + 6)
 #define MENU_INFO_ICON_BALL_BLUE (NUMBER_OF_MON_TYPES + 7)
 
 enum
@@ -35,7 +35,8 @@ enum
 struct MenuAction
 {
     const u8 *text;
-    union {
+    union
+    {
         void (*void_u8)(u8);
         u8 (*u8_void)(void);
     } func;
@@ -51,7 +52,7 @@ void LoadMessageBoxAndBorderGfx(void);
 void DrawDialogueFrame(u8 windowId, bool8 copyToVram);
 void ClearStdWindowAndFrame(u8 windowId, bool8 copyToVram);
 u16 AddTextPrinterParameterized2(u8 windowId, u8 fontId, const u8 *str, u8 speed, void (*callback)(struct TextPrinterTemplate *, u16), u8 fgColor, u8 bgColor, u8 shadowColor);
-void PrintPlayerNameOnWindow(u8, const u8*, u16, u16);
+void PrintPlayerNameOnWindow(u8, const u8 *, u16, u16);
 void ClearDialogWindowAndFrame(u8 windowId, bool8 copyToVram);
 void SetStandardWindowBorderStyle(u8 windowId, bool8 copyToVram);
 void DisplayYesNoMenuDefaultYes(void);
@@ -62,7 +63,7 @@ void AddTextPrinterWithCallbackForMessage(bool8 a1, void (*callback)(struct Text
 void sub_8199DF0(u32 bg, u8 a1, int a2, int a3);
 void AddTextPrinterParameterized3(u8 windowId, u8 fontId, u8 left, u8 top, const u8 *color, s8 speed, const u8 *str);
 void ClearStdWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram);
-void SetWindowTemplateFields(struct WindowTemplate* template, u8 priority, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 palNum, u16 baseBlock);
+void SetWindowTemplateFields(struct WindowTemplate *template, u8 priority, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 palNum, u16 baseBlock);
 void DrawStdFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 tileStart, u8 palette);
 void ScheduleBgCopyTilemapToVram(u8 bgNum);
 void PrintMenuTable(u8 windowId, u8 itemCount, const struct MenuAction *strs);
@@ -85,7 +86,7 @@ void AddTextPrinterParameterized4(u8 windowId, u8 fontId, u8 x, u8 y, u8 letterS
 void DrawDialogFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 a2, u8 a3);
 void sub_81995E4(u8 windowId, u8 optionsNo, const struct MenuAction *actions, const u8 *actionIds);
 void ClearDialogWindowAndFrameToTransparent(u8 windowId, bool8 copyToVram);
-u16 sub_8198AA4(u8, u8, u8, u8, u8, u8, u16);
+u16 CreateWindow(u8, u8, u8, u8, u8, u8, u16);
 void *malloc_and_decompress(const void *src, u32 *sizeOut);
 u16 copy_decompressed_tile_data_to_vram(u8 bgId, const void *src, u16 size, u16 offset, u8 mode);
 void AddTextPrinterForMessage(bool8 allowSkippingDelayWithButtonPress);
@@ -98,7 +99,7 @@ void ListMenuLoadStdPalAt(u8, u8);
 u8 Menu_MoveCursor(s8 cursorDelta);
 u8 Menu_MoveCursorNoWrapAround(s8 cursorDelta);
 void DrawStdWindowFrame(u8 windowId, bool8 CopyToVram);
-u8 sub_81979C4(u8 a1);
+u8 GetWindowId(u8 numberOfActions);
 u8 Menu_InitCursor(u8 windowId, u8 fontId, u8 left, u8 top, u8 cursorHeight, u8 numChoices, u8 initialCursorPos);
 void sub_819786C(u8 windowId, bool8 copyToVram);
 void AddTextPrinterForMessage_2(bool8 allowSkippingDelayWithButtonPress);

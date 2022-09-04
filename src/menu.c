@@ -55,79 +55,74 @@ static EWRAM_DATA u16 sTileNum = 0;
 static EWRAM_DATA u8 sPaletteNum = 0;
 static EWRAM_DATA u8 sYesNoWindowId = 0;
 static EWRAM_DATA u8 sWindowId = 0;
-static EWRAM_DATA u16 sFiller = 0;  // needed to align
+static EWRAM_DATA u16 sFiller = 0; // needed to align
 static EWRAM_DATA bool8 sScheduledBgCopiesToVram[4] = {FALSE};
 static EWRAM_DATA u16 sTempTileDataBufferIdx = 0;
 static EWRAM_DATA void *sTempTileDataBuffer[0x20] = {NULL};
 
 const u16 gUnknown_0860F074[] = INCBIN_U16("graphics/interface/860F074.gbapal");
 
-static const u8 sTextSpeedFrameDelays[] = 
-{ 
-    [OPTIONS_TEXT_SPEED_SLOW] = 8, 
-    [OPTIONS_TEXT_SPEED_MID]  = 4, 
-    [OPTIONS_TEXT_SPEED_FAST] = 1 
-};
+static const u8 sTextSpeedFrameDelays[] =
+    {
+        [OPTIONS_TEXT_SPEED_SLOW] = 8,
+        [OPTIONS_TEXT_SPEED_MID] = 4,
+        [OPTIONS_TEXT_SPEED_FAST] = 1};
 
 static const struct WindowTemplate sStandardTextBox_WindowTemplates[] =
-{
     {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 15,
-        .width = 27,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0x194
-    },
-    DUMMY_WIN_TEMPLATE
-};
+        {.bg = 0,
+         .tilemapLeft = 2,
+         .tilemapTop = 15,
+         .width = 27,
+         .height = 4,
+         .paletteNum = 15,
+         .baseBlock = 0x194},
+        DUMMY_WIN_TEMPLATE};
 
 static const struct WindowTemplate sYesNo_WindowTemplates =
-{
-    .bg = 0,
-    .tilemapLeft = 21,
-    .tilemapTop = 9,
-    .width = 5,
-    .height = 4,
-    .paletteNum = 15,
-    .baseBlock = 0x125
-};
+    {
+        .bg = 0,
+        .tilemapLeft = 21,
+        .tilemapTop = 9,
+        .width = 5,
+        .height = 4,
+        .paletteNum = 15,
+        .baseBlock = 0x125};
 
 const u16 gUnknown_0860F0B0[] = INCBIN_U16("graphics/interface/860F0B0.gbapal");
-const u8 sTextColors[] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GREY };
+const u8 sTextColors[] = {TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GREY};
 
 // Table of move info icon offsets in graphics/interface_fr/menu.png
 static const struct MenuInfoIcon sMenuInfoIcons[] =
-{   // { width, height, offset }
-    { 12, 12, 0x00 },  // Unused
-    [TYPE_NORMAL + 1]   = { 32, 12, 0x20 },
-    [TYPE_FIGHTING + 1] = { 32, 12, 0x64 },
-    [TYPE_FLYING + 1]   = { 32, 12, 0x60 },
-    [TYPE_POISON + 1]   = { 32, 12, 0x80 },
-    [TYPE_GROUND + 1]   = { 32, 12, 0x48 },
-    [TYPE_ROCK + 1]     = { 32, 12, 0x44 },
-    [TYPE_BUG + 1]      = { 32, 12, 0x6C },
-    [TYPE_GHOST + 1]    = { 32, 12, 0x68 },
-    [TYPE_STEEL + 1]    = { 32, 12, 0x88 },
-    [TYPE_MYSTERY + 1]  = { 32, 12, 0xA4 },
-    [TYPE_FIRE + 1]     = { 32, 12, 0x24 },
-    [TYPE_WATER + 1]    = { 32, 12, 0x28 },
-    [TYPE_GRASS + 1]    = { 32, 12, 0x2C },
-    [TYPE_ELECTRIC + 1] = { 32, 12, 0x40 },
-    [TYPE_PSYCHIC + 1]  = { 32, 12, 0x84 },
-    [TYPE_ICE + 1]      = { 32, 12, 0x4C },
-    [TYPE_DRAGON + 1]   = { 32, 12, 0xA0 },
-    [TYPE_DARK + 1]     = { 32, 12, 0x8C },
-    [MENU_INFO_ICON_TYPE]      = { 42, 12, 0xA8 },
-    [MENU_INFO_ICON_POWER]     = { 42, 12, 0xC0 },
-    [MENU_INFO_ICON_ACCURACY]  = { 42, 12, 0xC8 },
-    [MENU_INFO_ICON_PP]        = { 42, 12, 0xE0 },
-    [MENU_INFO_ICON_EFFECT]    = { 42, 12, 0xE8 }, // Unused
-    [MENU_INFO_ICON_BALL_RED]  = {  8,  8, 0xAE }, // For placed decorations in Secret Base
-    [MENU_INFO_ICON_BALL_BLUE] = {  8,  8, 0xAF }, // For placed decorations in player's room
+    {
+        // { width, height, offset }
+        {12, 12, 0x00}, // Unused
+        [TYPE_NORMAL + 1] = {32, 12, 0x20},
+        [TYPE_FIGHTING + 1] = {32, 12, 0x64},
+        [TYPE_FLYING + 1] = {32, 12, 0x60},
+        [TYPE_POISON + 1] = {32, 12, 0x80},
+        [TYPE_GROUND + 1] = {32, 12, 0x48},
+        [TYPE_ROCK + 1] = {32, 12, 0x44},
+        [TYPE_BUG + 1] = {32, 12, 0x6C},
+        [TYPE_GHOST + 1] = {32, 12, 0x68},
+        [TYPE_STEEL + 1] = {32, 12, 0x88},
+        [TYPE_MYSTERY + 1] = {32, 12, 0xA4},
+        [TYPE_FIRE + 1] = {32, 12, 0x24},
+        [TYPE_WATER + 1] = {32, 12, 0x28},
+        [TYPE_GRASS + 1] = {32, 12, 0x2C},
+        [TYPE_ELECTRIC + 1] = {32, 12, 0x40},
+        [TYPE_PSYCHIC + 1] = {32, 12, 0x84},
+        [TYPE_ICE + 1] = {32, 12, 0x4C},
+        [TYPE_DRAGON + 1] = {32, 12, 0xA0},
+        [TYPE_DARK + 1] = {32, 12, 0x8C},
+        [MENU_INFO_ICON_TYPE] = {42, 12, 0xA8},
+        [MENU_INFO_ICON_POWER] = {42, 12, 0xC0},
+        [MENU_INFO_ICON_ACCURACY] = {42, 12, 0xC8},
+        [MENU_INFO_ICON_PP] = {42, 12, 0xE0},
+        [MENU_INFO_ICON_EFFECT] = {42, 12, 0xE8},  // Unused
+        [MENU_INFO_ICON_BALL_RED] = {8, 8, 0xAE},  // For placed decorations in Secret Base
+        [MENU_INFO_ICON_BALL_BLUE] = {8, 8, 0xAF}, // For placed decorations in player's room
 };
-
 
 // Forward declarations
 void WindowFunc_DrawStandardFrame(u8, u8, u8, u8, u8, u8);
@@ -443,18 +438,6 @@ void Menu_LoadStdPalAt(u16 offset)
     LoadPalette(gUnknown_0860F074, offset, 0x14);
 }
 
-const u16 *sub_81978C8(void)
-{
-    return gUnknown_0860F074;
-}
-
-u16 sub_81978D0(u8 colorNum)
-{
-    if (colorNum > 15)
-        colorNum = 0;
-    return gUnknown_0860F074[colorNum];
-}
-
 void DisplayItemMessageOnField(u8 taskId, const u8 *string, TaskFunc callback)
 {
     LoadMessageBoxAndBorderGfx();
@@ -488,10 +471,10 @@ u8 GetPlayerTextSpeedDelay(void)
     return sTextSpeedFrameDelays[speed];
 }
 
-u8 sub_81979C4(u8 a1)
+u8 GetWindowId(u8 numberOfActions)
 {
     if (sStartMenuWindowId == 0xFF)
-        sStartMenuWindowId = sub_8198AA4(0, 0x16, 1, 7, (a1 * 2) + 2, 0xF, 0x139);
+        sStartMenuWindowId = CreateWindow(0, 0x16, 1, 7, numberOfActions * 2, 0xF, 0x139);
     return sStartMenuWindowId;
 }
 
@@ -509,20 +492,10 @@ void RemoveStartMenuWindow(void)
     }
 }
 
-u16 sub_8197A30(void)
-{
-    return DLG_WINDOW_BASE_TILE_NUM;
-}
-
-u16 sub_8197A38(void)
-{
-    return STD_WINDOW_BASE_TILE_NUM;
-}
-
 u8 AddMapNamePopUpWindow(void)
 {
     if (sMapNamePopupWindowId == 0xFF)
-        sMapNamePopupWindowId = sub_8198AA4(0, 1, 1, 10, 3, 14, 0x107);
+        sMapNamePopupWindowId = CreateWindow(0, 1, 1, 10, 3, 14, 0x107);
     return sMapNamePopupWindowId;
 }
 
@@ -557,18 +530,6 @@ void DrawDialogFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 
 {
     sTileNum = tileNum;
     sPaletteNum = paletteNum;
-    CallWindowFunction(windowId, WindowFunc_DrawDialogFrameWithCustomTileAndPalette);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
-    PutWindowTilemap(windowId);
-    if (copyToVram == TRUE)
-        CopyWindowToVram(windowId, 3);
-}
-
-// Never used.
-void DrawDialogFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 tileNum)
-{
-    sTileNum = tileNum;
-    sPaletteNum = GetWindowAttribute(windowId, WINDOW_PALETTE_NUM);
     CallWindowFunction(windowId, WindowFunc_DrawDialogFrameWithCustomTileAndPalette);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     PutWindowTilemap(windowId);
@@ -697,18 +658,6 @@ void DrawStdFrameWithCustomTileAndPalette(u8 windowId, bool8 copyToVram, u16 bas
         CopyWindowToVram(windowId, 3);
 }
 
-// Never used.
-void DrawStdFrameWithCustomTile(u8 windowId, bool8 copyToVram, u16 baseTileNum)
-{
-    sTileNum = baseTileNum;
-    sPaletteNum = GetWindowAttribute(windowId, WINDOW_PALETTE_NUM);
-    CallWindowFunction(windowId, WindowFunc_DrawStdFrameWithCustomTileAndPalette);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
-    PutWindowTilemap(windowId);
-    if (copyToVram == TRUE)
-        CopyWindowToVram(windowId, 3);
-}
-
 void WindowFunc_DrawStdFrameWithCustomTileAndPalette(u8 bg, u8 tilemapLeft, u8 tilemapTop, u8 width, u8 height, u8 paletteNum)
 {
     FillBgTilemapBufferRect(bg,
@@ -821,12 +770,12 @@ void sub_8198180(const u8 *string, u8 a2, bool8 copyToVram)
         FillWindowPixelBuffer(sWindowId, PIXEL_FILL(15));
         width = GetStringWidth(0, string, 0);
         AddTextPrinterParameterized3(sWindowId,
-                  0,
-                  0xEC - (GetWindowAttribute(sWindowId, WINDOW_TILEMAP_LEFT) * 8) - a2 - width,
-                  1,
-                  sTextColors,
-                  0,
-                  string);
+                                     0,
+                                     0xEC - (GetWindowAttribute(sWindowId, WINDOW_TILEMAP_LEFT) * 8) - a2 - width,
+                                     1,
+                                     sTextColors,
+                                     0,
+                                     string);
         if (copyToVram)
             CopyWindowToVram(sWindowId, 3);
     }
@@ -857,31 +806,16 @@ void sub_8198204(const u8 *string, const u8 *string2, u8 a3, u8 a4, bool8 copyTo
         {
             width = GetStringWidth(0, string2, 0);
             AddTextPrinterParameterized3(sWindowId,
-                      0,
-                      0xEC - (GetWindowAttribute(sWindowId, WINDOW_TILEMAP_LEFT) * 8) - a4 - width,
-                      1,
-                      color,
-                      0,
-                      string2);
+                                         0,
+                                         0xEC - (GetWindowAttribute(sWindowId, WINDOW_TILEMAP_LEFT) * 8) - a4 - width,
+                                         1,
+                                         color,
+                                         0,
+                                         string2);
         }
         AddTextPrinterParameterized4(sWindowId, 1, 4, 1, 0, 0, color, 0, string);
         if (copyToVram)
             CopyWindowToVram(sWindowId, 3);
-    }
-}
-
-void sub_81982D8(void)
-{
-    if (sWindowId != 0xFF)
-        CopyWindowToVram(sWindowId, 3);
-}
-
-void sub_81982F0(void)
-{
-    if (sWindowId != 0xFF)
-    {
-        FillWindowPixelBuffer(sWindowId, PIXEL_FILL(15));
-        CopyWindowToVram(sWindowId, 3);
     }
 }
 
@@ -1105,21 +1039,6 @@ void PrintTextArray(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 i
     CopyWindowToVram(windowId, 2);
 }
 
-void sub_81987BC(u8 windowId, u8 fontId, u8 left, u8 top, u8 lineHeight, u8 itemCount, const struct MenuAction *strs, u8 a6, u8 a7)
-{
-    u8 i;
-    for (i = 0; i < itemCount; i++)
-    {
-        AddTextPrinterParameterized5(windowId, fontId, strs[i].text, left, (lineHeight * i) + top, 0xFF, NULL, a6, a7);
-    }
-    CopyWindowToVram(windowId, 2);
-}
-
-void sub_8198854(u8 windowId, u8 fontId, u8 lineHeight, u8 itemCount, const struct MenuAction *strs)
-{
-    PrintTextArray(windowId, fontId, GetFontAttribute(fontId, 0), 1, lineHeight, itemCount, strs);
-}
-
 void AddItemMenuActionTextPrinters(u8 windowId, u8 fontId, u8 left, u8 top, u8 letterSpacing, u8 lineHeight, u8 itemCount, const struct MenuAction *strs, const u8 *a8)
 {
     u8 i;
@@ -1170,7 +1089,7 @@ struct WindowTemplate CreateWindowTemplate(u8 bg, u8 left, u8 top, u8 width, u8 
     return template;
 }
 
-u16 sub_8198AA4(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum, u16 baseBlock)
+u16 CreateWindow(u8 bg, u8 left, u8 top, u8 width, u8 height, u8 paletteNum, u16 baseBlock)
 {
     struct WindowTemplate template;
     SetWindowTemplateFields(&template, bg, left, top, width, height, paletteNum, baseBlock);
@@ -1222,25 +1141,6 @@ void sub_8198C78(void)
     RemoveWindow(sYesNoWindowId);
 }
 
-void sub_8198C94(u8 windowId, u8 fontId, u8 left, u8 top, u8 a4, u8 a5, u8 a6, u8 a7, const struct MenuAction *strs)
-{
-    u8 i;
-    u8 j;
-    for (i = 0; i < a7; i++)
-    {
-        for (j = 0; j < a6; j++)
-        {
-            AddTextPrinterParameterized(windowId, fontId, strs[(i * a6) + j].text, (a4 * j) + left, (a5 * i) + top, 0xFF, NULL);
-        }
-    }
-    CopyWindowToVram(windowId, 2);
-}
-
-void sub_8198D54(u8 windowId, u8 fontId, u8 a2, u8 a3, u8 a4, u8 a5, const struct MenuAction *strs)
-{
-    sub_8198C94(windowId, fontId, GetFontAttribute(fontId, 0), 0, a2, a3, a4, a5, strs);
-}
-
 void sub_8198DBC(u8 windowId, u8 fontId, u8 left, u8 top, u8 a4, u8 itemCount, u8 itemCount2, const struct MenuAction *strs, const u8 *a8)
 {
     u8 i;
@@ -1272,46 +1172,6 @@ void sub_8198DBC(u8 windowId, u8 fontId, u8 left, u8 top, u8 a4, u8 itemCount, u
     CopyWindowToVram(windowId, 2);
 }
 
-void sub_8198EF8(u8 windowId, u8 fontId, u8 a2, u8 a3, u8 a4, u8 a5, const struct MenuAction *strs, const u8 *a8)
-{
-    sub_8198DBC(windowId, fontId, GetFontAttribute(fontId, 0), 0, a2, a4, a5, strs, a8);
-}
-
-u8 sub_8198F58(u8 windowId, u8 fontId, u8 left, u8 top, u8 a4, u8 cursorHeight, u8 a6, u8 a7, u8 numChoices, u8 a9)
-{
-    s32 pos;
-
-    sMenu.left = left;
-    sMenu.top = top;
-    sMenu.minCursorPos = 0;
-    sMenu.maxCursorPos = numChoices - 1;
-    sMenu.windowId = windowId;
-    sMenu.fontId = fontId;
-    sMenu.optionWidth = a4;
-    sMenu.optionHeight = cursorHeight;
-    sMenu.columns = a6;
-    sMenu.rows = a7;
-
-    pos = a9;
-
-    if (pos < 0 || pos > sMenu.maxCursorPos)
-        sMenu.cursorPos = 0;
-    else
-        sMenu.cursorPos = pos;
-
-    // Why call this when it's not gonna move?
-    ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_NONE, MENU_CURSOR_DELTA_NONE);
-    return sMenu.cursorPos;
-}
-
-// Unused
-u8 sub_8198FD4(u8 windowId, u8 fontId, u8 left, u8 top, u8 a4, u8 a5, u8 a6, u8 a7)
-{
-    u8 cursorHeight = GetMenuCursorDimensionByFont(fontId, 1);
-    u8 numChoices = a5 * a6;
-    return sub_8198F58(windowId, fontId, left, top, a4, cursorHeight, a5, a6, numChoices, a7);
-}
-
 void sub_8199060(u8 oldCursorPos, u8 newCursorPos)
 {
     u8 cursorWidth = GetMenuCursorDimensionByFont(sMenu.fontId, 0);
@@ -1327,12 +1187,12 @@ void sub_8199060(u8 oldCursorPos, u8 newCursorPos)
     xPos = (newCursorPos % sMenu.columns) * sMenu.optionWidth + sMenu.left;
     yPos = (newCursorPos / sMenu.columns) * sMenu.optionHeight + sMenu.top;
     AddTextPrinterParameterized(sMenu.windowId,
-                      sMenu.fontId,
-                      gText_SelectorArrow3,
-                      xPos,
-                      yPos,
-                      0,
-                      0);
+                                sMenu.fontId,
+                                gText_SelectorArrow3,
+                                xPos,
+                                yPos,
+                                0,
+                                0);
 }
 
 u8 ChangeListMenuCursorPosition(s8 deltaX, s8 deltaY)
@@ -1378,7 +1238,7 @@ u8 ChangeGridMenuCursorPosition(s8 deltaX, s8 deltaY)
     if (deltaX != 0)
     {
         if (((sMenu.cursorPos % sMenu.columns) + deltaX >= 0) &&
-        ((sMenu.cursorPos % sMenu.columns) + deltaX < sMenu.columns))
+            ((sMenu.cursorPos % sMenu.columns) + deltaX < sMenu.columns))
         {
             sMenu.cursorPos += deltaX;
         }
@@ -1387,7 +1247,7 @@ u8 ChangeGridMenuCursorPosition(s8 deltaX, s8 deltaY)
     if (deltaY != 0)
     {
         if (((sMenu.cursorPos / sMenu.columns) + deltaY >= 0) &&
-        ((sMenu.cursorPos / sMenu.columns) + deltaY < sMenu.rows))
+            ((sMenu.cursorPos / sMenu.columns) + deltaY < sMenu.rows))
         {
             sMenu.cursorPos += (sMenu.columns * deltaY);
         }
@@ -1403,45 +1263,6 @@ u8 ChangeGridMenuCursorPosition(s8 deltaX, s8 deltaY)
         sub_8199060(oldPos, sMenu.cursorPos);
         return sMenu.cursorPos;
     }
-}
-
-s8 sub_8199284(void)
-{
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if (JOY_NEW(DPAD_UP))
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_NONE, MENU_CURSOR_DELTA_UP);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_DOWN))
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_NONE, MENU_CURSOR_DELTA_DOWN);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_LEFT) || GetLRKeysPressed() == MENU_L_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_LEFT, MENU_CURSOR_DELTA_NONE);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if (JOY_NEW(DPAD_RIGHT) || GetLRKeysPressed() == MENU_R_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_RIGHT, MENU_CURSOR_DELTA_NONE);
-        return MENU_NOTHING_CHOSEN;
-    }
-
-    return MENU_NOTHING_CHOSEN;
 }
 
 s8 Menu_ProcessInputGridLayout(void)
@@ -1476,87 +1297,6 @@ s8 Menu_ProcessInputGridLayout(void)
         return MENU_NOTHING_CHOSEN;
     }
     else if (JOY_NEW(DPAD_RIGHT) || GetLRKeysPressed() == MENU_R_PRESSED)
-    {
-        if (oldPos != ChangeGridMenuCursorPosition(1, 0))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-
-    return MENU_NOTHING_CHOSEN;
-}
-
-s8 sub_81993D8(void)
-{
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_UP)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_NONE, MENU_CURSOR_DELTA_UP);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_DOWN)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_NONE, MENU_CURSOR_DELTA_DOWN);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_LEFT || GetLRKeysPressedAndHeld() == MENU_L_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_LEFT, MENU_CURSOR_DELTA_NONE);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_RIGHT || GetLRKeysPressedAndHeld() == MENU_R_PRESSED)
-    {
-        PlaySE(SE_SELECT);
-        ChangeListMenuCursorPosition(MENU_CURSOR_DELTA_RIGHT, MENU_CURSOR_DELTA_NONE);
-        return MENU_NOTHING_CHOSEN;
-    }
-
-    return MENU_NOTHING_CHOSEN;
-}
-
-//Unused
-s8 sub_8199484(void)
-{
-    u8 oldPos = sMenu.cursorPos;
-
-    if (JOY_NEW(A_BUTTON))
-    {
-        PlaySE(SE_SELECT);
-        return sMenu.cursorPos;
-    }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        return MENU_B_PRESSED;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_UP)
-    {
-        if (oldPos != ChangeGridMenuCursorPosition(0, -1))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_DOWN)
-    {
-        if (oldPos != ChangeGridMenuCursorPosition(0, 1))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_LEFT || GetLRKeysPressedAndHeld() == MENU_L_PRESSED)
-    {
-        if (oldPos != ChangeGridMenuCursorPosition(-1, 0))
-            PlaySE(SE_SELECT);
-        return MENU_NOTHING_CHOSEN;
-    }
-    else if ((JOY_REPEAT(DPAD_ANY)) == DPAD_RIGHT || GetLRKeysPressedAndHeld() == MENU_R_PRESSED)
     {
         if (oldPos != ChangeGridMenuCursorPosition(1, 0))
             PlaySE(SE_SELECT);
@@ -1667,37 +1407,6 @@ void PrintMenuGridTable(u8 windowId, u8 optionWidth, u8 columns, u8 rows, const 
         for (j = 0; j < columns; j++)
             AddTextPrinterParameterized(windowId, 1, strs[(i * columns) + j].text, (optionWidth * j) + 8, (i * 16) + 1, 0xFF, NULL);
     }
-    CopyWindowToVram(windowId, 2);
-}
-
-void sub_819983C(u8 windowId, u8 a4, u8 itemCount, u8 itemCount2, const struct MenuAction *strs, const u8 *a8)
-{
-    u8 i;
-    u8 j;
-    struct TextPrinterTemplate printer;
-
-    printer.windowId = windowId;
-    printer.fontId = 1;
-    printer.fgColor = GetFontAttribute(1, FONTATTR_COLOR_FOREGROUND);
-    printer.bgColor = GetFontAttribute(1, FONTATTR_COLOR_BACKGROUND);
-    printer.shadowColor = GetFontAttribute(1, FONTATTR_COLOR_SHADOW);
-    printer.unk = GetFontAttribute(1, FONTATTR_UNKNOWN);
-    printer.letterSpacing = 0;
-    printer.lineSpacing = 0;
-
-    for (i = 0; i < itemCount2; i++)
-    {
-        for (j = 0; j < itemCount; j++)
-        {
-            printer.currentChar = strs[a8[(itemCount * i) + j]].text;
-            printer.x = (a4 * j) + 8;
-            printer.y = (16 * i) + 1;
-            printer.currentX = printer.x;
-            printer.currentY = printer.y;
-            AddTextPrinter(&printer, 0xFF, NULL);
-        }
-    }
-
     CopyWindowToVram(windowId, 2);
 }
 
@@ -1856,12 +1565,12 @@ u16 copy_decompressed_tile_data_to_vram(u8 bgId, const void *src, u16 size, u16 
 {
     switch (mode)
     {
-        case 0:
-            return LoadBgTiles(bgId, src, size, offset);
-        case 1:
-            return LoadBgTilemap(bgId, src, size, offset);
-        default:
-            return -1;
+    case 0:
+        return LoadBgTiles(bgId, src, size, offset);
+    case 1:
+        return LoadBgTilemap(bgId, src, size, offset);
+    default:
+        return -1;
     }
 }
 
@@ -2011,108 +1720,22 @@ void PrintPlayerNameOnWindow(u8 windowId, const u8 *src, u16 x, u16 y)
     AddTextPrinterParameterized(windowId, 1, gStringVar4, x, y, 0xFF, 0);
 }
 
-// Unused. Similar to BlitBitmapRect4Bit.
-void sub_819A080(const struct Bitmap *src, struct Bitmap *dst, u16 srcX, u16 srcY, u16 dstX, u16 dstY, u16 width, u16 height)
-{
-    int loopSrcY, loopDstY, loopSrcX, loopDstX, xEnd, yEnd, multiplierSrcY, multiplierDstY;
-    const u8 *pixelsSrc;
-    u8 *pixelsDst;
-    u16 toOrr;
-
-    if (dst->width - dstX < width)
-        xEnd = dst->width - dstX + srcX;
-    else
-        xEnd = width + srcX;
-
-    if (dst->height - dstY < height)
-        yEnd = srcY + dst->height - dstY;
-    else
-        yEnd = srcY + height;
-
-    multiplierSrcY = (src->width + (src->width & 7)) >> 3;
-    multiplierDstY = (dst->width + (dst->width & 7)) >> 3;
-
-    for (loopSrcY = srcY, loopDstY = dstY; loopSrcY < yEnd; loopSrcY++, loopDstY++)
-    {
-        for (loopSrcX = srcX, loopDstX = dstX; loopSrcX < xEnd; loopSrcX++, loopDstX++)
-        {
-            pixelsSrc = src->pixels + ((loopSrcX >> 1) & 3) + ((loopSrcX >> 3) << 5) + (((loopSrcY >> 3) * multiplierSrcY) << 5) + ((u32)(loopSrcY << 0x1d) >> 0x1B);
-            pixelsDst = (void*) dst->pixels + ((loopDstX >> 1) & 3) + ((loopDstX >> 3) << 5) + ((( loopDstY >> 3) * multiplierDstY) << 5) + ((u32)(loopDstY << 0x1d) >> 0x1B);
-
-            if ((uintptr_t)pixelsDst & 0x1)
-            {
-                pixelsDst--;
-                if (loopDstX & 0x1)
-                {
-                    toOrr = *(vu16*)pixelsDst;
-                    toOrr &= 0x0fff;
-                    if (loopSrcX & 0x1)
-                        toOrr |= ((*pixelsSrc & 0xf0) << 8);
-                    else
-                        toOrr |= ((*pixelsSrc & 0x0f) << 12);
-                }
-                else
-                {
-                    toOrr = *(vu16*)pixelsDst;
-                    toOrr &= 0xf0ff;
-                    if (loopSrcX & 0x1)
-                        toOrr |= ((*pixelsSrc & 0xf0) << 4);
-                    else
-                        toOrr |= ((*pixelsSrc & 0x0f) << 8);
-                }
-            }
-            else
-            {
-                if (loopDstX & 1)
-                {
-                    toOrr = *(vu16*)pixelsDst;
-                    toOrr &= 0xff0f;
-                    if (loopSrcX & 1)
-                        toOrr |= ((*pixelsSrc & 0xf0) << 0);
-                    else
-                        toOrr |= ((*pixelsSrc & 0x0f) << 4);
-                }
-                else
-                {
-                    toOrr = *(vu16*)pixelsDst;
-                    toOrr &= 0xfff0;
-                    if (loopSrcX & 1)
-                        toOrr |= ((*pixelsSrc & 0xf0) >> 4);
-                    else
-                        toOrr |= ((*pixelsSrc & 0x0f) >> 0);
-                }
-            }
-            *(vu16*)pixelsDst = toOrr;
-        }
-    }
-}
-
-void sub_819A25C(u8 palOffset, u16 speciesId)
-{
-    LoadPalette(GetValidMonIconPalettePtr(speciesId), palOffset, 0x20);
-}
-
-void sub_819A27C(u8 windowId, u16 speciesId, u32 personality, u16 x, u16 y)
-{
-    BlitBitmapToWindow(windowId, GetMonIconPtr(speciesId, personality, 1), x, y, 32, 32);
-}
-
 void ListMenuLoadStdPalAt(u8 palOffset, u8 palId)
 {
     const u16 *palette;
 
     switch (palId)
     {
-        case 0:
-        default:
-            palette = gFireRedMenuElements1_Pal;
-            break;
-        case 1:
-            palette = gFireRedMenuElements2_Pal;
-            break;
-        case 2:
-            palette = gFireRedMenuElements3_Pal;
-            break;
+    case 0:
+    default:
+        palette = gFireRedMenuElements1_Pal;
+        break;
+    case 1:
+        palette = gFireRedMenuElements2_Pal;
+        break;
+    case 2:
+        palette = gFireRedMenuElements3_Pal;
+        break;
     }
 
     LoadPalette(palette, palOffset, 0x20);
@@ -2139,32 +1762,32 @@ void BufferSaveMenuText(u8 textId, u8 *dest, u8 color)
 
     switch (textId)
     {
-        case SAVE_MENU_NAME:
-            StringCopy(string, gSaveBlock2Ptr->playerName);
-            break;
-        case SAVE_MENU_CAUGHT:
-            if (IsNationalPokedexEnabled())
-                string = ConvertIntToDecimalStringN(string, GetNationalPokedexCount(FLAG_GET_CAUGHT), STR_CONV_MODE_LEFT_ALIGN, 3);
-            else
-                string = ConvertIntToDecimalStringN(string, GetHoennPokedexCount(FLAG_GET_CAUGHT), STR_CONV_MODE_LEFT_ALIGN, 3);
-            *string = EOS;
-            break;
-        case SAVE_MENU_PLAY_TIME:
-            string = ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeHours, STR_CONV_MODE_LEFT_ALIGN, 3);
-            *(string++) = CHAR_COLON;
-            ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeMinutes, STR_CONV_MODE_LEADING_ZEROS, 2);
-            break;
-        case SAVE_MENU_LOCATION:
-            GetMapNameGeneric(string, gMapHeader.regionMapSectionId);
-            break;
-        case SAVE_MENU_BADGES:
-            for (curFlag = FLAG_BADGE01_GET, flagCount = 0, endOfString = string + 1; curFlag < FLAG_BADGE01_GET + NUM_BADGES; curFlag++)
-            {
-                if (FlagGet(curFlag))
-                    flagCount++;
-            }
-            *string = flagCount + CHAR_0;
-            *endOfString = EOS;
-            break;
+    case SAVE_MENU_NAME:
+        StringCopy(string, gSaveBlock2Ptr->playerName);
+        break;
+    case SAVE_MENU_CAUGHT:
+        if (IsNationalPokedexEnabled())
+            string = ConvertIntToDecimalStringN(string, GetNationalPokedexCount(FLAG_GET_CAUGHT), STR_CONV_MODE_LEFT_ALIGN, 3);
+        else
+            string = ConvertIntToDecimalStringN(string, GetHoennPokedexCount(FLAG_GET_CAUGHT), STR_CONV_MODE_LEFT_ALIGN, 3);
+        *string = EOS;
+        break;
+    case SAVE_MENU_PLAY_TIME:
+        string = ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeHours, STR_CONV_MODE_LEFT_ALIGN, 3);
+        *(string++) = CHAR_COLON;
+        ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->playTimeMinutes, STR_CONV_MODE_LEADING_ZEROS, 2);
+        break;
+    case SAVE_MENU_LOCATION:
+        GetMapNameGeneric(string, gMapHeader.regionMapSectionId);
+        break;
+    case SAVE_MENU_BADGES:
+        for (curFlag = FLAG_BADGE01_GET, flagCount = 0, endOfString = string + 1; curFlag < FLAG_BADGE01_GET + NUM_BADGES; curFlag++)
+        {
+            if (FlagGet(curFlag))
+                flagCount++;
+        }
+        *string = flagCount + CHAR_0;
+        *endOfString = EOS;
+        break;
     }
 }
