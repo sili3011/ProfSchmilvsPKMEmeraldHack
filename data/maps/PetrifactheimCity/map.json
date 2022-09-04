@@ -92,6 +92,13 @@
       "elevation": 0,
       "dest_map": "MAP_PETRIFACTHEIM_CITY",
       "dest_warp_id": 0
+    },
+    {
+      "x": 67,
+      "y": 12,
+      "elevation": 0,
+      "dest_map": "MAP_PETRIFACTHEIM_CITY",
+      "dest_warp_id": 0
     }
   ],
   "coord_events": [
