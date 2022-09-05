@@ -160,8 +160,6 @@ u16 GetPlayerAvatarBike(void)
 {
     if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
         return 1;
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE))
-        return 2;
     return 0;
 }
 
@@ -1549,7 +1547,7 @@ u16 ScriptGetPartyMonSpecies(void)
 // Removed for Emerald
 void TryInitBattleTowerAwardManObjectEvent(void)
 {
-    //TryInitLocalObjectEvent(6);
+    // TryInitLocalObjectEvent(6);
 }
 
 bool8 MonOTNameNotPlayer(void)
@@ -1989,7 +1987,7 @@ void ShowFrontierManiacMessage(void)
             [FRONTIER_MANIAC_BATTLE_FACTORY] = {7, 21},
             [FRONTIER_MANIAC_BATTLE_PALACE] = {7, 21},
             [FRONTIER_MANIAC_BATTLE_ARENA] = {14, 28},
-            [FRONTIER_MANIAC_BATTLE_PIKE] = {13, 112}, //BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
+            [FRONTIER_MANIAC_BATTLE_PIKE] = {13, 112}, // BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
             [FRONTIER_MANIAC_BATTLE_PYRAMID] = {7, 56}};
 
     u8 i;
@@ -3765,13 +3763,13 @@ bool8 InPokemonCenter(void)
 }
 
 /*  Summary of the Lilycove Trainer Fan Club, because it's a little messy
-    
+
     ## The Fan Club room itself
     There are initially 4 members of the Fan Club (+ an interviewer), none of whom are fans of the player
     After becoming the champion there will be 8 members of the Fan Club, 3 of whom are automatically fans of the player
     After this point, if a club member is a fan of the player they will sit at the front table and comment on the player
     If they are not fans of the player, they will sit at the far table and can make comments about a different trainer (see BufferFanClubTrainerName)
-    
+
     ## Gaining/losing fans
     After every link battle the player will gain a fan if they won, or lose a fan if they lost
     If the player has at least 3 fans, this is the only way to gain fans

@@ -24,7 +24,6 @@
 #include "constants/songs.h"
 #include "constants/tv.h"
 
-
 EWRAM_DATA struct MapPosition gPlayerFacingPosition = {0};
 
 static void Task_ComputerScreenOpenEffect(u8);
@@ -75,200 +74,200 @@ static const u8 sSandPillar1_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand
 static const u8 sSandPillar2_Gfx[] = INCBIN_U8("graphics/field_effects/pics/sand_pillar/2.4bpp");
 
 static const struct OamData sOam_SecretPower =
-{
-    .y = 0,
-    .x = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .size = SPRITE_SIZE(16x16),
-    .priority = 2,
+    {
+        .y = 0,
+        .x = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(16x16),
+        .size = SPRITE_SIZE(16x16),
+        .priority = 2,
 };
 
 static const union AnimCmd sAnim_SecretPowerCave[] =
-{
-    ANIMCMD_FRAME(0, 8),
-    ANIMCMD_FRAME(1, 8),
-    ANIMCMD_FRAME(2, 8),
-    ANIMCMD_FRAME(3, 8),
-    ANIMCMD_FRAME(4, 8),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 8),
+        ANIMCMD_FRAME(1, 8),
+        ANIMCMD_FRAME(2, 8),
+        ANIMCMD_FRAME(3, 8),
+        ANIMCMD_FRAME(4, 8),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_VineDropLeft[] =
-{
-    ANIMCMD_FRAME(0, 8),
-    ANIMCMD_FRAME(1, 8),
-    ANIMCMD_FRAME(2, 8),
-    ANIMCMD_FRAME(3, 8),
-    ANIMCMD_FRAME(4, 8),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 8),
+        ANIMCMD_FRAME(1, 8),
+        ANIMCMD_FRAME(2, 8),
+        ANIMCMD_FRAME(3, 8),
+        ANIMCMD_FRAME(4, 8),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_VineRiseLeft[] =
-{
-    ANIMCMD_FRAME(4, 8),
-    ANIMCMD_FRAME(3, 8),
-    ANIMCMD_FRAME(2, 8),
-    ANIMCMD_FRAME(1, 8),
-    ANIMCMD_FRAME(0, 8),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(4, 8),
+        ANIMCMD_FRAME(3, 8),
+        ANIMCMD_FRAME(2, 8),
+        ANIMCMD_FRAME(1, 8),
+        ANIMCMD_FRAME(0, 8),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_VineDropRight[] =
-{
-    ANIMCMD_FRAME(0, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(1, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(2, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(1, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(2, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_VineRiseRight[] =
-{
-    ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(2, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(1, 8, .hFlip = TRUE),
-    ANIMCMD_FRAME(0, 8, .hFlip = TRUE),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(4, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(3, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(2, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(1, 8, .hFlip = TRUE),
+        ANIMCMD_FRAME(0, 8, .hFlip = TRUE),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_SecretPowerShrub[] =
-{
-    ANIMCMD_FRAME(0, 8),
-    ANIMCMD_FRAME(1, 8),
-    ANIMCMD_FRAME(2, 8),
-    ANIMCMD_FRAME(3, 8),
-    ANIMCMD_FRAME(4, 8),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 8),
+        ANIMCMD_FRAME(1, 8),
+        ANIMCMD_FRAME(2, 8),
+        ANIMCMD_FRAME(3, 8),
+        ANIMCMD_FRAME(4, 8),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd *const sAnimTable_SecretPowerCave[] =
-{
-    sAnim_SecretPowerCave,
+    {
+        sAnim_SecretPowerCave,
 };
 
 static const union AnimCmd *const sAnimTable_SecretPowerTree[] =
-{
-    sAnim_VineDropLeft,
-    sAnim_VineRiseLeft,
-    sAnim_VineDropRight,
-    sAnim_VineRiseRight,
+    {
+        sAnim_VineDropLeft,
+        sAnim_VineRiseLeft,
+        sAnim_VineDropRight,
+        sAnim_VineRiseRight,
 };
 
 static const union AnimCmd *const sAnimTable_SecretPowerShrub[] =
-{
-    sAnim_SecretPowerShrub,
+    {
+        sAnim_SecretPowerShrub,
 };
 
 static const struct SpriteFrameImage sPicTable_SecretPowerCave[] =
-{
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerCave_Gfx, 2, 2, 4),
+    {
+        overworld_frame(sSecretPowerCave_Gfx, 2, 2, 0),
+        overworld_frame(sSecretPowerCave_Gfx, 2, 2, 1),
+        overworld_frame(sSecretPowerCave_Gfx, 2, 2, 2),
+        overworld_frame(sSecretPowerCave_Gfx, 2, 2, 3),
+        overworld_frame(sSecretPowerCave_Gfx, 2, 2, 4),
 };
 
 static const struct SpriteFrameImage sPicTable_SecretPowerTree[] =
-{
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerTree_Gfx, 2, 2, 4),
-    // 6th frame exists but isnt accessed, the tree vine metatile is used instead
+    {
+        overworld_frame(sSecretPowerTree_Gfx, 2, 2, 0),
+        overworld_frame(sSecretPowerTree_Gfx, 2, 2, 1),
+        overworld_frame(sSecretPowerTree_Gfx, 2, 2, 2),
+        overworld_frame(sSecretPowerTree_Gfx, 2, 2, 3),
+        overworld_frame(sSecretPowerTree_Gfx, 2, 2, 4),
+        // 6th frame exists but isnt accessed, the tree vine metatile is used instead
 };
 
 static const struct SpriteFrameImage sPicTable_SecretPowerShrub[] =
-{
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 0),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 1),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 2),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 3),
-    overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 4),
+    {
+        overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 0),
+        overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 1),
+        overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 2),
+        overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 3),
+        overworld_frame(sSecretPowerShrub_Gfx, 2, 2, 4),
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SecretPowerCave =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_TREE,
-    .oam = &sOam_SecretPower,
-    .anims = sAnimTable_SecretPowerCave,
-    .images = sPicTable_SecretPowerCave,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_CaveEntranceInit,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_TREE,
+        .oam = &sOam_SecretPower,
+        .anims = sAnimTable_SecretPowerCave,
+        .images = sPicTable_SecretPowerCave,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_CaveEntranceInit,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SecretPowerTree =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_PLANT,
-    .oam = &sOam_SecretPower,
-    .anims = sAnimTable_SecretPowerTree,
-    .images = sPicTable_SecretPowerTree,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TreeEntranceInit,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_PLANT,
+        .oam = &sOam_SecretPower,
+        .anims = sAnimTable_SecretPowerTree,
+        .images = sPicTable_SecretPowerTree,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_TreeEntranceInit,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SecretPowerShrub =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_PLANT,
-    .oam = &sOam_SecretPower,
-    .anims = sAnimTable_SecretPowerShrub,
-    .images = sPicTable_SecretPowerShrub,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_ShrubEntranceInit,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = FLDEFF_PAL_TAG_SECRET_POWER_PLANT,
+        .oam = &sOam_SecretPower,
+        .anims = sAnimTable_SecretPowerShrub,
+        .images = sPicTable_SecretPowerShrub,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_ShrubEntranceInit,
 };
 
 const struct SpritePalette gSpritePalette_SecretPower_Cave = {sSecretPowerCave_Pal, FLDEFF_PAL_TAG_SECRET_POWER_TREE};
 const struct SpritePalette gSpritePalette_SecretPower_Plant = {sSecretPowerPlant_Pal, FLDEFF_PAL_TAG_SECRET_POWER_PLANT};
 
 static const struct OamData sOam_SandPillar =
-{
-    .x = 0,
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x32),
-    .size = SPRITE_SIZE(16x32),
-    .priority = 2,
+    {
+        .x = 0,
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(16x32),
+        .size = SPRITE_SIZE(16x32),
+        .priority = 2,
 };
 
 static const union AnimCmd sAnim_SandPillar[] =
-{
-    ANIMCMD_FRAME(0, 6),
-    ANIMCMD_FRAME(1, 6),
-    ANIMCMD_FRAME(2, 6),
-    ANIMCMD_END,
+    {
+        ANIMCMD_FRAME(0, 6),
+        ANIMCMD_FRAME(1, 6),
+        ANIMCMD_FRAME(2, 6),
+        ANIMCMD_END,
 };
 
 static const union AnimCmd *const sAnimTable_SandPillar[] =
-{
-    sAnim_SandPillar,
+    {
+        sAnim_SandPillar,
 };
 
 static const struct SpriteFrameImage sPicTable_SandPillar[] =
-{
-    {sSandPillar0_Gfx, sizeof(sSandPillar0_Gfx)},
-    {sSandPillar1_Gfx, sizeof(sSandPillar1_Gfx)},
-    {sSandPillar2_Gfx, sizeof(sSandPillar2_Gfx)},
+    {
+        {sSandPillar0_Gfx, sizeof(sSandPillar0_Gfx)},
+        {sSandPillar1_Gfx, sizeof(sSandPillar1_Gfx)},
+        {sSandPillar2_Gfx, sizeof(sSandPillar2_Gfx)},
 };
 
 static const struct SpriteTemplate sSpriteTemplate_SandPillar =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = FLDEFF_PAL_TAG_SAND_PILLAR,
-    .oam = &sOam_SandPillar,
-    .anims = sAnimTable_SandPillar,
-    .images = sPicTable_SandPillar,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_SandPillar_BreakTop,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = FLDEFF_PAL_TAG_SAND_PILLAR,
+        .oam = &sOam_SandPillar,
+        .anims = sAnimTable_SandPillar,
+        .images = sPicTable_SandPillar,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_SandPillar_BreakTop,
 };
 
 const struct SpritePalette gSpritePalette_SandPillar = {gTilesetPalettes_SecretBase[5], FLDEFF_PAL_TAG_SAND_PILLAR};
@@ -277,36 +276,36 @@ static const u8 sRecordMixLights_Gfx[] = INCBIN_U8("graphics/field_effects/pics/
 static const u16 sRecordMixLights_Pal[] = INCBIN_U16("graphics/field_effects/palettes/record_mix_lights.gbapal");
 
 static const struct SpriteFrameImage sPicTable_RecordMixLights[] =
-{
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 0),
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 1),
-    overworld_frame(sRecordMixLights_Gfx, 4, 1, 2),
+    {
+        overworld_frame(sRecordMixLights_Gfx, 4, 1, 0),
+        overworld_frame(sRecordMixLights_Gfx, 4, 1, 1),
+        overworld_frame(sRecordMixLights_Gfx, 4, 1, 2),
 };
 
 static const struct SpritePalette sSpritePalette_RecordMixLights = {sRecordMixLights_Pal, 0x1000};
 
 static const union AnimCmd sAnim_RecordMixLights[] =
-{
-    ANIMCMD_FRAME(0, 30),
-    ANIMCMD_FRAME(1, 30),
-    ANIMCMD_FRAME(2, 30),
-    ANIMCMD_JUMP(0),
+    {
+        ANIMCMD_FRAME(0, 30),
+        ANIMCMD_FRAME(1, 30),
+        ANIMCMD_FRAME(2, 30),
+        ANIMCMD_JUMP(0),
 };
 
 static const union AnimCmd *const sAnimTable_RecordMixLights[] =
-{
-    sAnim_RecordMixLights,
+    {
+        sAnim_RecordMixLights,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RecordMixLights =
-{
-    .tileTag = 0xFFFF,
-    .paletteTag = 0x1000,
-    .oam = &gObjectEventBaseOam_32x8,
-    .anims = sAnimTable_RecordMixLights,
-    .images = sPicTable_RecordMixLights,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = 0xFFFF,
+        .paletteTag = 0x1000,
+        .oam = &gObjectEventBaseOam_32x8,
+        .anims = sAnimTable_RecordMixLights,
+        .images = sPicTable_RecordMixLights,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 // For accessing pokemon storage PC or the Hall of Fame PC
@@ -330,17 +329,17 @@ bool8 IsComputerScreenCloseEffectActive(void)
     return FuncIsActiveTask(Task_ComputerScreenCloseEffect);
 }
 
-#define tState         data[0]
+#define tState data[0]
 #define tHorzIncrement data[1]
 #define tVertIncrement data[2]
-#define tWinLeft       data[3]
-#define tWinRight      data[4]
-#define tWinTop        data[5]
-#define tWinBottom     data[6]
-#define tBlendCnt      data[7]
-#define tBlendY        data[8]
+#define tWinLeft data[3]
+#define tWinRight data[4]
+#define tWinTop data[5]
+#define tWinBottom data[6]
+#define tBlendCnt data[7]
+#define tBlendY data[8]
 
-static void CreateComputerScreenEffectTask(void (*taskfunc) (u8), u16 increment, u16 unused, u8 priority)
+static void CreateComputerScreenEffectTask(void (*taskfunc)(u8), u16 increment, u16 unused, u8 priority)
 {
     u8 taskId = CreateTask(taskfunc, priority);
 
@@ -499,7 +498,7 @@ static void SetCurrentSecretBase(void)
 
 static void AdjustSecretPowerSpritePixelOffsets(void)
 {
-    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
+    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE)
     {
         switch (gFieldEffectArguments[1])
         {
@@ -782,8 +781,8 @@ static void SpriteCB_ShrubEntranceEnd(struct Sprite *sprite)
     EnableBothScriptContexts();
 }
 
-#define tX     data[0]
-#define tY     data[1]
+#define tX data[0]
+#define tY data[1]
 #define tState data[2]
 
 bool8 FldEff_SecretBasePCTurnOn(void)
@@ -1244,8 +1243,7 @@ static void Task_WateringBerryTreeAnim_Start(u8 taskId)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
-    if (!ObjectEventIsMovementOverridden(playerObjEvent)
-        || ObjectEventClearHeldMovementIfFinished(playerObjEvent))
+    if (!ObjectEventIsMovementOverridden(playerObjEvent) || ObjectEventClearHeldMovementIfFinished(playerObjEvent))
     {
         // Start watering
         SetPlayerAvatarWatering(GetPlayerFacingDirection());

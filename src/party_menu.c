@@ -3875,7 +3875,7 @@ static void FieldCallback_Surf(void)
 static void FieldCallback_Ride(void)
 {
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
-    FieldEffectStart(FLDEFF_USE_SURF);
+    FieldEffectStart(FLDEFF_USE_RIDE);
 }
 
 static bool8 SetUpFieldMove_Surf(void)
@@ -3910,7 +3910,7 @@ static void DisplayCantUseSurfMessage(void)
 
 static void DisplayCantUseRideMessage(void)
 {
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_RIDING))
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)) // ADD RIDE FLAG/ANIMATION/SPRITE
         DisplayPartyMenuStdMessage(PARTY_MSG_ALREADY_RIDING);
     else
         DisplayPartyMenuStdMessage(PARTY_MSG_CANT_RIDE_HERE);

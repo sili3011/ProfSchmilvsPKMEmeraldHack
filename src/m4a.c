@@ -75,10 +75,7 @@ void m4aSoundInit(void)
 
     SoundInit(&gSoundInfo);
     MPlayExtender(gCgbChans);
-    m4aSoundMode(SOUND_MODE_DA_BIT_8
-               | SOUND_MODE_FREQ_13379
-               | (12 << SOUND_MODE_MASVOL_SHIFT)
-               | (5 << SOUND_MODE_MAXCHN_SHIFT));
+    m4aSoundMode(SOUND_MODE_DA_BIT_8 | SOUND_MODE_FREQ_13379 | (12 << SOUND_MODE_MASVOL_SHIFT) | (5 << SOUND_MODE_MAXCHN_SHIFT));
 
     for (i = 0; i < NUM_MUSIC_PLAYERS; i++)
     {
@@ -127,8 +124,7 @@ void m4aSongNumStartOrChange(u16 n)
     }
     else
     {
-        if ((mplay->info->status & MUSICPLAYER_STATUS_TRACK) == 0
-         || (mplay->info->status & MUSICPLAYER_STATUS_PAUSE))
+        if ((mplay->info->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplay->info->status & MUSICPLAYER_STATUS_PAUSE))
         {
             MPlayStart(mplay->info, song->header);
         }
@@ -259,11 +255,7 @@ void MPlayExtender(struct CgbChannel *cgbChans)
     struct SoundInfo *soundInfo;
     u32 ident;
 
-    REG_SOUNDCNT_X = SOUND_MASTER_ENABLE
-                   | SOUND_4_ON
-                   | SOUND_3_ON
-                   | SOUND_2_ON
-                   | SOUND_1_ON;
+    REG_SOUNDCNT_X = SOUND_MASTER_ENABLE | SOUND_4_ON | SOUND_3_ON | SOUND_2_ON | SOUND_1_ON;
     REG_SOUNDCNT_L = 0; // set master volume to zero
     REG_NR12 = 0x8;
     REG_NR22 = 0x8;
@@ -342,14 +334,8 @@ void SoundInit(struct SoundInfo *soundInfo)
 
     REG_DMA1CNT_H = DMA_32BIT;
     REG_DMA2CNT_H = DMA_32BIT;
-    REG_SOUNDCNT_X = SOUND_MASTER_ENABLE
-                   | SOUND_4_ON
-                   | SOUND_3_ON
-                   | SOUND_2_ON
-                   | SOUND_1_ON;
-    REG_SOUNDCNT_H = SOUND_B_FIFO_RESET | SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT
-                   | SOUND_A_FIFO_RESET | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT
-                   | SOUND_ALL_MIX_FULL;
+    REG_SOUNDCNT_X = SOUND_MASTER_ENABLE | SOUND_4_ON | SOUND_3_ON | SOUND_2_ON | SOUND_1_ON;
+    REG_SOUNDCNT_H = SOUND_B_FIFO_RESET | SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT | SOUND_A_FIFO_RESET | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT | SOUND_ALL_MIX_FULL;
     REG_SOUNDBIAS_H = (REG_SOUNDBIAS_H & 0x3F) | 0x40;
 
     REG_DMA1SAD = (s32)soundInfo->pcmBuffer;
@@ -599,11 +585,7 @@ void MPlayStart(struct MusicPlayerInfo *mplayInfo, struct SongHeader *songHeader
 
     unk_B = mplayInfo->unk_B;
 
-    if (!unk_B
-        || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START))
-            && ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0
-                || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE)))
-        || (mplayInfo->priority <= songHeader->priority))
+    if (!unk_B || ((!mplayInfo->songHeader || !(mplayInfo->tracks[0].flags & MPT_FLG_START)) && ((mplayInfo->status & MUSICPLAYER_STATUS_TRACK) == 0 || (mplayInfo->status & MUSICPLAYER_STATUS_PAUSE))) || (mplayInfo->priority <= songHeader->priority))
     {
         mplayInfo->ident++;
         mplayInfo->status = 0;
@@ -771,11 +753,7 @@ void TrkVolPitSet(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *tr
     if (track->flags & MPT_FLG_PITSET)
     {
         s32 bend = track->bend * track->bendRange;
-        s32 x = (track->tune + bend)
-              * 4
-              + (track->keyShift << 8)
-              + (track->keyShiftX << 8)
-              + track->pitX;
+        s32 x = (track->tune + bend) * 4 + (track->keyShift << 8) + (track->keyShiftX << 8) + track->pitX;
 
         if (track->modT == 0)
             x += 16 * track->modM;
@@ -891,12 +869,15 @@ void CgbModVol(struct CgbChannel *chan)
     }
     else
     {
-        // Force chan->rightVolume and chan->leftVolume to be read from memory again,
-        // even though there is no reason to do so.
-        // The command line option "-fno-gcse" achieves the same result as this.
-        #ifndef NONMATCHING
-            asm("" : : : "memory");
-        #endif
+// Force chan->rightVolume and chan->leftVolume to be read from memory again,
+// even though there is no reason to do so.
+// The command line option "-fno-gcse" achieves the same result as this.
+#ifndef NONMATCHING
+        asm(""
+            :
+            :
+            : "memory");
+#endif
 
         chan->envelopeGoal = (u32)(chan->rightVolume + chan->leftVolume) >> 4;
         if (chan->envelopeGoal > 15)
@@ -944,7 +925,7 @@ void CgbSound(void)
             nrx4ptr = (vu8 *)(REG_ADDR_NR14);
             break;
         case 2:
-            nrx0ptr = (vu8 *)(REG_ADDR_NR10+1);
+            nrx0ptr = (vu8 *)(REG_ADDR_NR10 + 1);
             nrx1ptr = (vu8 *)(REG_ADDR_NR21);
             nrx2ptr = (vu8 *)(REG_ADDR_NR22);
             nrx3ptr = (vu8 *)(REG_ADDR_NR23);
@@ -958,7 +939,7 @@ void CgbSound(void)
             nrx4ptr = (vu8 *)(REG_ADDR_NR34);
             break;
         default:
-            nrx0ptr = (vu8 *)(REG_ADDR_NR30+1);
+            nrx0ptr = (vu8 *)(REG_ADDR_NR30 + 1);
             nrx1ptr = (vu8 *)(REG_ADDR_NR41);
             nrx2ptr = (vu8 *)(REG_ADDR_NR42);
             nrx3ptr = (vu8 *)(REG_ADDR_NR43);
@@ -1173,9 +1154,9 @@ void CgbSound(void)
             {
                 int dac_pwm_rate = REG_SOUNDBIAS_H;
 
-                if (dac_pwm_rate < 0x40)        // if PWM rate = 32768 Hz
+                if (dac_pwm_rate < 0x40) // if PWM rate = 32768 Hz
                     channels->frequency = (channels->frequency + 2) & 0x7fc;
-                else if (dac_pwm_rate < 0x80)   // if PWM rate = 65536 Hz
+                else if (dac_pwm_rate < 0x80) // if PWM rate = 65536 Hz
                     channels->frequency = (channels->frequency + 1) & 0x7fe;
             }
 
@@ -1183,7 +1164,7 @@ void CgbSound(void)
                 *nrx3ptr = channels->frequency;
             else
                 *nrx3ptr = (*nrx3ptr & 0x08) | channels->frequency;
-            channels->n4 = (channels->n4 & 0xC0) + (*((u8*)(&channels->frequency) + 1));
+            channels->n4 = (channels->n4 & 0xC0) + (*((u8 *)(&channels->frequency) + 1));
             *nrx4ptr = (s8)(channels->n4 & mask);
         }
 
@@ -1414,10 +1395,10 @@ void m4aMPlayLFOSpeedSet(struct MusicPlayerInfo *mplayInfo, u16 trackBits, u8 lf
 }
 
 #define MEMACC_COND_JUMP(cond) \
-if (cond)                      \
-    goto cond_true;            \
-else                           \
-    goto cond_false;           \
+    if (cond)                  \
+        goto cond_true;        \
+    else                       \
+        goto cond_false;
 
 void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -1495,11 +1476,11 @@ void ply_memacc(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *trac
     }
 
 cond_true:
-    {
-        // *& is required for matching
-        (*&gMPlayJumpTable[1])(mplayInfo, track);
-        return;
-    }
+{
+    // *& is required for matching
+    (*&gMPlayJumpTable[1])(mplayInfo, track);
+    return;
+}
 
 cond_false:
     track->cmdPtr += 4;
@@ -1518,13 +1499,13 @@ void ply_xxx(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
     gMPlayJumpTable[0](mplayInfo, track);
 }
 
-#define READ_XCMD_BYTE(var, n)       \
-{                                    \
-    u32 byte = track->cmdPtr[(n)]; \
-    byte <<= n * 8;                  \
-    (var) &= ~(0xFF << (n * 8));     \
-    (var) |= byte;                   \
-}
+#define READ_XCMD_BYTE(var, n)         \
+    {                                  \
+        u32 byte = track->cmdPtr[(n)]; \
+        byte <<= n * 8;                \
+        (var) &= ~(0xFF << (n * 8));   \
+        (var) |= byte;                 \
+    }
 
 void ply_xwave(struct MusicPlayerInfo *mplayInfo, struct MusicPlayerTrack *track)
 {
@@ -1740,16 +1721,12 @@ void SetPokemonCryStereo(u32 val)
 
     if (val)
     {
-        REG_SOUNDCNT_H = SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT
-                       | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT
-                       | SOUND_ALL_MIX_FULL;
+        REG_SOUNDCNT_H = SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT | SOUND_A_TIMER_0 | SOUND_A_RIGHT_OUTPUT | SOUND_ALL_MIX_FULL;
         soundInfo->mode &= ~1;
     }
     else
     {
-        REG_SOUNDCNT_H = SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT | SOUND_B_RIGHT_OUTPUT
-                       | SOUND_A_TIMER_0 | SOUND_A_LEFT_OUTPUT | SOUND_A_RIGHT_OUTPUT
-                       | SOUND_B_MIX_HALF | SOUND_A_MIX_HALF | SOUND_CGB_MIX_FULL;
+        REG_SOUNDCNT_H = SOUND_B_TIMER_0 | SOUND_B_LEFT_OUTPUT | SOUND_B_RIGHT_OUTPUT | SOUND_A_TIMER_0 | SOUND_A_LEFT_OUTPUT | SOUND_A_RIGHT_OUTPUT | SOUND_B_MIX_HALF | SOUND_A_MIX_HALF | SOUND_CGB_MIX_FULL;
         soundInfo->mode |= 1;
     }
 }

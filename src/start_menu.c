@@ -465,7 +465,7 @@ static bool32 InitStartMenuStep(void)
             sInitStartMenuData[0]++;
         break;
     case 5:
-        sStartMenuCursorPos = Menu_InitCursor(GetStartMenuWindowId(), 1, 0, 3, 16, sNumStartMenuActions, sStartMenuCursorPos);
+        sStartMenuCursorPos = Menu_InitCursor(GetStartMenuWindowId(), 1, 0, 0, 16, sNumStartMenuActions, sStartMenuCursorPos);
         CopyWindowToVram(GetStartMenuWindowId(), TRUE);
         return TRUE;
     }

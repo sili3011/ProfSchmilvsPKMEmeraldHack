@@ -207,8 +207,8 @@ struct ObjectEvent
     /*0x1D*/ u8 trainerRange_berryTreeId;
     /*0x1E*/ u8 currentMetatileBehavior;
     /*0x1F*/ u8 previousMetatileBehavior;
-    /*0x20*/ u8 previousMovementDirection:4;
-             u8 directionOverwrite:4;
+    /*0x20*/ u8 previousMovementDirection : 4;
+    u8 directionOverwrite : 4;
     /*0x21*/ u8 directionSequenceIndex;
     /*0x22*/ u8 playerCopyableMovement;
     /*size = 0x24*/
@@ -237,27 +237,25 @@ struct ObjectEventGraphicsInfo
 enum
 {
     PLAYER_AVATAR_STATE_NORMAL,
-    PLAYER_AVATAR_STATE_MACH_BIKE,
+    PLAYER_AVATAR_STATE_RIDING,
     PLAYER_AVATAR_STATE_ACRO_BIKE,
     PLAYER_AVATAR_STATE_SURFING,
     PLAYER_AVATAR_STATE_UNDERWATER,
     PLAYER_AVATAR_STATE_FIELD_MOVE,
     PLAYER_AVATAR_STATE_FISHING,
     PLAYER_AVATAR_STATE_WATERING,
-    PLAYER_AVATAR_STATE_RIDING
 };
 
 #define PLAYER_AVATAR_FLAG_ON_FOOT (1 << 0)
-#define PLAYER_AVATAR_FLAG_MACH_BIKE (1 << 1)
+#define PLAYER_AVATAR_FLAG_RIDING (1 << 1) // ADD RIDE ANIMATION/SPRITE
 #define PLAYER_AVATAR_FLAG_ACRO_BIKE (1 << 2)
 #define PLAYER_AVATAR_FLAG_SURFING (1 << 3)
 #define PLAYER_AVATAR_FLAG_UNDERWATER (1 << 4)
 #define PLAYER_AVATAR_FLAG_5 (1 << 5)
 #define PLAYER_AVATAR_FLAG_FORCED_MOVE (1 << 6)
 #define PLAYER_AVATAR_FLAG_DASH (1 << 7)
-#define PLAYER_AVATAR_FLAG_RIDING (1 << 8)
 
-#define PLAYER_AVATAR_FLAG_BIKE (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE)
+#define PLAYER_AVATAR_FLAG_BIKE (PLAYER_AVATAR_FLAG_ACRO_BIKE)
 
 enum
 {
@@ -286,7 +284,7 @@ enum
     COLLISION_ISOLATED_HORIZONTAL_RAIL,
     COLLISION_VERTICAL_RAIL,
     COLLISION_HORIZONTAL_RAIL,
-    //sideways_stairs
+    // sideways_stairs
     COLLISION_SIDEWAYS_STAIRS_TO_RIGHT,
     COLLISION_SIDEWAYS_STAIRS_TO_LEFT
 };

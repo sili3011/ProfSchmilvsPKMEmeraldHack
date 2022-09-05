@@ -75,26 +75,26 @@ static void SetDistanceOfClosestHiddenItem(u8 taskId, s16 x, s16 y);
 static void CB2_OpenPokeblockFromBag(void);
 
 // EWRAM variables
-EWRAM_DATA static void(*sItemUseOnFieldCB)(u8 taskId) = NULL;
+EWRAM_DATA static void (*sItemUseOnFieldCB)(u8 taskId) = NULL;
 
 // Below is set TRUE by UseRegisteredKeyItemOnField
-#define tUsingRegisteredKeyItem  data[3]
+#define tUsingRegisteredKeyItem data[3]
 
 // .rodata
 
 static const MainCallback sItemUseCallbacks[] =
-{
-    CB2_ShowPartyMenuForItemUse,
-    CB2_ReturnToField,
-    NULL,
+    {
+        CB2_ShowPartyMenuForItemUse,
+        CB2_ReturnToField,
+        NULL,
 };
 
 static const u8 sClockwiseDirections[] = {DIR_NORTH, DIR_EAST, DIR_SOUTH, DIR_WEST};
 
 static const struct YesNoFuncTable sUseTMHMYesNoFuncTable =
-{
-    .yesFunc = UseTMHM,
-    .noFunc = BagMenu_InitListsMenu,
+    {
+        .yesFunc = UseTMHM,
+        .noFunc = BagMenu_InitListsMenu,
 };
 
 // .text
@@ -199,7 +199,7 @@ void ItemUseOutOfBattle_Mail(u8 taskId)
 
 void ItemUseOutOfBattle_Bike(u8 taskId)
 {
-    s16* data = gTasks[taskId].data;
+    s16 *data = gTasks[taskId].data;
     s16 coordsY;
     s16 coordsX;
     u8 behavior;
@@ -221,10 +221,7 @@ void ItemUseOutOfBattle_Bike(u8 taskId)
 
 static void ItemUseOnFieldCB_Bike(u8 taskId)
 {
-    if (!ItemId_GetSecondaryId(gSpecialVar_ItemId))
-        GetOnOffBike(PLAYER_AVATAR_FLAG_MACH_BIKE);
-    else
-        GetOnOffBike(PLAYER_AVATAR_FLAG_ACRO_BIKE);
+    GetOnOffBike(PLAYER_AVATAR_FLAG_ACRO_BIKE);
     ScriptUnfreezeObjectEvents();
     ScriptContext2_Disable();
     DestroyTask(taskId);
@@ -293,19 +290,19 @@ static void ItemUseOnFieldCB_Itemfinder(u8 taskId)
 }
 
 // Define itemfinder task data
-#define tItemDistanceX    data[0]
-#define tItemDistanceY    data[1]
-#define tItemFound        data[2]
-#define tCounter          data[3] // Used to count delay between beeps and rotations during player spin
-#define tItemfinderBeeps  data[4]
-#define tFacingDir        data[5]
+#define tItemDistanceX data[0]
+#define tItemDistanceY data[1]
+#define tItemFound data[2]
+#define tCounter data[3] // Used to count delay between beeps and rotations during player spin
+#define tItemfinderBeeps data[4]
+#define tFacingDir data[5]
 
 static void Task_UseItemfinder(u8 taskId)
 {
     u8 playerDir;
     u8 playerDirToItem;
     u8 i;
-    s16* data = gTasks[taskId].data;
+    s16 *data = gTasks[taskId].data;
     if (tCounter == 0)
     {
         if (tItemfinderBeeps == 4)
@@ -451,10 +448,7 @@ static void CheckForHiddenItemsInMapConnection(u8 taskId)
     {
         for (y = playerY - 5; y <= playerY + 5; y++)
         {
-            if (var1 > x
-             || x >= width
-             || var2 > y
-             || y >= height)
+            if (var1 > x || x >= width || var2 > y || y >= height)
             {
                 struct MapConnection *conn = GetConnectionAtCoords(x, y);
                 if (conn && IsHiddenItemPresentInConnection(conn, x, y) == TRUE)
@@ -484,13 +478,13 @@ static void SetDistanceOfClosestHiddenItem(u8 taskId, s16 itemDistanceX, s16 ite
         if (tItemDistanceX < 0)
             oldItemAbsX = tItemDistanceX * -1; // WEST
         else
-            oldItemAbsX = tItemDistanceX;      // EAST
+            oldItemAbsX = tItemDistanceX; // EAST
 
         // Get absolute y distance of the already-found item
         if (tItemDistanceY < 0)
             oldItemAbsY = tItemDistanceY * -1; // NORTH
         else
-            oldItemAbsY = tItemDistanceY;      // SOUTH
+            oldItemAbsY = tItemDistanceY; // SOUTH
 
         // Get absolute x distance of the newly-found item
         if (itemDistanceX < 0)
@@ -504,7 +498,6 @@ static void SetDistanceOfClosestHiddenItem(u8 taskId, s16 itemDistanceX, s16 ite
         else
             newItemAbsY = itemDistanceY;
 
-
         if (oldItemAbsX + oldItemAbsY > newItemAbsX + newItemAbsY)
         {
             // New item is closer
@@ -513,8 +506,7 @@ static void SetDistanceOfClosestHiddenItem(u8 taskId, s16 itemDistanceX, s16 ite
         }
         else
         {
-            if (oldItemAbsX + oldItemAbsY == newItemAbsX + newItemAbsY
-            && (oldItemAbsY > newItemAbsY || (oldItemAbsY == newItemAbsY && tItemDistanceY < itemDistanceY)))
+            if (oldItemAbsX + oldItemAbsY == newItemAbsX + newItemAbsY && (oldItemAbsY > newItemAbsY || (oldItemAbsY == newItemAbsY && tItemDistanceY < itemDistanceY)))
             {
                 // If items are equal distance, use whichever is closer on the Y axis or further south
                 tItemDistanceX = itemDistanceX;
@@ -588,8 +580,7 @@ static void Task_StandingOnHiddenItem(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if (ObjectEventCheckHeldMovementStatus(&gObjectEvents[GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0)]) == TRUE
-    || tItemFound == FALSE)
+    if (ObjectEventCheckHeldMovementStatus(&gObjectEvents[GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0)]) == TRUE || tItemFound == FALSE)
     {
         // Spin player around on item
         PlayerFaceHiddenItem(sClockwiseDirections[tFacingDir]);
@@ -849,7 +840,7 @@ void ItemUseOutOfBattle_Repel(u8 taskId)
 
 static void Task_StartUseRepel(u8 taskId)
 {
-    s16* data = gTasks[taskId].data;
+    s16 *data = gTasks[taskId].data;
 
     if (++data[8] > 7)
     {
@@ -874,7 +865,7 @@ static void Task_UseRepel(u8 taskId)
 
 static void Task_UsedBlackWhiteFlute(u8 taskId)
 {
-    if(++gTasks[taskId].data[8] > 7)
+    if (++gTasks[taskId].data[8] > 7)
     {
         PlaySE(SE_GLASS_FLUTE);
         if (!InBattlePyramid())
@@ -913,9 +904,9 @@ void Task_UseDigEscapeRopeOnField(u8 taskId)
 static void ItemUseOnFieldCB_EscapeRope(u8 taskId)
 {
     Overworld_ResetStateAfterDigEscRope();
-    #if I_KEY_ESCAPE_ROPE < GEN_8
-        RemoveUsedItem();
-    #endif
+#if I_KEY_ESCAPE_ROPE < GEN_8
+    RemoveUsedItem();
+#endif
     gTasks[taskId].data[0] = 0;
     DisplayItemMessageOnField(taskId, gStringVar4, Task_UseDigEscapeRopeOnField);
 }
@@ -949,8 +940,7 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if (IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT))
-        && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT))) // There are two present pokemon.
+    if (IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)) && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT))) // There are two present pokemon.
     {
         static const u8 textCantThrowPokeBall[] = _("Cannot throw a ball!\nThere are two pokemon out there!\p");
 
@@ -959,8 +949,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         else
             DisplayItemMessageInBattlePyramid(taskId, textCantThrowPokeBall, Task_CloseBattlePyramidBagMessage);
     }
-    else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)
-             && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))) // Attempting to throw a ball with the second pokemon while both are alive.
+    else if (gBattlerInMenuId == GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT) && IsBattlerAlive(GetBattlerAtPosition(B_POSITION_PLAYER_LEFT))) // Attempting to throw a ball with the second pokemon while both are alive.
     {
         static const u8 textCantThrowPokeBall[] = _("Cannot throw a ball!\p");
 
@@ -999,7 +988,7 @@ static void Task_CloseStatIncreaseMessage(u8 taskId)
 
 static void Task_UseStatIncreaseItem(u8 taskId)
 {
-    if(++gTasks[taskId].data[8] > 7)
+    if (++gTasks[taskId].data[8] > 7)
     {
         PlaySE(SE_USE_ITEM);
         RemoveBagItem(gSpecialVar_ItemId, 1);
@@ -1066,7 +1055,7 @@ void ItemUseInBattle_PPRecovery(u8 taskId)
 void ItemUseInBattle_Escape(u8 taskId)
 {
 
-    if((gBattleTypeFlags & BATTLE_TYPE_TRAINER) == FALSE)
+    if ((gBattleTypeFlags & BATTLE_TYPE_TRAINER) == FALSE)
     {
         RemoveUsedItem();
         if (!InBattlePyramid())
@@ -1158,16 +1147,17 @@ void ItemUseOutOfBattle_CannotUse(u8 taskId)
 
 void ItemUseOutOfBattle_EonFlute(u8 taskId)
 {
-	s16* data = gTasks[taskId].data;
-	
-	if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
-	{
+    s16 *data = gTasks[taskId].data;
+
+    if (Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType) == TRUE)
+    {
         sItemUseOnFieldCB = ItemUseOnFieldCB_EonFlute;
-		SetUpItemUseOnFieldCallback(taskId);
-	}
-	else {
-		DisplayDadsAdviceCannotUseItemMessage(taskId, data[3]);
-	}
+        SetUpItemUseOnFieldCallback(taskId);
+    }
+    else
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, data[3]);
+    }
 }
 
 #undef tUsingRegisteredKeyItem

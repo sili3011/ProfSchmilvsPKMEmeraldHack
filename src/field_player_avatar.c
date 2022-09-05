@@ -221,14 +221,14 @@ static const u8 sAcroBikeTrickCollisionTypes[] = {
 static void (*const sPlayerAvatarTransitionFuncs[])(struct ObjectEvent *) =
     {
         [PLAYER_AVATAR_STATE_NORMAL] = PlayerAvatarTransition_Normal,
-        [PLAYER_AVATAR_STATE_MACH_BIKE] = PlayerAvatarTransition_MachBike,
+        [PLAYER_AVATAR_STATE_RIDING] = PlayerAvatarTransition_Riding,
         [PLAYER_AVATAR_STATE_ACRO_BIKE] = PlayerAvatarTransition_AcroBike,
         [PLAYER_AVATAR_STATE_SURFING] = PlayerAvatarTransition_Surfing,
         [PLAYER_AVATAR_STATE_UNDERWATER] = PlayerAvatarTransition_Underwater,
         [PLAYER_AVATAR_STATE_FIELD_MOVE] = PlayerAvatarTransition_ReturnToField,
         [PLAYER_AVATAR_STATE_FISHING] = PlayerAvatarTransition_Dummy,
         [PLAYER_AVATAR_STATE_WATERING] = PlayerAvatarTransition_Dummy,
-        [PLAYER_AVATAR_STATE_RIDING] = PlayerAvatarTransition_Riding};
+};
 
 static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
     {
@@ -241,18 +241,19 @@ static bool8 (*const sArrowWarpMetatileBehaviorChecks[])(u8) =
 static const u8 sRivalAvatarGfxIds[][2] =
     {
         {OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL, OBJ_EVENT_GFX_RIVAL_MAY_NORMAL},
-        {OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE, OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE},
+        {OBJ_EVENT_GFX_RIVAL_BRENDAN_MACH_BIKE, OBJ_EVENT_GFX_RIVAL_MAY_MACH_BIKE}, // ADD RIDING SPRITE
         {OBJ_EVENT_GFX_RIVAL_BRENDAN_ACRO_BIKE, OBJ_EVENT_GFX_RIVAL_MAY_ACRO_BIKE},
         {OBJ_EVENT_GFX_RIVAL_BRENDAN_SURFING, OBJ_EVENT_GFX_RIVAL_MAY_SURFING},
         {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
         {OBJ_EVENT_GFX_RIVAL_BRENDAN_FIELD_MOVE, OBJ_EVENT_GFX_RIVAL_MAY_FIELD_MOVE},
         {OBJ_EVENT_GFX_BRENDAN_FISHING, OBJ_EVENT_GFX_MAY_FISHING},
-        {OBJ_EVENT_GFX_BRENDAN_WATERING, OBJ_EVENT_GFX_MAY_WATERING}};
+        {OBJ_EVENT_GFX_BRENDAN_WATERING, OBJ_EVENT_GFX_MAY_WATERING},
+};
 
 static const u8 sPlayerAvatarGfxIds[][2] =
     {
         {OBJ_EVENT_GFX_BRENDAN_NORMAL, OBJ_EVENT_GFX_MAY_NORMAL},
-        {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE, OBJ_EVENT_GFX_MAY_MACH_BIKE},
+        {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE, OBJ_EVENT_GFX_MAY_MACH_BIKE}, // ADD RIDING SPRITE
         {OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE, OBJ_EVENT_GFX_MAY_ACRO_BIKE},
         {OBJ_EVENT_GFX_BRENDAN_SURFING, OBJ_EVENT_GFX_MAY_SURFING},
         {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, OBJ_EVENT_GFX_MAY_UNDERWATER},
@@ -270,7 +271,7 @@ static const u8 sPlayerAvatarGfxToStateFlag[2][5][2] =
         [MALE] =
             {
                 {OBJ_EVENT_GFX_BRENDAN_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
-                {OBJ_EVENT_GFX_BRENDAN_MACH_BIKE, PLAYER_AVATAR_FLAG_MACH_BIKE},
+                {OBJ_EVENT_GFX_BRENDAN_SURFING, PLAYER_AVATAR_FLAG_RIDING}, // ADD RIDING SPRITE
                 {OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE, PLAYER_AVATAR_FLAG_ACRO_BIKE},
                 {OBJ_EVENT_GFX_BRENDAN_SURFING, PLAYER_AVATAR_FLAG_SURFING},
                 {OBJ_EVENT_GFX_BRENDAN_UNDERWATER, PLAYER_AVATAR_FLAG_UNDERWATER},
@@ -278,13 +279,13 @@ static const u8 sPlayerAvatarGfxToStateFlag[2][5][2] =
         [FEMALE] =
             {
                 {OBJ_EVENT_GFX_MAY_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
-                {OBJ_EVENT_GFX_MAY_MACH_BIKE, PLAYER_AVATAR_FLAG_MACH_BIKE},
+                {OBJ_EVENT_GFX_MAY_MACH_BIKE, PLAYER_AVATAR_FLAG_RIDING},
                 {OBJ_EVENT_GFX_MAY_ACRO_BIKE, PLAYER_AVATAR_FLAG_ACRO_BIKE},
                 {OBJ_EVENT_GFX_MAY_SURFING, PLAYER_AVATAR_FLAG_SURFING},
                 {OBJ_EVENT_GFX_MAY_UNDERWATER, PLAYER_AVATAR_FLAG_UNDERWATER},
             }};
 
-static bool8 (*const sArrowWarpMetatileBehaviorChecks2[])(u8) = //Duplicate of sArrowWarpMetatileBehaviorChecks
+static bool8 (*const sArrowWarpMetatileBehaviorChecks2[])(u8) = // Duplicate of sArrowWarpMetatileBehaviorChecks
     {
         MetatileBehavior_IsSouthArrowWarp,
         MetatileBehavior_IsNorthArrowWarp,
@@ -386,7 +387,7 @@ static void npc_clear_strange_bits(struct ObjectEvent *objEvent)
 
 static void MovePlayerAvatarUsingKeypadInput(u8 direction, u16 newKeys, u16 heldKeys)
 {
-    if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE) || (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE))
+    if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE))
         MovePlayerOnBike(direction, newKeys, heldKeys);
     else
         MovePlayerNotOnBike(direction, heldKeys);
@@ -726,7 +727,7 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
         CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
     }
 
-    //sideways stairs logic
+    // sideways stairs logic
     /*
     if (MetatileBehavior_IsSidewaysStairsLeftSideTop(metatileBehavior) && direction == DIR_EAST)
         return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
@@ -878,11 +879,10 @@ static void PlayerAvatarTransition_Normal(struct ObjectEvent *objEvent)
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_ON_FOOT);
 }
 
+// TODO: remove
 static void PlayerAvatarTransition_MachBike(struct ObjectEvent *objEvent)
 {
-    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_MACH_BIKE));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_MACH_BIKE);
     BikeClearState(0, 0);
 }
 
@@ -914,9 +914,9 @@ static void PlayerAvatarTransition_Riding(struct ObjectEvent *objEvent)
 {
     u8 spriteId;
 
-    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_RIDING));
+    ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_RIDING)); // ADD RIDE FLAG/ANIMATION/SPRITE
     ObjectEventTurn(objEvent, objEvent->movementDirection);
-    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_RIDING);
+    SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_RIDING); // ADD RIDE FLAG/ANIMATION/SPRITE
     gFieldEffectArguments[0] = objEvent->currentCoords.x;
     gFieldEffectArguments[1] = objEvent->currentCoords.y;
     gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
@@ -1275,7 +1275,7 @@ void sub_808BCF4(void)
 
     npc_clear_strange_bits(playerObjEvent);
     SetObjectEventDirection(playerObjEvent, playerObjEvent->facingDirection);
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_ACRO_BIKE))
     {
         Bike_HandleBumpySlopeJump();
         Bike_UpdateBikeCounterSpeed(0);
@@ -2302,7 +2302,7 @@ static u8 TrySpinPlayerForWarp(struct ObjectEvent *object, s16 *delayTimer)
     return sSpinDirections[object->facingDirection];
 }
 
-//sideways stairs
+// sideways stairs
 u8 GetRightSideStairsDirection(u8 direction)
 {
     switch (direction)

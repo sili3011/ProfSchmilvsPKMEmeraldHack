@@ -64,47 +64,47 @@ static void Bike_SetBikeStill(void);
 */
 
 static void (*const sMachBikeTransitions[])(u8) =
-{
-    MachBikeTransition_FaceDirection, // Face vs Turn: Face has no anim while Turn does. Turn checks for collision because if you turn right as opposed to face right, if there is a wall there, turn will make a bonk sound effect while face will not.
-    MachBikeTransition_TurnDirection,
-    MachBikeTransition_TrySpeedUp,
-    MachBikeTransition_TrySlowDown,
+    {
+        MachBikeTransition_FaceDirection, // Face vs Turn: Face has no anim while Turn does. Turn checks for collision because if you turn right as opposed to face right, if there is a wall there, turn will make a bonk sound effect while face will not.
+        MachBikeTransition_TurnDirection,
+        MachBikeTransition_TrySpeedUp,
+        MachBikeTransition_TrySlowDown,
 };
 
 // bikeFrameCounter is input which is represented by sMachBikeSpeeds in order: 0 is normal speed (1 speed), 1 is fast speed (2 speed), 2 is fastest speed (4 speed)
 static void (*const sMachBikeSpeedCallbacks[])(u8) =
-{
-    PlayerGoSpeed1, // normal speed (1 speed)
-    PlayerGoSpeed2, // fast speed (2 speed)
-    PlayerGoSpeed4, // fastest speed (4 speed)
+    {
+        PlayerGoSpeed1, // normal speed (1 speed)
+        PlayerGoSpeed2, // fast speed (2 speed)
+        PlayerGoSpeed4, // fastest speed (4 speed)
 };
 
 static void (*const sAcroBikeTransitions[])(u8) =
-{
-    AcroBikeTransition_FaceDirection,
-    AcroBikeTransition_TurnDirection,
-    AcroBikeTransition_Moving,
-    AcroBikeTransition_NormalToWheelie,
-    AcroBikeTransition_WheelieToNormal,
-    AcroBikeTransition_WheelieIdle,
-    AcroBikeTransition_WheelieHoppingStanding,
-    AcroBikeTransition_WheelieHoppingMoving,
-    AcroBikeTransition_SideJump,
-    AcroBikeTransition_TurnJump,
-    AcroBikeTransition_WheelieMoving,
-    AcroBikeTransition_WheelieRisingMoving,
-    AcroBikeTransition_WheelieLoweringMoving,
+    {
+        AcroBikeTransition_FaceDirection,
+        AcroBikeTransition_TurnDirection,
+        AcroBikeTransition_Moving,
+        AcroBikeTransition_NormalToWheelie,
+        AcroBikeTransition_WheelieToNormal,
+        AcroBikeTransition_WheelieIdle,
+        AcroBikeTransition_WheelieHoppingStanding,
+        AcroBikeTransition_WheelieHoppingMoving,
+        AcroBikeTransition_SideJump,
+        AcroBikeTransition_TurnJump,
+        AcroBikeTransition_WheelieMoving,
+        AcroBikeTransition_WheelieRisingMoving,
+        AcroBikeTransition_WheelieLoweringMoving,
 };
 
 static u8 (*const sAcroBikeInputHandlers[])(u8 *, u16, u16) =
-{
-    AcroBikeHandleInputNormal,
-    AcroBikeHandleInputTurning,
-    AcroBikeHandleInputWheelieStanding,
-    AcroBikeHandleInputBunnyHop,
-    AcroBikeHandleInputWheelieMoving,
-    AcroBikeHandleInputSidewaysJump,
-    AcroBikeHandleInputTurnJump,
+    {
+        AcroBikeHandleInputNormal,
+        AcroBikeHandleInputTurning,
+        AcroBikeHandleInputWheelieStanding,
+        AcroBikeHandleInputBunnyHop,
+        AcroBikeHandleInputWheelieMoving,
+        AcroBikeHandleInputSidewaysJump,
+        AcroBikeHandleInputTurnJump,
 };
 
 // used with bikeFrameCounter from mach bike
@@ -115,21 +115,18 @@ static const u8 sAcroBikeJumpTimerList[] = {4, 0};
 
 // this is a list of history inputs to do in order to do the check to retrieve a jump direction for acro bike. it seems to be an extensible list, so its possible that Game Freak may have intended for the Acro Bike to have more complex tricks at some point. The final list only has the acro jump.
 static const struct BikeHistoryInputInfo sAcroBikeTricksList[] =
-{
-    // the 0xF is a mask performed with each byte of the array in order to perform the check on only the last entry of the history list, otherwise the check wouldn't work as there can be 0xF0 as opposed to 0x0F.
-    {DIR_SOUTH, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_SOUTH},
-    {DIR_NORTH, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_NORTH},
-    {DIR_WEST, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_WEST},
-    {DIR_EAST, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_EAST},
+    {
+        // the 0xF is a mask performed with each byte of the array in order to perform the check on only the last entry of the history list, otherwise the check wouldn't work as there can be 0xF0 as opposed to 0x0F.
+        {DIR_SOUTH, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_SOUTH},
+        {DIR_NORTH, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_NORTH},
+        {DIR_WEST, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_WEST},
+        {DIR_EAST, B_BUTTON, 0xF, 0xF, sAcroBikeJumpTimerList, sAcroBikeJumpTimerList, DIR_EAST},
 };
 
 // code
 void MovePlayerOnBike(u8 direction, u16 newKeys, u16 heldKeys)
 {
-    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE)
-        MovePlayerOnMachBike(direction, newKeys, heldKeys);
-    else
-        MovePlayerOnAcroBike(direction, newKeys, heldKeys);
+    MovePlayerOnAcroBike(direction, newKeys, heldKeys);
 }
 
 static void MovePlayerOnMachBike(u8 direction, u16 newKeys, u16 heldKeys)
@@ -142,7 +139,7 @@ static u8 GetMachBikeTransition(u8 *dirTraveling)
 {
     // if the dir updated before this function, get the relevent new direction to check later.
     u8 direction = GetPlayerMovementDirection();
-    
+
     // fix direction when moving on sideways stairs
     switch (direction)
     {
@@ -206,7 +203,7 @@ static void MachBikeTransition_TurnDirection(u8 direction)
         Bike_SetBikeStill();
     }
     else
-    {        
+    {
         MachBikeTransition_FaceDirection(playerObjEvent->facingDirection);
     }
 }
@@ -248,10 +245,10 @@ static void MachBikeTransition_TrySpeedUp(u8 direction)
         {
             if (ObjectMovingOnRockStairs(playerObjEvent, direction) && gPlayerAvatar.bikeFrameCounter > 1)
                 gPlayerAvatar.bikeFrameCounter--;
-            
+
             sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
             gPlayerAvatar.bikeSpeed = gPlayerAvatar.bikeFrameCounter + (gPlayerAvatar.bikeFrameCounter >> 1); // same as dividing by 2, but compiler is insistent on >> 1
-            if (gPlayerAvatar.bikeFrameCounter < 2) // do not go faster than the last element in the mach bike array
+            if (gPlayerAvatar.bikeFrameCounter < 2)                                                           // do not go faster than the last element in the mach bike array
                 gPlayerAvatar.bikeFrameCounter++;
         }
     }
@@ -307,8 +304,8 @@ static u8 AcroBikeHandleInputNormal(u8 *newDirection, u16 newKeys, u16 heldKeys)
     {
         if (newKeys & B_BUTTON)
         {
-            //We're standing still with the B button held.
-            //Do a wheelie.
+            // We're standing still with the B button held.
+            // Do a wheelie.
             *newDirection = direction;
             gPlayerAvatar.runningState = NOT_MOVING;
             gPlayerAvatar.acroBikeState = ACRO_STATE_WHEELIE_STANDING;
@@ -383,7 +380,7 @@ static u8 AcroBikeHandleInputWheelieStanding(u8 *newDirection, u16 newKeys, u16 
     struct ObjectEvent *playerObjEvent;
 
     direction = GetPlayerMovementDirection();
-    
+
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
     gPlayerAvatar.runningState = NOT_MOVING;
 
@@ -650,7 +647,7 @@ static void AcroBikeTransition_WheelieHoppingMoving(u8 direction)
         }
         else
         {
-        derp:            
+        derp:
             PlayerMovingHoppingWheelie(direction);
         }
     }
@@ -714,11 +711,11 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
             if (MetatileBehavior_IsBumpySlope(playerObjEvent->currentMetatileBehavior))
                 PlayerIdleWheelie(direction);
             else
-                PlayerWheelieInPlace(direction);  //hit wall?
+                PlayerWheelieInPlace(direction); // hit wall?
         }
         return;
     }
-    
+
     PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;
 }
@@ -749,7 +746,7 @@ static void AcroBikeTransition_WheelieRisingMoving(u8 direction)
             if (MetatileBehavior_IsBumpySlope(playerObjEvent->currentMetatileBehavior))
                 PlayerIdleWheelie(direction);
             else
-                PlayerWheelieInPlace(direction);  //hit wall?
+                PlayerWheelieInPlace(direction); // hit wall?
         }
         return;
     }
@@ -941,15 +938,13 @@ static bool8 CanBikeFaceDirOnMetatile(u8 direction, u8 tile)
     if (direction == DIR_EAST || direction == DIR_WEST)
     {
         // Bike cannot face east or west on a vertical rail
-        if (MetatileBehavior_IsIsolatedVerticalRail(tile)
-         || MetatileBehavior_IsVerticalRail(tile))
+        if (MetatileBehavior_IsIsolatedVerticalRail(tile) || MetatileBehavior_IsVerticalRail(tile))
             return FALSE;
     }
     else
     {
         // Bike cannot face north or south on a horizontal rail
-        if (MetatileBehavior_IsIsolatedHorizontalRail(tile)
-         || MetatileBehavior_IsHorizontalRail(tile))
+        if (MetatileBehavior_IsIsolatedHorizontalRail(tile) || MetatileBehavior_IsHorizontalRail(tile))
             return FALSE;
     }
     return TRUE;
@@ -997,7 +992,7 @@ void GetOnOffBike(u8 transitionFlags)
 {
     gUnusedBikeCameraAheadPanback = FALSE;
 
-    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_MACH_BIKE | PLAYER_AVATAR_FLAG_ACRO_BIKE))
+    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_ACRO_BIKE))
     {
         SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
         Overworld_ClearSavedMusic();
@@ -1048,9 +1043,7 @@ s16 GetPlayerSpeed(void)
 
     memcpy(machSpeeds, sMachBikeSpeeds, sizeof(machSpeeds));
 
-    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE)
-        return machSpeeds[gPlayerAvatar.bikeFrameCounter];
-    else if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_ACRO_BIKE | PLAYER_AVATAR_FLAG_RIDING))
+    if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_ACRO_BIKE | PLAYER_AVATAR_FLAG_RIDING))
         return SPEED_FASTER;
     else if (gPlayerAvatar.flags & (PLAYER_AVATAR_FLAG_SURFING | PLAYER_AVATAR_FLAG_DASH))
         return SPEED_FAST;
