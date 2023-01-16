@@ -3067,10 +3067,17 @@ static void SurfFieldEffect_End(struct Task *task)
 
 u8 FldEff_UseRide(void)
 {
-    u8 taskId = CreateTask(Task_RideFieldEffect, 0xff);
-    gTasks[taskId].tMonId = gFieldEffectArguments[0];
-    Overworld_ClearSavedMusic();
-    Overworld_ChangeMusicTo(MUS_SURF); // TODO: ride music
+    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_RIDING)
+    {
+        CreateStopRidingTask();
+    }
+    else
+    {
+        u8 taskId = CreateTask(Task_RideFieldEffect, 0xff);
+        gTasks[taskId].tMonId = gFieldEffectArguments[0];
+        Overworld_ClearSavedMusic();
+        Overworld_ChangeMusicTo(MUS_SURF); // TODO: ride music
+    }
     return FALSE;
 }
 
@@ -3121,7 +3128,7 @@ static void RideFieldEffect_JumpOnRideBlob(struct Task *task)
         // ObjectEventSetHeldMovement(objectEvent, GetJumpSpecialMovementAction(objectEvent->movementDirection));
         // gFieldEffectArguments[0] = task->tDestX;
         // gFieldEffectArguments[1] = task->tDestY;
-        // gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
+        gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
         // objectEvent->fieldEffectSpriteId = FieldEffectStart(FLDEFF_SURF_BLOB); // TODO: add a ride blob
         task->tState++;
     }

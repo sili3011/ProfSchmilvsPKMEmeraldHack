@@ -279,7 +279,7 @@ static const u8 sPlayerAvatarGfxToStateFlag[2][5][2] =
         [FEMALE] =
             {
                 {OBJ_EVENT_GFX_MAY_NORMAL, PLAYER_AVATAR_FLAG_ON_FOOT},
-                {OBJ_EVENT_GFX_MAY_MACH_BIKE, PLAYER_AVATAR_FLAG_RIDING},
+                {OBJ_EVENT_GFX_MAY_SURFING, PLAYER_AVATAR_FLAG_RIDING}, // ADD RIDING SPRITE
                 {OBJ_EVENT_GFX_MAY_ACRO_BIKE, PLAYER_AVATAR_FLAG_ACRO_BIKE},
                 {OBJ_EVENT_GFX_MAY_SURFING, PLAYER_AVATAR_FLAG_SURFING},
                 {OBJ_EVENT_GFX_MAY_UNDERWATER, PLAYER_AVATAR_FLAG_UNDERWATER},
@@ -312,8 +312,6 @@ static bool8 (*const sPlayerAvatarSecretBaseMatSpin[])(struct Task *, struct Obj
         PlayerAvatar_SecretBaseMatSpinStep2,
         PlayerAvatar_SecretBaseMatSpinStep3,
 };
-
-// .text
 
 void MovementType_Player(struct Sprite *sprite)
 {
@@ -917,12 +915,12 @@ static void PlayerAvatarTransition_Riding(struct ObjectEvent *objEvent)
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_RIDING)); // ADD RIDE FLAG/ANIMATION/SPRITE
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_RIDING); // ADD RIDE FLAG/ANIMATION/SPRITE
-    gFieldEffectArguments[0] = objEvent->currentCoords.x;
-    gFieldEffectArguments[1] = objEvent->currentCoords.y;
+    // gFieldEffectArguments[0] = objEvent->currentCoords.x;
+    // gFieldEffectArguments[1] = objEvent->currentCoords.y;
     gFieldEffectArguments[2] = gPlayerAvatar.objectEventId;
-    spriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
-    objEvent->fieldEffectSpriteId = spriteId;
-    SetSurfBobState(spriteId, 1);
+    // spriteId = FieldEffectStart(FLDEFF_SURF_BLOB);
+    // objEvent->fieldEffectSpriteId = spriteId;
+    // SetSurfBobState(spriteId, 1);
 }
 
 static void PlayerAvatarTransition_Underwater(struct ObjectEvent *objEvent)
