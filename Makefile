@@ -94,6 +94,7 @@ RAMSCRGEN := tools/ramscrgen/ramscrgen$(EXE)
 FIX := tools/gbafix/gbafix$(EXE)
 MAPJSON := tools/mapjson/mapjson$(EXE)
 JSONPROC := tools/jsonproc/jsonproc$(EXE)
+SCRIPT := tools/poryscript/poryscript.exe$(EXE)
 
 TOOLDIRS := $(filter-out tools/agbcc tools/binutils tools/poryscript,$(wildcard tools/*))
 TOOLBASE = $(TOOLDIRS:tools/%=%)
@@ -224,7 +225,7 @@ include songs.mk
 $(CRY_SUBDIR)/cry_not_%.bin: $(CRY_SUBDIR)/cry_not_%.aif ; $(AIF) $< $@
 $(CRY_SUBDIR)/cry_%.bin: $(CRY_SUBDIR)/cry_%.aif ; $(AIF) $< $@ --compress
 sound/%.bin: sound/%.aif ; $(AIF) $< $@
-data/%.inc: data/%.pory; $(SCRIPT) -i $< -o $@ -fw tools/poryscript/font_widths.json
+data/%.inc: data/%.pory; $(SCRIPT) -i $< -o $@ -fc tools/poryscript/font_config.json
 
 ifeq ($(MODERN),0)
 $(C_BUILDDIR)/libc.o: CC1 := tools/agbcc/bin/old_agbcc
@@ -349,5 +350,3 @@ berry_fix:
 
 libagbsyscall:
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN)
-
-SCRIPT := tools/poryscript/poryscript$(EXE)
