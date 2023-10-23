@@ -138,10 +138,10 @@ static const u8 *const gPCText_OptionDescList[] =
 
 static const struct MenuAction sPlayerPCMenuActions[] =
     {
-        {gText_ItemStorage, PlayerPC_ItemStorage},
-        {gText_Mailbox, PlayerPC_Mailbox},
-        {gText_Decoration, PlayerPC_Decoration},
-        {gText_TurnOff, PlayerPC_TurnOff}};
+        [MENU_ITEMSTORAGE] = {gText_ItemStorage, {PlayerPC_ItemStorage}},
+        [MENU_MAILBOX] = {gText_Mailbox, {PlayerPC_Mailbox}},
+        [MENU_DECORATION] = {gText_Decoration, {PlayerPC_Decoration}},
+        [MENU_TURNOFF] = {gText_TurnOff, {PlayerPC_TurnOff}}};
 
 static const u8 gBedroomPC_OptionOrder[] =
     {
@@ -156,24 +156,24 @@ static const u8 gPlayerPC_OptionOrder[] =
         PLAYERPC_MENU_MAILBOX,
         PLAYERPC_MENU_TURNOFF};
 
-static const struct MenuAction gPCText_ItemPCOptionsText[] =
+static const struct MenuAction sItemStorage_MenuActions[] =
     {
-        {gText_WithdrawItem, ItemStorage_Withdraw},
-        {gText_DepositItem, ItemStorage_Deposit},
-        {gText_TossItem, ItemStorage_Toss},
-        {gText_Cancel, ItemStorage_Exit}};
+        [MENU_WITHDRAW] = {gText_WithdrawItem, {ItemStorage_Withdraw}},
+        [MENU_DEPOSIT] = {gText_DepositItem, {ItemStorage_Deposit}},
+        [MENU_TOSS] = {gText_TossItem, {ItemStorage_Toss}},
+        [MENU_EXIT] = {gText_Cancel, {ItemStorage_Exit}}};
 
-static const struct ItemSlot gNewGamePCItems[] =
+static const u16 sNewGamePCItems[][2] =
     {
         {ITEM_POTION, 1},
         {ITEM_NONE, 0}};
 
 const struct MenuAction gMailboxMailOptions[] =
     {
-        {gText_Read, Mailbox_DoMailRead},
-        {gText_MoveToBag, Mailbox_MoveToBag},
-        {gText_Give2, Mailbox_Give},
-        {gText_Cancel2, Mailbox_Cancel}};
+        {gText_Read, {Mailbox_DoMailRead}},
+        {gText_MoveToBag, {Mailbox_MoveToBag}},
+        {gText_Give2, {Mailbox_Give}},
+        {gText_Cancel2, {Mailbox_Cancel}}};
 
 static const struct WindowTemplate gUnknown_085DFF24[3] =
     {
@@ -274,16 +274,19 @@ static const struct WindowTemplate gUnknown_085DFF84 =
 
 static const u8 gUnknown_085DFF8C[] = {0x01, 0x03, 0x02, 0x00};
 
-// text
 void NewGameInitPCItems(void)
 {
-    u8 i;
+    u8 i = 0;
+    ClearItemSlots(gSaveBlock1Ptr->pcItems, PC_ITEMS_COUNT);
 
-    // because Game Freak don't know how to use a struct or a 2d array
-    for (i = 0, ClearItemSlots(gSaveBlock1Ptr->pcItems, ARRAY_COUNT(gSaveBlock1Ptr->pcItems)); NEW_GAME_PC_ITEMS(i, PC_ITEM_ID) && NEW_GAME_PC_ITEMS(i, PC_QUANTITY) &&
-                                                                                               AddPCItem(NEW_GAME_PC_ITEMS(i, PC_ITEM_ID), NEW_GAME_PC_ITEMS(i, PC_QUANTITY)) == TRUE;
-         i++)
-        ;
+    while (TRUE)
+    {
+        if (sNewGamePCItems[i][0] == ITEM_NONE || sNewGamePCItems[i][1] == 0)
+            break;
+        if (AddPCItem(sNewGamePCItems[i][0], sNewGamePCItems[i][1]) != TRUE)
+            break;
+        i++;
+    }
 }
 
 void BedroomPC(void)

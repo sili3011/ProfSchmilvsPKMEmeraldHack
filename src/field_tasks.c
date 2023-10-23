@@ -137,7 +137,7 @@ static void Task_RunTimeBasedEvents(u8 taskId)
     if (!ScriptContext2_IsEnabled())
     {
         RunTimeBasedEvents(data);
-        UpdateAmbientCry(&tAmbientCryState, &tAmbientCryDelay);
+        UpdateAmbientCry(&tAmbientCryState, (u16*) &tAmbientCryDelay);
     }
 
     if (tForceTimeUpdate)

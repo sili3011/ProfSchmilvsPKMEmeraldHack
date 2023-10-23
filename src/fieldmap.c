@@ -28,8 +28,8 @@ struct ConnectionFlags
 EWRAM_DATA static u16 gBackupMapData[MAX_MAP_DATA_SIZE] = {0};
 EWRAM_DATA struct MapHeader gMapHeader = {0};
 EWRAM_DATA struct Camera gCamera = {0};
-EWRAM_DATA static struct ConnectionFlags gMapConnectionFlags = {0};
-EWRAM_DATA static u32 sFiller_02037344 = 0; // without this, the next file won't align properly
+EWRAM_DATA static struct ConnectionFlags sMapConnectionFlags = {0};
+EWRAM_DATA static u32 UNUSED sFiller = 0; // without this, the next file won't align properly
 
 struct BackupMapLayout gBackupMapLayout;
 
@@ -919,8 +919,7 @@ void GetCameraFocusCoords(u16 *x, u16 *y)
     *y = gSaveBlock1Ptr->pos.y + 7;
 }
 
-// Unused
-static void SetCameraCoords(u16 x, u16 y)
+static void UNUSED SetCameraCoords(u16 x, u16 y)
 {
     gSaveBlock1Ptr->pos.x = x;
     gSaveBlock1Ptr->pos.y = y;
@@ -984,7 +983,7 @@ void nullsub_3(u16 a0, u16 a1)
 {
 }
 
-void nullsub_90(void)
+static void UNUSED ApplyGlobalTintToPaletteSlot(u8 slot, u8 count)
 {
 }
 

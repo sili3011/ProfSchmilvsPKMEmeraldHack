@@ -407,7 +407,7 @@ static void (*const sTurnActionsFuncsTable[])(void) =
 
 static void (*const sEndTurnFuncsTable[])(void) =
     {
-        [0] = HandleEndTurn_ContinueBattle, //B_OUTCOME_NONE?
+        [0] = HandleEndTurn_ContinueBattle, // B_OUTCOME_NONE?
         [B_OUTCOME_WON] = HandleEndTurn_BattleWon,
         [B_OUTCOME_LOST] = HandleEndTurn_BattleLost,
         [B_OUTCOME_DREW] = HandleEndTurn_BattleLost,
@@ -1901,6 +1901,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     return gTrainers[trainerNum].partySize;
 }
 
+static void UNUSED HBlankCB_Battle(void)
+{
+    if (REG_VCOUNT < DISPLAY_HEIGHT && REG_VCOUNT >= 111)
+        SetGpuReg(REG_OFFSET_BG0CNT, BGCNT_SCREENBASE(24) | BGCNT_TXT256x512);
+}
+
 void VBlankCB_Battle(void)
 {
     // Change gRngSeed every vblank unless the battle could be recorded.
@@ -2543,7 +2549,10 @@ void SpriteCallbackDummy_2(struct Sprite *sprite)
 {
 }
 
-static void sub_80398D0(struct Sprite *sprite)
+#define sNumFlickers data[3]
+#define sDelay data[4]
+
+static void UNUSED SpriteCB_InitFlicker(struct Sprite *sprite)
 {
     sprite->data[4]--;
     if (sprite->data[4] == 0)
@@ -2680,7 +2689,7 @@ static void oac_poke_ally_(struct Sprite *sprite)
     }
 }
 
-void sub_80105DC(struct Sprite *sprite)
+static void UNUSED SetIdleSpriteCallback(struct Sprite *sprite)
 {
     sprite->callback = SpriteCallbackDummy_3;
 }
@@ -3437,7 +3446,343 @@ static void DoBattleIntro(void)
 
             gBattleMainFunc = TryDoEventsBeforeFirstTurn;
         }
-        break;
+
+        if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
+        {
+            if (GetBattlerPosition(gActiveBattler) == B_POSITION_PLAYER_RIGHT || GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_RIGHT)
+            {
+                BtlController_EmitDrawTrainerPic(BUFFER_A);
+                MarkBattlerForControllerExec(gActiveBattler);
+            }
+        }
+
+        if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS && GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_RIGHT)
+        {
+            BtlController_EmitDrawTrainerPic(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+
+        if (gBattleTypeFlags & BATTLE_TYPE_ARENA)
+            BattleArena_InitPoints();
+    }
+    gBattleMainFunc = BattleIntroDrawPartySummaryScreens;
+}
+
+static void BattleIntroDrawPartySummaryScreens(void)
+{
+    s32 i;
+    struct HpAndStatus hpStatus[PARTY_SIZE];
+
+    if (gBattleControllerExecFlags)
+        return;
+
+    if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
+    {
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+            {
+                hpStatus[i].hp = HP_EMPTY_SLOT;
+                hpStatus[i].status = 0;
+            }
+            else
+            {
+                hpStatus[i].hp = GetMonData(&gEnemyParty[i], MON_DATA_HP);
+                hpStatus[i].status = GetMonData(&gEnemyParty[i], MON_DATA_STATUS);
+            }
+        }
+        gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        BtlController_EmitDrawPartyStatusSummary(BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
+        MarkBattlerForControllerExec(gActiveBattler);
+
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+            {
+                hpStatus[i].hp = HP_EMPTY_SLOT;
+                hpStatus[i].status = 0;
+            }
+            else
+            {
+                hpStatus[i].hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
+                hpStatus[i].status = GetMonData(&gPlayerParty[i], MON_DATA_STATUS);
+            }
+        }
+        gActiveBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+        BtlController_EmitDrawPartyStatusSummary(BUFFER_A, hpStatus, PARTY_SUMM_SKIP_DRAW_DELAY);
+        MarkBattlerForControllerExec(gActiveBattler);
+
+        gBattleMainFunc = BattleIntroPrintTrainerWantsToBattle;
+    }
+    else
+    {
+        // The struct gets set here, but nothing is ever done with it since
+        // wild battles don't show the party summary.
+        // Still, there's no point in having dead code.
+
+        for (i = 0; i < PARTY_SIZE; i++)
+        {
+            if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG) == SPECIES_EGG)
+            {
+                hpStatus[i].hp = HP_EMPTY_SLOT;
+                hpStatus[i].status = 0;
+            }
+            else
+            {
+                hpStatus[i].hp = GetMonData(&gPlayerParty[i], MON_DATA_HP);
+                hpStatus[i].status = GetMonData(&gPlayerParty[i], MON_DATA_STATUS);
+            }
+        }
+
+        gBattleMainFunc = BattleIntroPrintWildMonAttacked;
+    }
+}
+
+static void BattleIntroPrintTrainerWantsToBattle(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        gActiveBattler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        PrepareStringBattle(STRINGID_INTROMSG, gActiveBattler);
+        gBattleMainFunc = BattleIntroPrintOpponentSendsOut;
+    }
+}
+
+static void BattleIntroPrintWildMonAttacked(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        PrepareStringBattle(STRINGID_INTROMSG, 0);
+    }
+}
+
+static void BattleIntroPrintOpponentSendsOut(void)
+{
+    u32 position;
+
+    if (gBattleControllerExecFlags)
+        return;
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+        position = B_POSITION_OPPONENT_LEFT;
+    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+            position = B_POSITION_OPPONENT_LEFT;
+        else
+            position = B_POSITION_PLAYER_LEFT;
+    }
+    else
+        position = B_POSITION_OPPONENT_LEFT;
+
+    PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(position));
+    gBattleMainFunc = BattleIntroOpponent1SendsOutMonAnimation;
+}
+
+static void BattleIntroOpponent2SendsOutMonAnimation(void)
+{
+    u32 position;
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+        position = B_POSITION_OPPONENT_RIGHT;
+    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+            position = B_POSITION_OPPONENT_RIGHT;
+        else
+            position = B_POSITION_PLAYER_RIGHT;
+    }
+    else
+        position = B_POSITION_OPPONENT_RIGHT;
+
+    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+    {
+        if (GetBattlerPosition(gActiveBattler) == position)
+        {
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+    }
+
+    gBattleMainFunc = BattleIntroRecordMonsToDex;
+}
+
+static void BattleIntroOpponent1SendsOutMonAnimation(void)
+{
+    u32 position;
+
+    if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+                position = B_POSITION_OPPONENT_LEFT;
+            else
+                position = B_POSITION_PLAYER_LEFT;
+        }
+        else
+            position = B_POSITION_OPPONENT_LEFT;
+    }
+    else
+        position = B_POSITION_OPPONENT_LEFT;
+
+    if (gBattleControllerExecFlags)
+        return;
+
+    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+    {
+        if (GetBattlerPosition(gActiveBattler) == position)
+        {
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+            if (gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_TWO_OPPONENTS))
+            {
+                gBattleMainFunc = BattleIntroOpponent2SendsOutMonAnimation;
+                return;
+            }
+        }
+    }
+
+    gBattleMainFunc = BattleIntroRecordMonsToDex;
+}
+
+static void BattleIntroRecordMonsToDex(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+        {
+            if (GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT && !(gBattleTypeFlags & (BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_TRAINER_HILL)))
+            {
+                HandleSetPokedexFlag(SpeciesToNationalPokedexNum(gBattleMons[gActiveBattler].species), FLAG_SET_SEEN, gBattleMons[gActiveBattler].personality);
+            }
+        }
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+    }
+}
+
+static void UNUSED BattleIntroSkipRecordMonsToDex(void)
+{
+    if (gBattleControllerExecFlags == 0)
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+}
+
+static void BattleIntroPrintPlayerSendsOut(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        u8 position;
+
+        if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+            position = B_POSITION_PLAYER_LEFT;
+        else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+        {
+            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+                position = B_POSITION_PLAYER_LEFT;
+            else
+                position = B_POSITION_OPPONENT_LEFT;
+        }
+        else
+            position = B_POSITION_PLAYER_LEFT;
+
+        if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
+            PrepareStringBattle(STRINGID_INTROSENDOUT, GetBattlerAtPosition(position));
+
+        gBattleMainFunc = BattleIntroPlayer1SendsOutMonAnimation;
+    }
+}
+
+static void BattleIntroPlayer2SendsOutMonAnimation(void)
+{
+    u32 position;
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+        position = B_POSITION_PLAYER_RIGHT;
+    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+            position = B_POSITION_PLAYER_RIGHT;
+        else
+            position = B_POSITION_OPPONENT_RIGHT;
+    }
+    else
+        position = B_POSITION_PLAYER_RIGHT;
+
+    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+    {
+        if (GetBattlerPosition(gActiveBattler) == position)
+        {
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+        }
+    }
+
+    gBattleStruct->switchInAbilitiesCounter = 0;
+    gBattleStruct->switchInItemsCounter = 0;
+    gBattleStruct->overworldWeatherDone = FALSE;
+
+    gBattleMainFunc = TryDoEventsBeforeFirstTurn;
+}
+
+static void BattleIntroPlayer1SendsOutMonAnimation(void)
+{
+    u32 position;
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_RECORDED))
+        position = B_POSITION_PLAYER_LEFT;
+    else if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_LINK)
+    {
+        if (gBattleTypeFlags & BATTLE_TYPE_RECORDED_IS_MASTER)
+            position = B_POSITION_PLAYER_LEFT;
+        else
+            position = B_POSITION_OPPONENT_LEFT;
+    }
+    else
+        position = B_POSITION_PLAYER_LEFT;
+
+    if (gBattleControllerExecFlags)
+        return;
+
+    for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+    {
+        if (GetBattlerPosition(gActiveBattler) == position)
+        {
+            BtlController_EmitIntroTrainerBallThrow(BUFFER_A);
+            MarkBattlerForControllerExec(gActiveBattler);
+            if (gBattleTypeFlags & (BATTLE_TYPE_MULTI))
+            {
+                gBattleMainFunc = BattleIntroPlayer2SendsOutMonAnimation;
+                return;
+            }
+        }
+    }
+
+    gBattleStruct->switchInAbilitiesCounter = 0;
+    gBattleStruct->switchInItemsCounter = 0;
+    gBattleStruct->overworldWeatherDone = FALSE;
+
+    gBattleMainFunc = TryDoEventsBeforeFirstTurn;
+}
+
+static void UNUSED BattleIntroSwitchInPlayerMons(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+        {
+            if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+            {
+                BtlController_EmitSwitchInAnim(BUFFER_A, gBattlerPartyIndexes[gActiveBattler], FALSE);
+                MarkBattlerForControllerExec(gActiveBattler);
+            }
+        }
+
+        gBattleStruct->switchInAbilitiesCounter = 0;
+        gBattleStruct->switchInItemsCounter = 0;
+        gBattleStruct->overworldWeatherDone = FALSE;
+
+        gBattleMainFunc = TryDoEventsBeforeFirstTurn;
     }
 }
 

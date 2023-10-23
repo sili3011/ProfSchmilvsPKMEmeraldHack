@@ -2488,7 +2488,7 @@ static void GetEasyChatConfirmDeletionText(const u8 **str1, const u8 **str2)
     *str2 = gText_BeDeletedThatOkay;
 }
 
-void sub_811BB9C(u8 *arg0, u8 *arg1)
+static void GetKeyboardCursorColAndRow(s8 *column, s8 *row)
 {
     *arg0 = sEasyChatScreen->unk_0a;
     *arg1 = sEasyChatScreen->unk_0b;
@@ -2504,7 +2504,7 @@ u8 sub_811BBBC(void)
     return sEasyChatScreen->unk_0c;
 }
 
-void sub_811BBC8(u8 *arg0, u8 *arg1)
+static void GetWordSelectColAndRow(s8 *column, s8 *row)
 {
     *arg0 = sEasyChatScreen->unk_10;
     *arg1 = sEasyChatScreen->unk_11;
@@ -2520,7 +2520,7 @@ u8 sub_811BBE8(void)
     return sEasyChatScreen->unk_0f;
 }
 
-static u8 unref_sub_811BBF4(void)
+static u8 UNUSED UnusedDummy(void)
 {
     return 0;
 }
@@ -4966,7 +4966,7 @@ u8 *ConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows
     return dest;
 }
 
-u8 *unref_sub_811EC98(u8 *dest, const u16 *src, u16 columns, u16 rows)
+static u8 UNUSED *UnusedConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows)
 {
     u16 i, j, k;
     u16 numColumns;
@@ -5183,8 +5183,7 @@ u16 GetNewHipsterPhraseToTeach(void)
     return 0xFFFF;
 }
 
-// Unused
-u16 GetRandomTaughtHipsterPhrase(void)
+static u16 UNUSED GetRandomUnlockedTrendySaying(void)
 {
     u16 i;
     u16 additionalPhraseId = GetNumAdditionalPhrasesUnlocked();
@@ -5330,7 +5329,7 @@ static u8 sub_811F3B8(u8 index)
         return sUnknown_0203A120->unk2[index];
 }
 
-u8 *unref_sub_811F3E0(u8 *dest, u8 groupId, u16 totalChars)
+static u8 UNUSED *BufferEasyChatWordGroupName(u8 *dest, u8 groupId, u16 totalChars)
 {
     u16 i;
     u8 *str = StringCopy(dest, gEasyChatGroupNamePointers[groupId]);

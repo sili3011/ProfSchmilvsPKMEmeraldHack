@@ -1042,7 +1042,9 @@ static void PCTurnOnEffect_0(struct Task *task)
     s8 dy = 0;
     if (task->data[3] == 6)
     {
-        task->data[3] = 0;
+        task->tTimer = 0;
+
+        // Get where the PC should be, depending on where the player is looking.
         playerDirection = GetPlayerFacingDirection();
         switch (playerDirection)
         {
@@ -1061,11 +1063,12 @@ static void PCTurnOnEffect_0(struct Task *task)
         }
         PCTurnOnEffect_1(task->data[4], dx, dy);
         DrawWholeMapView();
-        task->data[4] ^= 1;
-        if ((++task->data[2]) == 5)
-        {
-            DestroyTask(task->data[1]);
-        }
+
+        // Screen flickers 5 times. Odd number and starting with the
+        // screen off means the animation ends with the screen on.
+        task->tIsScreenOn ^= 1;
+        if (++task->tFlickerCount == 5)
+            DestroyTask(task->tTaskId);
     }
     task->data[3]++;
 }
@@ -1549,7 +1552,7 @@ u16 ScriptGetPartyMonSpecies(void)
 // Removed for Emerald
 void TryInitBattleTowerAwardManObjectEvent(void)
 {
-    //TryInitLocalObjectEvent(6);
+    // TryInitLocalObjectEvent(6);
 }
 
 bool8 MonOTNameNotPlayer(void)
@@ -1989,7 +1992,7 @@ void ShowFrontierManiacMessage(void)
             [FRONTIER_MANIAC_BATTLE_FACTORY] = {7, 21},
             [FRONTIER_MANIAC_BATTLE_PALACE] = {7, 21},
             [FRONTIER_MANIAC_BATTLE_ARENA] = {14, 28},
-            [FRONTIER_MANIAC_BATTLE_PIKE] = {13, 112}, //BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
+            [FRONTIER_MANIAC_BATTLE_PIKE] = {13, 112}, // BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
             [FRONTIER_MANIAC_BATTLE_PYRAMID] = {7, 56}};
 
     u8 i;
@@ -3765,13 +3768,13 @@ bool8 InPokemonCenter(void)
 }
 
 /*  Summary of the Lilycove Trainer Fan Club, because it's a little messy
-    
+
     ## The Fan Club room itself
     There are initially 4 members of the Fan Club (+ an interviewer), none of whom are fans of the player
     After becoming the champion there will be 8 members of the Fan Club, 3 of whom are automatically fans of the player
     After this point, if a club member is a fan of the player they will sit at the front table and comment on the player
     If they are not fans of the player, they will sit at the far table and can make comments about a different trainer (see BufferFanClubTrainerName)
-    
+
     ## Gaining/losing fans
     After every link battle the player will gain a fan if they won, or lose a fan if they lost
     If the player has at least 3 fans, this is the only way to gain fans

@@ -1602,8 +1602,7 @@ void DrawTextWindowAndBufferTiles(const u8 *string, void *dst, u8 zero1, u8 zero
     RemoveWindow(windowId);
 }
 
-// Unused
-void sub_80C6EAC(const u8 *string, void *dst, u16 arg2, u8 arg3, u8 clr2, u8 clr3)
+static void UNUSED UnusedDrawTextWindow(const u8 *string, void *dst, u16 offset, u8 bgColor, u8 fgColor, u8 shadowColor)
 {
     u32 var;
     u8 windowId;
@@ -1714,7 +1713,7 @@ u8 *StringCopyAndFillWithSpaces(u8 *dst, const u8 *src, u16 n)
     return str;
 }
 
-static void sub_80C7128(u16 *dest, u16 dest_left, u16 dest_top, const u16 *src, u16 src_left, u16 src_top, u16 dest_width, u16 dest_height, u16 src_width)
+static void UNUSED UnusedWriteRectCpu(u16 *dest, u16 dest_left, u16 dest_top, const u16 *src, u16 src_left, u16 src_top, u16 dest_width, u16 dest_height, u16 src_width)
 {
     u16 i;
 
@@ -1729,7 +1728,7 @@ static void sub_80C7128(u16 *dest, u16 dest_left, u16 dest_top, const u16 *src, 
     }
 }
 
-static void sub_80C71A4(u16 *dest, u16 dest_left, u16 dest_top, u16 width, u16 height)
+static void UNUSED UnusedWriteRectDma(u16 *dest, u16 dest_left, u16 dest_top, u16 width, u16 height)
 {
     u16 i;
 
@@ -1890,7 +1889,7 @@ static void Cb2_ExitPSS(void)
     SetMainCallback2(CB2_ReturnToField);
 }
 
-static s16 StorageSystemGetNextMonIndex(struct BoxPokemon *box, s8 startIdx, u8 stopIdx, u8 mode)
+static s16 UNUSED StorageSystemGetNextMonIndex(struct BoxPokemon *box, s8 startIdx, u8 stopIdx, u8 mode)
 {
     s16 i;
     s16 direction;
@@ -7786,7 +7785,7 @@ static void sub_80CFE54(u8 animNum)
     StartSpriteAnim(sPSSData->field_CB4, animNum);
 }
 
-static u8 sub_80CFE78(void)
+static u8 UNUSED GetMovingMonOriginalBoxId(void)
 {
     return sMovingMonOrigBoxId;
 }
@@ -9253,11 +9252,22 @@ static void sub_80D1CCC(struct Sprite *sprite)
     }
 }
 
-void nullsub_pss(void)
+#undef sState
+#undef sItemIconId
+#undef sCursorArea
+#undef sCursorPos
+
+//------------------------------------------------------------------------------
+//  SECTION: General utility
+//------------------------------------------------------------------------------
+
+// Leftover from FRLG
+static void UNUSED BackupPokemonStorage(void /*struct PokemonStorage * dest*/)
 {
 }
 
-void nullsub_98(void)
+// Leftover from FRLG
+static void UNUSED RestorePokemonStorage(void /*struct PokemonStorage * src*/)
 {
 }
 
@@ -9595,7 +9605,7 @@ static void sub_80D25F0(void)
     Free(gUnknown_02039D84);
 }
 
-static void sub_80D2604(void)
+static void UNUSED TilemapUtil_UpdateAll(void)
 {
     s32 i;
 
@@ -9659,7 +9669,7 @@ static void sub_80D2644(u8 id, u8 bg, const void *arg2, u16 arg3, u16 arg4)
     gUnknown_02039D84[id].field_2C = 1;
 }
 
-static void sub_80D2740(u8 id, const void *arg1)
+static void UNUSED TilemapUtil_SetSavedMap(u8 id, const void *tilemap)
 {
     if (id >= gUnknown_02039D88)
         return;
@@ -9798,7 +9808,7 @@ static void sub_80D2AA4(void)
     }
 }
 
-static bool8 sub_80D2AEC(u8 *dest, u16 dLeft, u16 dTop, const u8 *src, u16 sLeft, u16 sTop, u16 width, u16 height, u16 unkArg)
+static bool8 UNUSED UnkUtil_CpuAdd(u8 *dest, u16 dLeft, u16 dTop, const u8 *src, u16 sLeft, u16 sTop, u16 width, u16 height, u16 unkArg)
 {
     struct UnkStruct_2000028 *unkStruct;
 
@@ -9827,7 +9837,7 @@ static void sub_80D2B88(struct UnkStruct_2000028 *unkStruct)
     }
 }
 
-static bool8 sub_80D2BC0(void *dest, u16 dLeft, u16 dTop, u16 width, u16 height)
+static bool8 UNUSED UnkUtil_DmaAdd(void *dest, u16 dLeft, u16 dTop, u16 width, u16 height)
 {
     struct UnkStruct_2000028 *unkStruct;
 

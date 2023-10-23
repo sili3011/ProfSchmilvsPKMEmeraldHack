@@ -78,12 +78,12 @@ void *const gNullScriptPtr = NULL;
 static const u8 sScriptConditionTable[6][3] =
     {
         //  <  =  >
-        1, 0, 0, // <
-        0, 1, 0, // =
-        0, 0, 1, // >
-        1, 1, 0, // <=
-        0, 1, 1, // >=
-        1, 0, 1, // !=
+        {1, 0, 0}, // <
+        {0, 1, 0}, // =
+        {0, 0, 1}, // >
+        {1, 1, 0}, // <=
+        {0, 1, 1}, // >=
+        {1, 0, 1}, // !=
 };
 
 static u8 *const sScriptStringVars[] =
@@ -2137,7 +2137,7 @@ bool8 ScrCmd_addelevmenuitem(struct ScriptContext *ctx)
     u16 v7 = VarGet(ScriptReadHalfword(ctx));
     u16 v9 = VarGet(ScriptReadHalfword(ctx));
 
-    //ScriptAddElevatorMenuItem(v3, v5, v7, v9);
+    // ScriptAddElevatorMenuItem(v3, v5, v7, v9);
     return FALSE;
 }
 

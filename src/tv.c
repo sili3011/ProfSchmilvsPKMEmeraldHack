@@ -4043,7 +4043,7 @@ static void sub_80F0F24(void)
         (langptr) = langfix;                \
     }
 
-static void sub_80F0F64(TVShow *show, u32 language)
+static void UNUSED TranslateShowNames(TVShow *show, u32 language)
 {
     int i;
     TVShow **r4;

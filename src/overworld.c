@@ -121,21 +121,18 @@ static void ClearAllPlayerKeys(void);
 static void ResetAllTradingStates(void);
 static void UpdateHeldKeyCode(u16);
 static void UpdateAllLinkPlayers(u16 *, s32);
-static u8 FlipVerticalAndClearForced(u8 a1, u8 a2);
-static u8 LinkPlayerDetectCollision(u8 selfObjEventId, u8 a2, s16 x, s16 y);
-static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion);
-static void GetLinkPlayerCoords(u8 linkPlayerId, u16 *x, u16 *y);
-static u8 GetLinkPlayerFacingDirection(u8 linkPlayerId);
-static u8 GetLinkPlayerElevation(u8 linkPlayerId);
-static s32 sub_80878E4(u8 linkPlayerId);
-static u8 GetLinkPlayerIdAt(s16 x, s16 y);
-static void SetPlayerFacingDirection(u8 linkPlayerId, u8 a2);
-static void ZeroObjectEvent(struct ObjectEvent *objEvent);
-static void SpawnLinkPlayerObjectEvent(u8 linkPlayerId, s16 x, s16 y, u8 a4);
-static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s16 y);
-static void sub_80877DC(u8 linkPlayerId, u8 a2);
-static void sub_808780C(u8 linkPlayerId);
-static u8 GetSpriteForLinkedPlayer(u8 linkPlayerId);
+static u8 FlipVerticalAndClearForced(u8, u8);
+static u8 LinkPlayerGetCollision(u8, u8, s16, s16);
+static void CreateLinkPlayerSprite(u8, u8);
+static void GetLinkPlayerCoords(u8, u16 *, u16 *);
+static u8 GetLinkPlayerFacingDirection(u8);
+static u8 GetLinkPlayerElevation(u8);
+static u8 GetLinkPlayerIdAt(s16, s16);
+static void SetPlayerFacingDirection(u8, u8);
+static void ZeroObjectEvent(struct ObjectEvent *);
+static void SpawnLinkPlayerObjectEvent(u8, s16, s16, u8);
+static void InitLinkPlayerObjectEventPos(struct ObjectEvent *, s16, s16);
+static u8 GetSpriteForLinkedPlayer(u8);
 static void RunTerminateLinkScript(void);
 static u32 GetLinkSendQueueLength(void);
 static void ZeroLinkPlayerObjectEvent(struct LinkPlayerObjectEvent *linkPlayerObjEvent);
@@ -980,8 +977,8 @@ void SetObjectEventLoadFlag(u8 flag)
     sObjectEventLoadFlag = flag;
 }
 
-// Unused, sObjectEventLoadFlag is read directly
-static u8 GetObjectEventLoadFlag(void)
+// sObjectEventLoadFlag is read directly
+static u8 UNUSED GetObjectEventLoadFlag(void)
 {
     return sObjectEventLoadFlag;
 }
@@ -2049,7 +2046,7 @@ static void InitObjectEventsLink(void)
 
 static void InitObjectEventsLocal(void)
 {
-    s16 x, y;
+    u16 x, y;
     struct InitialPlayerAvatarState *player;
 
     gTotalCameraPixelOffsetX = 0;
@@ -2530,14 +2527,25 @@ static u16 KeyInterCB_SendNothing_2(u32 key)
 
 u32 sub_8087214(void)
 {
-    if (IsAnyPlayerInTradingState(PLAYER_TRADING_STATE_EXITING_ROOM) == TRUE)
-        return 2;
-    if (sPlayerKeyInterceptCallback == sub_8087170 && sPlayerTradingStates[gLocalLinkPlayerId] != PLAYER_TRADING_STATE_UNK_2)
-        return 0;
-    if (sPlayerKeyInterceptCallback == KeyInterCB_DoNothingAndKeepAlive && sPlayerTradingStates[gLocalLinkPlayerId] == PLAYER_TRADING_STATE_BUSY)
-        return 2;
-    if (AreAllPlayersInTradingState(PLAYER_TRADING_STATE_UNK_2) != FALSE)
-        return 1;
+    if (IsAnyPlayerInLinkState(PLAYER_LINK_STATE_EXITING_ROOM) == TRUE)
+        return CABLE_SEAT_FAILED;
+    if (sPlayerKeyInterceptCallback == KeyInterCB_Ready && sPlayerLinkStates[gLocalLinkPlayerId] != PLAYER_LINK_STATE_READY)
+        return CABLE_SEAT_WAITING;
+    if (sPlayerKeyInterceptCallback == KeyInterCB_ExitingSeat && sPlayerLinkStates[gLocalLinkPlayerId] == PLAYER_LINK_STATE_BUSY)
+        return CABLE_SEAT_FAILED;
+    if (AreAllPlayersInLinkState(PLAYER_LINK_STATE_READY))
+        return CABLE_SEAT_SUCCESS;
+    return CABLE_SEAT_WAITING;
+}
+
+static bool32 UNUSED IsAnyPlayerExitingCableClub(void)
+{
+    return IsAnyPlayerInLinkState(PLAYER_LINK_STATE_EXITING_ROOM);
+}
+
+u16 SetInCableClubSeat(void)
+{
+    SetKeyInterceptCallback(KeyInterCB_SetReady);
     return 0;
 }
 
@@ -2849,7 +2857,7 @@ static void InitLinkPlayerObjectEventPos(struct ObjectEvent *objEvent, s16 x, s1
     ObjectEventUpdateZCoord(objEvent);
 }
 
-static void sub_80877DC(u8 linkPlayerId, u8 dir)
+static void UNUSED SetLinkPlayerObjectRange(u8 linkPlayerId, u8 dir)
 {
     if (gLinkPlayerObjectEvents[linkPlayerId].active)
     {
@@ -2859,7 +2867,7 @@ static void sub_80877DC(u8 linkPlayerId, u8 dir)
     }
 }
 
-static void sub_808780C(u8 linkPlayerId)
+static void UNUSED DestroyLinkPlayerObject(u8 linkPlayerId)
 {
     struct LinkPlayerObjectEvent *linkPlayerObjEvent = &gLinkPlayerObjectEvents[linkPlayerId];
     u8 objEventId = linkPlayerObjEvent->objEventId;
@@ -2900,7 +2908,7 @@ static u8 GetLinkPlayerElevation(u8 linkPlayerId)
     return objEvent->currentElevation;
 }
 
-static s32 sub_80878E4(u8 linkPlayerId)
+static s32 UNUSED GetLinkPlayerObjectStepTimer(u8 linkPlayerId)
 {
     u8 objEventId = gLinkPlayerObjectEvents[linkPlayerId].objEventId;
     struct ObjectEvent *objEvent = &gObjectEvents[objEventId];

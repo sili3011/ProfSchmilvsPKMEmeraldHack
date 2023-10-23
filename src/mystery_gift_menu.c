@@ -32,7 +32,8 @@
 #include "wonder_news.h"
 #include "constants/cable_club.h"
 
-enum {
+enum
+{
     WIN_HEADER,
     WIN_MSG,
     WIN_UNK, // Cleared, but nothing is ever apparently rendered on it
@@ -68,40 +69,34 @@ struct MysteryGiftTaskData
 };
 
 static const struct BgTemplate sBGTemplates[] = {
-    {
-        .bg = 0,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 15,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 0,
-        .baseTile = 0x000
-    }, {
-        .bg = 1,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 14,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0x000
-    }, {
-        .bg = 2,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 13,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0x000
-    }, {
-        .bg = 3,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 12,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 3,
-        .baseTile = 0x000
-    }
-};
+    {.bg = 0,
+     .charBaseIndex = 2,
+     .mapBaseIndex = 15,
+     .screenSize = 0,
+     .paletteMode = 0,
+     .priority = 0,
+     .baseTile = 0x000},
+    {.bg = 1,
+     .charBaseIndex = 0,
+     .mapBaseIndex = 14,
+     .screenSize = 0,
+     .paletteMode = 0,
+     .priority = 1,
+     .baseTile = 0x000},
+    {.bg = 2,
+     .charBaseIndex = 0,
+     .mapBaseIndex = 13,
+     .screenSize = 0,
+     .paletteMode = 0,
+     .priority = 2,
+     .baseTile = 0x000},
+    {.bg = 3,
+     .charBaseIndex = 0,
+     .mapBaseIndex = 12,
+     .screenSize = 0,
+     .paletteMode = 0,
+     .priority = 3,
+     .baseTile = 0x000}};
 
 static const struct WindowTemplate sMainWindows[] = {
     [WIN_HEADER] = {
@@ -111,28 +106,10 @@ static const struct WindowTemplate sMainWindows[] = {
         .width = DISPLAY_TILE_WIDTH,
         .height = 2,
         .paletteNum = 12,
-        .baseBlock = 0x0013
-    },
-    [WIN_MSG] = {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 15,
-        .width = 28,
-        .height = 4,
-        .paletteNum = 12,
-        .baseBlock = 0x004f
-    },
-    [WIN_UNK] = {
-        .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 15,
-        .width = DISPLAY_TILE_WIDTH,
-        .height = 5,
-        .paletteNum = 13,
-        .baseBlock = 0x004f
-    },
-    DUMMY_WIN_TEMPLATE
-};
+        .baseBlock = 0x0013},
+    [WIN_MSG] = {.bg = 0, .tilemapLeft = 1, .tilemapTop = 15, .width = 28, .height = 4, .paletteNum = 12, .baseBlock = 0x004f},
+    [WIN_UNK] = {.bg = 0, .tilemapLeft = 0, .tilemapTop = 15, .width = DISPLAY_TILE_WIDTH, .height = 5, .paletteNum = 13, .baseBlock = 0x004f},
+    DUMMY_WIN_TEMPLATE};
 
 static const struct WindowTemplate sWindowTemplate_YesNoMsg_Wide = {
     .bg = 0,
@@ -141,8 +118,7 @@ static const struct WindowTemplate sWindowTemplate_YesNoMsg_Wide = {
     .width = 28,
     .height = 4,
     .paletteNum = 12,
-    .baseBlock = 0x00e5
-};
+    .baseBlock = 0x00e5};
 
 static const struct WindowTemplate sWindowTemplate_YesNoMsg = {
     .bg = 0,
@@ -151,8 +127,7 @@ static const struct WindowTemplate sWindowTemplate_YesNoMsg = {
     .width = 20,
     .height = 4,
     .paletteNum = 12,
-    .baseBlock = 0x00e5
-};
+    .baseBlock = 0x00e5};
 
 static const struct WindowTemplate sWindowTemplate_GiftSelect = {
     .bg = 0,
@@ -161,8 +136,7 @@ static const struct WindowTemplate sWindowTemplate_GiftSelect = {
     .width = 19,
     .height = 4,
     .paletteNum = 12,
-    .baseBlock = 0x00e5
-};
+    .baseBlock = 0x00e5};
 
 static const struct WindowTemplate sWindowTemplate_ThreeOptions = {
     .bg = 0,
@@ -171,8 +145,7 @@ static const struct WindowTemplate sWindowTemplate_ThreeOptions = {
     .width = 14,
     .height = 6,
     .paletteNum = 12,
-    .baseBlock = 0x0155
-};
+    .baseBlock = 0x0155};
 
 static const struct WindowTemplate sWindowTemplate_YesNoBox = {
     .bg = 0,
@@ -181,8 +154,7 @@ static const struct WindowTemplate sWindowTemplate_YesNoBox = {
     .width = 6,
     .height = 4,
     .paletteNum = 12,
-    .baseBlock = 0x0155
-};
+    .baseBlock = 0x0155};
 
 static const struct WindowTemplate sWindowTemplate_GiftSelect_3Options = {
     .bg = 0,
@@ -191,8 +163,7 @@ static const struct WindowTemplate sWindowTemplate_GiftSelect_3Options = {
     .width = 7,
     .height = 8,
     .paletteNum = 12,
-    .baseBlock = 0x0155
-};
+    .baseBlock = 0x0155};
 
 static const struct WindowTemplate sWindowTemplate_GiftSelect_2Options = {
     .bg = 0,
@@ -201,8 +172,7 @@ static const struct WindowTemplate sWindowTemplate_GiftSelect_2Options = {
     .width = 7,
     .height = 6,
     .paletteNum = 12,
-    .baseBlock = 0x0155
-};
+    .baseBlock = 0x0155};
 
 static const struct WindowTemplate sWindowTemplate_GiftSelect_1Option = {
     .bg = 0,
@@ -211,20 +181,17 @@ static const struct WindowTemplate sWindowTemplate_GiftSelect_1Option = {
     .width = 7,
     .height = 4,
     .paletteNum = 12,
-    .baseBlock = 0x0155
-};
+    .baseBlock = 0x0155};
 
 static const struct ListMenuItem sListMenuItems_CardsOrNews[] = {
-    { gText_WonderCards,  0 },
-    { gText_WonderNews,   1 },
-    { gText_Exit3,        LIST_CANCEL }
-};
+    {gText_WonderCards, 0},
+    {gText_WonderNews, 1},
+    {gText_Exit3, LIST_CANCEL}};
 
 static const struct ListMenuItem sListMenuItems_WirelessOrFriend[] = {
-    { gText_WirelessCommunication,  0 },
-    { gText_Friend2,                1 },
-    { gText_Cancel2,                LIST_CANCEL }
-};
+    {gText_WirelessCommunication, 0},
+    {gText_Friend2, 1},
+    {gText_Cancel2, LIST_CANCEL}};
 
 static const struct ListMenuTemplate sListMenuTemplate_ThreeOptions = {
     .items = NULL,
@@ -244,32 +211,27 @@ static const struct ListMenuTemplate sListMenuTemplate_ThreeOptions = {
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NORMAL,
-    .cursorKind = CURSOR_BLACK_ARROW
-};
+    .cursorKind = CURSOR_BLACK_ARROW};
 
 static const struct ListMenuItem sListMenuItems_ReceiveSendToss[] = {
-    { gText_Receive,  0 },
-    { gText_Send,     1 },
-    { gText_Toss,     2 },
-    { gText_Cancel2,  LIST_CANCEL }
-};
+    {gText_Receive, 0},
+    {gText_Send, 1},
+    {gText_Toss, 2},
+    {gText_Cancel2, LIST_CANCEL}};
 
 static const struct ListMenuItem sListMenuItems_ReceiveToss[] = {
-    { gText_Receive,  0 },
-    { gText_Toss,     2 },
-    { gText_Cancel2,  LIST_CANCEL }
-};
+    {gText_Receive, 0},
+    {gText_Toss, 2},
+    {gText_Cancel2, LIST_CANCEL}};
 
 static const struct ListMenuItem sListMenuItems_ReceiveSend[] = {
-    { gText_Receive,  0 },
-    { gText_Send,     1 },
-    { gText_Cancel2,  LIST_CANCEL }
-};
+    {gText_Receive, 0},
+    {gText_Send, 1},
+    {gText_Cancel2, LIST_CANCEL}};
 
 static const struct ListMenuItem sListMenuItems_Receive[] = {
-    { gText_Receive,  0 },
-    { gText_Cancel2,  LIST_CANCEL }
-};
+    {gText_Receive, 0},
+    {gText_Cancel2, LIST_CANCEL}};
 
 static const struct ListMenuTemplate sListMenu_ReceiveSendToss = {
     .items = sListMenuItems_ReceiveSendToss,
@@ -289,8 +251,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveSendToss = {
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NORMAL,
-    .cursorKind = CURSOR_BLACK_ARROW
-};
+    .cursorKind = CURSOR_BLACK_ARROW};
 
 static const struct ListMenuTemplate sListMenu_ReceiveToss = {
     .items = sListMenuItems_ReceiveToss,
@@ -310,8 +271,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveToss = {
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NORMAL,
-    .cursorKind = CURSOR_BLACK_ARROW
-};
+    .cursorKind = CURSOR_BLACK_ARROW};
 
 static const struct ListMenuTemplate sListMenu_ReceiveSend = {
     .items = sListMenuItems_ReceiveSend,
@@ -331,8 +291,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveSend = {
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NORMAL,
-    .cursorKind = CURSOR_BLACK_ARROW
-};
+    .cursorKind = CURSOR_BLACK_ARROW};
 
 static const struct ListMenuTemplate sListMenu_Receive = {
     .items = sListMenuItems_Receive,
@@ -352,19 +311,20 @@ static const struct ListMenuTemplate sListMenu_Receive = {
     .itemVerticalPadding = 0,
     .scrollMultiple = LIST_NO_MULTIPLE_SCROLL,
     .fontId = FONT_NORMAL,
-    .cursorKind = CURSOR_BLACK_ARROW
-};
+    .cursorKind = CURSOR_BLACK_ARROW};
 
 static const u8 *const sUnusedMenuTexts[] = {
     gText_VarietyOfEventsImportedWireless,
     gText_WonderCardsInPossession,
     gText_ReadNewsThatArrived,
-    gText_ReturnToTitle
-};
+    gText_ReturnToTitle};
 
-ALIGNED(2) static const u8 sTextColors_Header[]      = { TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,     TEXT_COLOR_DARK_GRAY };
-ALIGNED(2) static const u8 sTextColors_Header_Copy[] = { TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,     TEXT_COLOR_DARK_GRAY };
-ALIGNED(2) static const u8 sMG_Ereader_TextColor_2[] = { TEXT_COLOR_WHITE,       TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY };
+ALIGNED(2)
+static const u8 sTextColors_Header[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY};
+ALIGNED(2)
+static const u8 sTextColors_Header_Copy[] = {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY};
+ALIGNED(2)
+static const u8 sMG_Ereader_TextColor_2[] = {TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
 
 static void VBlankCB_MysteryGiftEReader(void)
 {
@@ -597,8 +557,7 @@ static void ShowDownArrow(void)
     DrawDownArrow(WIN_MSG, DOWN_ARROW_X, DOWN_ARROW_Y, 1, TRUE, &sDownArrowCounterAndYCoordIdx[0], &sDownArrowCounterAndYCoordIdx[1]);
 }
 
-// Unused
-static bool32 HideDownArrowAndWaitButton(u8 *textState)
+static bool32 UNUSED HideDownArrowAndWaitButton(u8 *textState)
 {
     switch (*textState)
     {
@@ -632,7 +591,7 @@ static bool32 PrintStringAndWait2Seconds(u8 *counter, const u8 *str)
     }
 }
 
-static u32 MysteryGift_HandleThreeOptionMenu(u8 *unused0, u16 * unused1, u8 whichMenu)
+static u32 MysteryGift_HandleThreeOptionMenu(u8 *unused0, u16 *unused1, u8 whichMenu)
 {
     struct ListMenuTemplate listMenuTemplate = sListMenuTemplate_ThreeOptions;
     struct WindowTemplate windowTemplate = sWindowTemplate_ThreeOptions;
@@ -663,7 +622,7 @@ static u32 MysteryGift_HandleThreeOptionMenu(u8 *unused0, u16 * unused1, u8 whic
     return response;
 }
 
-s8 DoMysteryGiftYesNo(u8 *textState, u16 * windowId, bool8 yesNoBoxPlacement, const u8 *str)
+s8 DoMysteryGiftYesNo(u8 *textState, u16 *windowId, bool8 yesNoBoxPlacement, const u8 *str)
 {
     struct WindowTemplate windowTemplate;
     s8 input;
@@ -720,9 +679,9 @@ s8 DoMysteryGiftYesNo(u8 *textState, u16 * windowId, bool8 yesNoBoxPlacement, co
 }
 
 // Handle the "Receive/Send/Toss" menu that appears when selecting Wonder Card/News
-static s32 HandleGiftSelectMenu(u8 *textState, u16 * windowId, bool32 cannotToss, bool32 cannotSend)
+static s32 HandleGiftSelectMenu(u8 *textState, u16 *windowId, bool32 cannotToss, bool32 cannotSend)
 {
-    struct WindowTemplate windowTemplate;
+    struct WindowTemplate UNUSED windowTemplate;
     s32 input;
 
     switch (*textState)
@@ -853,7 +812,7 @@ static bool32 ExitWonderCardOrNews(bool32 isWonderNews, bool32 useCancel)
     }
 }
 
-static s32 AskDiscardGift(u8 *textState, u16 * windowId, bool32 isWonderNews)
+static s32 AskDiscardGift(u8 *textState, u16 *windowId, bool32 isWonderNews)
 {
     if (!isWonderNews)
         return DoMysteryGiftYesNo(textState, windowId, TRUE, gText_IfThrowAwayCardEventWontHappen);
@@ -898,7 +857,7 @@ static bool32 SaveOnMysteryGiftMenu(u8 *state)
     return FALSE;
 }
 
-static const u8 *GetClientResultMessage(bool32 * successMsg, bool8 isWonderNews, bool8 sourceIsFriend, u32 msgId)
+static const u8 *GetClientResultMessage(bool32 *successMsg, bool8 isWonderNews, bool8 sourceIsFriend, u32 msgId)
 {
     const u8 *msg = NULL;
     *successMsg = FALSE;
@@ -970,7 +929,7 @@ static const u8 *GetClientResultMessage(bool32 * successMsg, bool8 isWonderNews,
     return msg;
 }
 
-static bool32 PrintSuccessMessage(u8 *state, const u8 *msg, u16 * timer)
+static bool32 PrintSuccessMessage(u8 *state, const u8 *msg, u16 *timer)
 {
     switch (*state)
     {
@@ -997,7 +956,7 @@ static bool32 PrintSuccessMessage(u8 *state, const u8 *msg, u16 * timer)
     return FALSE;
 }
 
-static const u8 *GetServerResultMessage(bool32 * wonderSuccess, bool8 sourceIsFriend, u32 msgId)
+static const u8 *GetServerResultMessage(bool32 *wonderSuccess, bool8 sourceIsFriend, u32 msgId)
 {
     const u8 *result = gText_CommunicationError;
     *wonderSuccess = FALSE;
@@ -1054,7 +1013,7 @@ static const u8 *GetServerResultMessage(bool32 * wonderSuccess, bool8 sourceIsFr
     return result;
 }
 
-static bool32 PrintServerResultMessage(u8 *state, u16 * timer, bool8 sourceIsFriend, u32 msgId)
+static bool32 PrintServerResultMessage(u8 *state, u16 *timer, bool8 sourceIsFriend, u32 msgId)
 {
     bool32 wonderSuccess;
     const u8 *str = GetServerResultMessage(&wonderSuccess, sourceIsFriend, msgId);
@@ -1068,7 +1027,8 @@ static bool32 PrintServerResultMessage(u8 *state, u16 * timer, bool8 sourceIsFri
 // CLIENT states are for when the player is receiving a gift, and use mystery_gift_client.c link functions.
 // SERVER states are for when the player is sending a gift, and use mystery_gift_server.c link functions.
 // Other states handle the general Mystery Gift menu usage.
-enum {
+enum
+{
     MG_STATE_TO_MAIN_MENU,
     MG_STATE_MAIN_MENU,
     MG_STATE_DONT_HAVE_ANY,
@@ -1112,7 +1072,7 @@ enum {
 static void CreateMysteryGiftTask(void)
 {
     u8 taskId = CreateTask(Task_MysteryGift, 0);
-    struct MysteryGiftTaskData * data = (void *)gTasks[taskId].data;
+    struct MysteryGiftTaskData *data = (void *)gTasks[taskId].data;
     data->state = MG_STATE_TO_MAIN_MENU;
     data->textState = 0;
     data->unused4 = 0;
