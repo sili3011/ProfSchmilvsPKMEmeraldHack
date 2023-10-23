@@ -7,6 +7,7 @@
 #include "menu_helpers.h"
 #include "scanline_effect.h"
 #include "palette.h"
+#include "party_menu.h"
 #include "pokemon_icon.h"
 #include "sprite.h"
 #include "item.h"
@@ -18,7 +19,8 @@
 #include "text_window.h"
 #include "international_string_util.h"
 #include "strings.h"
-#include "battle_ai_script_commands.h"
+#include "battle_ai_main.h"
+#include "battle_ai_util.h"
 #include "list_menu.h"
 #include "decompress.h"
 #include "trainer_pokemon_sprites.h"
@@ -29,9 +31,11 @@
 #include "reset_rtc_screen.h"
 #include "reshow_battle_screen.h"
 #include "constants/abilities.h"
+#include "constants/party_menu.h"
 #include "constants/moves.h"
 #include "constants/items.h"
 #include "constants/rgb.h"
+#include "constants/hold_effects.h"
 
 #define MAX_MODIFY_DIGITS 4
 
@@ -41,8 +45,8 @@ struct BattleDebugModifyArrows
     u16 minValue;
     u16 maxValue;
     int currValue;
-    u8 currentDigit;
-    u8 maxDigits;
+    u8 currentDigit:4;
+    u8 maxDigits:4;
     u8 charDigits[MAX_MODIFY_DIGITS];
     void *modifiedValPtr;
     u8 typeOfVal;
@@ -50,7 +54,9 @@ struct BattleDebugModifyArrows
 
 struct BattleDebugMenu
 {
-    u8 battlerId;
+    u8 battlerId:2;
+    u8 aiBattlerId:2;
+
     u8 battlerWindowId;
 
     u8 mainListWindowId;
@@ -70,11 +76,16 @@ struct BattleDebugMenu
     const struct BitfieldInfo *bitfield;
     bool8 battlerWasChanged[MAX_BATTLERS_COUNT];
 
-    u8 aiBattlerId;
     u8 aiViewState;
-    u8 aiIconSpriteIds[MAX_BATTLERS_COUNT];
+
     u8 aiMonSpriteId;
     u8 aiMovesWindowId;
+
+    union
+    {
+        u8 aiIconSpriteIds[MAX_BATTLERS_COUNT];
+        u8 aiPartyIcons[PARTY_SIZE];
+    } spriteIds;
 };
 
 struct __attribute__((__packed__)) BitfieldInfo
@@ -95,9 +106,12 @@ enum
     LIST_ITEM_STATUS1,
     LIST_ITEM_STATUS2,
     LIST_ITEM_STATUS3,
+    LIST_ITEM_STATUS4,
     LIST_ITEM_SIDE_STATUS,
     LIST_ITEM_AI,
     LIST_ITEM_AI_MOVES_PTS,
+    LIST_ITEM_AI_INFO,
+    LIST_ITEM_AI_PARTY,
     LIST_ITEM_VARIOUS,
     LIST_ITEM_COUNT
 };
@@ -123,7 +137,6 @@ enum
     VAR_IN_LOVE,
     VAR_U16_4_ENTRIES,
     VAL_S8,
-    VAL_ITEM,
     VAL_ALL_STAT_STAGES,
 };
 
@@ -149,7 +162,11 @@ enum
     VARIOUS_IN_LOVE,
 };
 
+// Static Declarations
+static const u8 *GetHoldEffectName(u16 holdEffect);
+
 // const rom data
+static const u8 sText_HoldEffect[] = _("Hold Effect");
 static const u8 sText_Ability[] = _("Ability");
 static const u8 sText_Moves[] = _("Moves");
 static const u8 sText_Stats[] = _("Stats");
@@ -157,11 +174,13 @@ static const u8 sText_StatStages[] = _("Stat Stages");
 static const u8 sText_Status1[] = _("Status1");
 static const u8 sText_Status2[] = _("Status2");
 static const u8 sText_Status3[] = _("Status3");
+static const u8 sText_Status4[] = _("Status4");
 static const u8 sText_HeldItem[] = _("Held Item");
 static const u8 sText_SideStatus[] = _("Side Status");
 static const u8 sText_MaxHp[] = _("HP Max");
 static const u8 sText_CurrHp[] = _("HP Current");
 static const u8 sText_Freeze[] = _("Freeze");
+static const u8 sText_Frostbite[] = _("Frostbite");
 static const u8 sText_ToxicPoison[] = _("Toxic Poison");
 static const u8 sText_ToxicCounter[] = _("Toxic Counter");
 static const u8 sText_Flinch[] = _("Flinch");
@@ -200,6 +219,8 @@ static const u8 sText_GastroAcid[] = _("Gastro Acid");
 static const u8 sText_SmackDown[] = _("Smacked Down");
 static const u8 sText_MiracleEye[] = _("Miracle Eye");
 static const u8 sText_AquaRing[] = _("Aqua Ring");
+static const u8 sText_LaserFocus[] = _("Laser Focused");
+static const u8 sText_Electrified[] = _("Electrified");
 static const u8 sText_AuroraVeil[] = _("Aurora Veil");
 static const u8 sText_LuckyChant[] = _("Lucky Chant");
 static const u8 sText_Tailwind[] = _("Tailwind");
@@ -221,8 +242,9 @@ static const u8 sText_InDoubles[] = _("In Doubles");
 static const u8 sText_HpAware[] = _("HP aware");
 static const u8 sText_Unknown[] = _("Unknown");
 static const u8 sText_InLove[] = _("In Love");
-static const u8 sText_AIMovePts[] = _("AI Move Pts");
-static const u8 sText_EffectOverride[] = _("Effect Override");
+static const u8 sText_AIMovePts[] = _("AI Pts/Dmg");
+static const u8 sText_AiKnowledge[] = _("AI Info");
+static const u8 sText_AiParty[] = _("AI Party");
 
 static const u8 sText_EmptyString[] = _("");
 
@@ -235,6 +257,7 @@ static const struct BitfieldInfo sStatus1Bitfield[] =
     {/*Paralysis*/1, 6},
     {/*Toxic Poison*/ 1, 7},
     {/*Toxic Counter*/ 4, 8},
+    {/*Frostbite*/ 1, 12},
 };
 
 static const struct BitfieldInfo sStatus2Bitfield[] =
@@ -248,6 +271,7 @@ static const struct BitfieldInfo sStatus2Bitfield[] =
     {/*Multiple Turns*/ 1, 12},
     // Wrap bits are omitted. Done in various.
     // In Love bits are omitted. Done in various.
+    {/*(Focus Energy*/ 1, 20},
     {/*Transformed*/ 1, 21},
     {/*Recharge*/ 1, 22},
     {/*Rage*/ 1, 23},
@@ -287,6 +311,13 @@ static const struct BitfieldInfo sStatus3Bitfield[] =
     // Magnet Rise 1, 26,
     // Heal Block 1, 27,
     {/*Aqua Ring*/ 1, 28},
+    {/*Laser Focus*/ 1, 29},
+    // Power Trick 1, 30,
+};
+
+static const struct BitfieldInfo sStatus4Bitfield[] =
+{
+    {/*Electrified*/ 1, 0,}
 };
 
 static const struct BitfieldInfo sAIBitfield[] =
@@ -316,9 +347,12 @@ static const struct ListMenuItem sMainListItems[] =
     {sText_Status1, LIST_ITEM_STATUS1},
     {sText_Status2, LIST_ITEM_STATUS2},
     {sText_Status3, LIST_ITEM_STATUS3},
+    {sText_Status4, LIST_ITEM_STATUS4},
     {sText_SideStatus, LIST_ITEM_SIDE_STATUS},
     {sText_AI, LIST_ITEM_AI},
     {sText_AIMovePts, LIST_ITEM_AI_MOVES_PTS},
+    {sText_AiKnowledge, LIST_ITEM_AI_INFO},
+    {sText_AiParty, LIST_ITEM_AI_PARTY},
     {sText_Various, LIST_ITEM_VARIOUS},
 };
 
@@ -363,6 +397,7 @@ static const struct ListMenuItem sStatus1ListItems[] =
     {gText_Paralysis, 4},
     {sText_ToxicPoison, 5},
     {sText_ToxicCounter, 6},
+    {sText_Frostbite, 7},
 };
 
 static const struct ListMenuItem sStatus2ListItems[] =
@@ -399,6 +434,12 @@ static const struct ListMenuItem sStatus3ListItems[] =
     {sText_SmackDown, 8},
     {sText_MiracleEye, 9},
     {sText_AquaRing, 10},
+    {sText_LaserFocus, 11},
+};
+
+static const struct ListMenuItem sStatus4ListItems[] =
+{
+    {sText_Electrified, 0},
 };
 
 static const struct ListMenuItem sSideStatusListItems[] =
@@ -532,7 +573,7 @@ static const struct BgTemplate sBgTemplates[] =
    },
    {
        .bg = 1,
-       .charBaseIndex = 10,
+       .charBaseIndex = 2,
        .mapBaseIndex = 20,
        .screenSize = 0,
        .paletteMode = 0,
@@ -583,11 +624,12 @@ static void UpdateMonData(struct BattleDebugMenu *data);
 static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus, bool32 statusTrue);
 static bool32 TryMoveDigit(struct BattleDebugModifyArrows *modArrows, bool32 moveUp);
 static void SwitchToDebugView(u8 taskId);
+static void SwitchToDebugViewFromAiParty(u8 taskId);
 
 // code
 static struct BattleDebugMenu *GetStructPtr(u8 taskId)
 {
-    u8 *taskDataPtr = (u8*)(&gTasks[taskId].data[0]);
+    u8 *taskDataPtr = (u8 *)(&gTasks[taskId].data[0]);
 
     return (struct BattleDebugMenu*)(T1_READ_PTR(taskDataPtr));
 }
@@ -595,7 +637,7 @@ static struct BattleDebugMenu *GetStructPtr(u8 taskId)
 static void SetStructPtr(u8 taskId, void *ptr)
 {
     u32 structPtr = (u32)(ptr);
-    u8 *taskDataPtr = (u8*)(&gTasks[taskId].data[0]);
+    u8 *taskDataPtr = (u8 *)(&gTasks[taskId].data[0]);
 
     taskDataPtr[0] = structPtr >> 0;
     taskDataPtr[1] = structPtr >> 8;
@@ -687,8 +729,8 @@ void CB2_BattleDebugMenu(void)
 
 static void PutMovesPointsText(struct BattleDebugMenu *data)
 {
-    u32 i, j, count;
-    u8 *text = malloc(0x50);
+    u32 i, j, count, battlerDef;
+    u8 *text = Alloc(0x50);
 
     FillWindowPixelBuffer(data->aiMovesWindowId, 0x11);
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -698,18 +740,25 @@ static void PutMovesPointsText(struct BattleDebugMenu *data)
         AddTextPrinterParameterized(data->aiMovesWindowId, 1, text, 0, i * 15, 0, NULL);
         for (count = 0, j = 0; j < MAX_BATTLERS_COUNT; j++)
         {
-            if (data->aiIconSpriteIds[j] == 0xFF)
+            if (data->spriteIds.aiIconSpriteIds[j] == 0xFF)
                 continue;
+            battlerDef = gSprites[data->spriteIds.aiIconSpriteIds[j]].data[0];
             ConvertIntToDecimalStringN(text,
-                                       gBattleStruct->aiFinalScore[data->aiBattlerId][gSprites[data->aiIconSpriteIds[j]].data[0]][i],
+                                       gBattleStruct->aiFinalScore[data->aiBattlerId][battlerDef][i],
                                        STR_CONV_MODE_RIGHT_ALIGN, 3);
             AddTextPrinterParameterized(data->aiMovesWindowId, 1, text, 83 + count * 54, i * 15, 0, NULL);
+
+            ConvertIntToDecimalStringN(text,
+                                       AI_DATA->simulatedDmg[data->aiBattlerId][battlerDef][i],
+                                       STR_CONV_MODE_RIGHT_ALIGN, 3);
+            AddTextPrinterParameterized(data->aiMovesWindowId, 1, text, 110 + count * 54, i * 15, 0, NULL);
+
             count++;
         }
     }
 
     CopyWindowToVram(data->aiMovesWindowId, 3);
-    free(text);
+    Free(text);
 }
 
 static void Task_ShowAiPoints(u8 taskId)
@@ -726,7 +775,7 @@ static void Task_ShowAiPoints(u8 taskId)
 
         // Swap battler if it's player mon
         data->aiBattlerId = data->battlerId;
-        while (!IsBattlerAIControlled(data->aiBattlerId))
+        while (!BattlerHasAi(data->aiBattlerId))
         {
             if (++data->aiBattlerId >= gBattlersCount)
                 data->aiBattlerId = 0;
@@ -737,27 +786,27 @@ static void Task_ShowAiPoints(u8 taskId)
         {
             if (i != data->aiBattlerId && IsBattlerAlive(i))
             {
-                data->aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species,
+                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species,
                                                          SpriteCallbackDummy,
-                                                         95 + (count * 60), 17, 0, 0, FALSE);
-                gSprites[data->aiIconSpriteIds[i]].data[0] = i; // battler id
+                                                         95 + (count * 60), 17, 0, 0);
+                gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
                 count++;
             }
             else
             {
-                data->aiIconSpriteIds[i] = 0xFF;
+                data->spriteIds.aiIconSpriteIds[i] = 0xFF;
             }
         }
-        data->aiMonSpriteId = CreateMonPicSprite_HandleDeoxys(gBattleMons[data->aiBattlerId].species,
+        data->aiMonSpriteId = CreateMonPicSprite(gBattleMons[data->aiBattlerId].species,
                                                  gBattleMons[data->aiBattlerId].otId,
                                                  gBattleMons[data->aiBattlerId].personality,
                                                  TRUE,
-                                                 39, 130, 15, 0xFFFF);
+                                                 39, 130, 15, TAG_NONE);
         data->aiViewState++;
         break;
     // Put text
     case 1:
-        winTemplate = CreateWindowTemplate(1, 0, 4, 27, 14, 15, 0x200);
+        winTemplate = CreateWindowTemplate(1, 0, 4, 30, 14, 15, 0x200);
         data->aiMovesWindowId = AddWindow(&winTemplate);
         PutWindowTilemap(data->aiMovesWindowId);
         PutMovesPointsText(data);
@@ -766,7 +815,7 @@ static void Task_ShowAiPoints(u8 taskId)
         break;
     // Input
     case 2:
-        if (gMain.newKeys & (SELECT_BUTTON | B_BUTTON))
+        if (JOY_NEW(SELECT_BUTTON | B_BUTTON))
         {
             SwitchToDebugView(taskId);
             HideBg(1);
@@ -783,6 +832,254 @@ static void SwitchToAiPointsView(u8 taskId)
     GetStructPtr(taskId)->aiViewState = 0;
 }
 
+static const u8 *const sAiInfoItemNames[] =
+{
+    sText_Ability,
+    sText_HeldItem,
+    sText_HoldEffect,
+};
+
+static void PutAiInfoText(struct BattleDebugMenu *data)
+{
+    u32 i, j, count;
+    u8 *text = Alloc(0x50);
+
+    FillWindowPixelBuffer(data->aiMovesWindowId, 0x11);
+
+    // item names
+    for (i = 0; i < ARRAY_COUNT(sAiInfoItemNames); i++)
+    {
+        AddTextPrinterParameterized(data->aiMovesWindowId, 1, sAiInfoItemNames[i], 3, i * 15, 0, NULL);
+    }
+
+    // items info
+    for (i = 0; i < gBattlersCount; i++)
+    {
+        if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
+        {
+            u16 ability = AI_GetAbility(i);
+            u16 holdEffect = AI_GetHoldEffect(i);
+            u16 item = gBattleMons[i].item;
+            u8 x = (i == B_POSITION_PLAYER_LEFT) ? 83 + (i) * 75 : 83 + (i-1) * 75;
+            AddTextPrinterParameterized(data->aiMovesWindowId, 0, gAbilityNames[ability], x, 0, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, 0, ItemId_GetName(item), x, 15, 0, NULL);
+            AddTextPrinterParameterized(data->aiMovesWindowId, 0, GetHoldEffectName(holdEffect), x, 30, 0, NULL);
+        }
+    }
+
+    CopyWindowToVram(data->aiMovesWindowId, 3);
+    Free(text);
+}
+
+static void PutAiPartyText(struct BattleDebugMenu *data)
+{
+    u32 i, j, count;
+    u8 *text = Alloc(0x50), *txtPtr;
+    struct AiPartyMon *aiMons = AI_PARTY->mons[GetBattlerSide(data->aiBattlerId)];
+
+    FillWindowPixelBuffer(data->aiMovesWindowId, 0x11);
+    count = AI_PARTY->count[GetBattlerSide(data->aiBattlerId)];
+    for (i = 0; i < count; i++)
+    {
+        if (aiMons[i].wasSentInBattle)
+        {
+            text[0] = CHAR_LV;
+            txtPtr = ConvertIntToDecimalStringN(text + 1, aiMons[i].level, STR_CONV_MODE_LEFT_ALIGN, 3);
+            *txtPtr++ = CHAR_SPACE;
+            if (aiMons[i].gender == MON_MALE)
+                *txtPtr++ = CHAR_MALE;
+            else if (aiMons[i].gender == MON_FEMALE)
+                *txtPtr++ = CHAR_FEMALE;
+            *txtPtr = EOS;
+            AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 0, 0, NULL, 0, 0);
+        }
+
+        txtPtr = StringCopyN(text, gAbilityNames[aiMons[i].ability], 7); // The screen is too small to fit the whole string, so we need to drop the last letters.
+        *txtPtr = EOS;
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 15, 0, NULL, 0, 0);
+
+        for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            txtPtr = StringCopyN(text, gMoveNames[aiMons[i].moves[j]], 8);
+            *txtPtr = EOS;
+            AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
+        }
+
+        txtPtr = StringCopyN(text, GetHoldEffectName(aiMons[i].heldEffect), 7);
+        *txtPtr = EOS;
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + j * 15, 0, NULL, 0, 0);
+
+        txtPtr = ConvertIntToDecimalStringN(text, aiMons[i].switchInCount, STR_CONV_MODE_LEFT_ALIGN, 2);
+        *txtPtr = EOS;
+        AddTextPrinterParameterized5(data->aiMovesWindowId, FONT_SMALL_NARROW, text, i * 41, 35 + (j + 1) * 15, 0, NULL, 0, 0);
+    }
+
+    CopyWindowToVram(data->aiMovesWindowId, 3);
+    Free(text);
+}
+
+static void Task_ShowAiKnowledge(u8 taskId)
+{
+    u32 i, count;
+    struct WindowTemplate winTemplate;
+    struct BattleDebugMenu *data = GetStructPtr(taskId);
+
+    switch (data->aiViewState)
+    {
+    case 0:
+        HideBg(0);
+        ShowBg(1);
+
+        // Swap battler if it's player mon
+        data->aiBattlerId = data->battlerId;
+        while (!BattlerHasAi(data->aiBattlerId))
+        {
+            if (++data->aiBattlerId >= gBattlersCount)
+                data->aiBattlerId = 0;
+        }
+
+        LoadMonIconPalettes();
+        for (count = 0, i = 0; i < MAX_BATTLERS_COUNT; i++)
+        {
+            if (GetBattlerSide(i) == B_SIDE_PLAYER && IsBattlerAlive(i))
+            {
+                data->spriteIds.aiIconSpriteIds[i] = CreateMonIcon(gBattleMons[i].species,
+                                                         SpriteCallbackDummy,
+                                                         95 + (count * 80), 17, 0, 0);
+                gSprites[data->spriteIds.aiIconSpriteIds[i]].data[0] = i; // battler id
+                count++;
+            }
+            else
+            {
+                data->spriteIds.aiIconSpriteIds[i] = 0xFF;
+            }
+        }
+        data->aiMonSpriteId = CreateMonPicSprite(gBattleMons[data->aiBattlerId].species,
+                                                 gBattleMons[data->aiBattlerId].otId,
+                                                 gBattleMons[data->aiBattlerId].personality,
+                                                 TRUE,
+                                                 39, 130, 15, TAG_NONE);
+        data->aiViewState++;
+        break;
+    // Put text
+    case 1:
+        winTemplate = CreateWindowTemplate(1, 0, 4, 27, 14, 15, 0x200);
+        data->aiMovesWindowId = AddWindow(&winTemplate);
+        PutWindowTilemap(data->aiMovesWindowId);
+        PutAiInfoText(data);
+        data->aiViewState++;
+        break;
+    // Input
+    case 2:
+        if (JOY_NEW(SELECT_BUTTON | B_BUTTON))
+        {
+            SwitchToDebugView(taskId);
+            HideBg(1);
+            ShowBg(0);
+            return;
+        }
+        break;
+    }
+}
+
+#define sConditionSpriteId data[1]
+
+static void Task_ShowAiParty(u8 taskId)
+{
+    u32 i, ailment;
+    struct WindowTemplate winTemplate;
+    struct AiPartyMon *aiMons;
+    struct BattleDebugMenu *data = GetStructPtr(taskId);
+
+    switch (data->aiViewState)
+    {
+    case 0:
+        HideBg(0);
+        ShowBg(1);
+
+        LoadMonIconPalettes();
+        LoadPartyMenuAilmentGfx();
+        data->aiBattlerId = data->battlerId;
+        aiMons = AI_PARTY->mons[GetBattlerSide(data->aiBattlerId)];
+        for (i = 0; i < AI_PARTY->count[GetBattlerSide(data->aiBattlerId)]; i++)
+        {
+            u16 species = SPECIES_NONE; // Question mark
+            if (aiMons[i].wasSentInBattle && aiMons[i].species)
+                species = aiMons[i].species;
+            data->spriteIds.aiPartyIcons[i] = CreateMonIcon(species, SpriteCallbackDummy, (i * 41) + 15, 7, 1, 0);
+            gSprites[data->spriteIds.aiPartyIcons[i]].oam.priority = 0;
+
+            gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId = CreateSprite(&gSpriteTemplate_StatusIcons, (i * 41) + 15, 7, 0);
+            gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId].oam.priority = 0;
+            if (aiMons[i].isFainted)
+                ailment = AILMENT_FNT;
+            else
+                ailment = GetAilmentFromStatus(aiMons[i].status);
+
+            if (ailment != AILMENT_NONE)
+                StartSpriteAnim(&gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId], ailment - 1);
+            else
+                gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId].invisible = TRUE;
+        }
+        for (; i < PARTY_SIZE; i++)
+            data->spriteIds.aiPartyIcons[i] = 0xFF;
+        data->aiViewState++;
+        break;
+    // Put text
+    case 1:
+        winTemplate = CreateWindowTemplate(1, 0, 3, 29, 16, 15, 0x150);
+        data->aiMovesWindowId = AddWindow(&winTemplate);
+        PutWindowTilemap(data->aiMovesWindowId);
+        PutAiPartyText(data);
+        data->aiViewState++;
+        break;
+    // Input
+    case 2:
+        if (JOY_NEW(SELECT_BUTTON | B_BUTTON))
+        {
+            SwitchToDebugViewFromAiParty(taskId);
+            HideBg(1);
+            ShowBg(0);
+            return;
+        }
+        break;
+    }
+}
+
+static void SwitchToAiInfoView(u8 taskId)
+{
+    gTasks[taskId].func = Task_ShowAiKnowledge;
+    GetStructPtr(taskId)->aiViewState = 0;
+}
+
+static void SwitchToAiPartyView(u8 taskId)
+{
+    gTasks[taskId].func = Task_ShowAiParty;
+    GetStructPtr(taskId)->aiViewState = 0;
+}
+
+static void SwitchToDebugViewFromAiParty(u8 taskId)
+{
+    u32 i;
+    struct BattleDebugMenu *data = GetStructPtr(taskId);
+
+    FreeMonIconPalettes();
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (data->spriteIds.aiPartyIcons[i] != 0xFF)
+        {
+            DestroySpriteAndFreeResources(&gSprites[gSprites[data->spriteIds.aiPartyIcons[i]].sConditionSpriteId]);
+            FreeAndDestroyMonIconSprite(&gSprites[data->spriteIds.aiPartyIcons[i]]);
+        }
+    }
+    ClearWindowTilemap(data->aiMovesWindowId);
+    RemoveWindow(data->aiMovesWindowId);
+
+    gTasks[taskId].func = Task_DebugMenuProcessInput;
+}
+
+#undef sConditionSpriteId
+
 static void SwitchToDebugView(u8 taskId)
 {
     u32 i;
@@ -791,10 +1088,11 @@ static void SwitchToDebugView(u8 taskId)
     FreeMonIconPalettes();
     for (i = 0; i < MAX_BATTLERS_COUNT; i++)
     {
-        if (data->aiIconSpriteIds[i] != 0xFF)
-            FreeAndDestroyMonIconSprite(&gSprites[data->aiIconSpriteIds[i]]);
+        if (data->spriteIds.aiIconSpriteIds[i] != 0xFF)
+            FreeAndDestroyMonIconSprite(&gSprites[data->spriteIds.aiIconSpriteIds[i]]);
     }
     FreeAndDestroyMonPicSprite(data->aiMonSpriteId);
+    ClearWindowTilemap(data->aiMovesWindowId);
     RemoveWindow(data->aiMovesWindowId);
 
     gTasks[taskId].func = Task_DebugMenuProcessInput;
@@ -812,7 +1110,7 @@ static void Task_DebugMenuProcessInput(u8 taskId)
     struct BattleDebugMenu *data = GetStructPtr(taskId);
 
     // Exit the menu.
-    if (gMain.newKeys & SELECT_BUTTON)
+    if (JOY_NEW(SELECT_BUTTON) || ((JOY_NEW(B_BUTTON)) && data->activeWindow == ACTIVE_WIN_MAIN))
     {
         BeginNormalPaletteFade(-1, 0, 0, 0x10, 0);
         gTasks[taskId].func = Task_DebugMenuFadeOut;
@@ -820,13 +1118,13 @@ static void Task_DebugMenuProcessInput(u8 taskId)
     }
 
     // Try changing active battler.
-    if (gMain.newKeys & R_BUTTON)
+    if (JOY_NEW(R_BUTTON))
     {
         if (data->battlerId++ == gBattlersCount - 1)
             data->battlerId = 0;
         UpdateWindowsOnChangedBattler(data);
     }
-    else if (gMain.newKeys & L_BUTTON)
+    else if (JOY_NEW(L_BUTTON))
     {
         if (data->battlerId-- == 0)
             data->battlerId = gBattlersCount - 1;
@@ -839,9 +1137,19 @@ static void Task_DebugMenuProcessInput(u8 taskId)
         listItemId = ListMenu_ProcessInput(data->mainListTaskId);
         if (listItemId != LIST_CANCEL && listItemId != LIST_NOTHING_CHOSEN && listItemId < LIST_ITEM_COUNT)
         {
-            if (listItemId == LIST_ITEM_AI_MOVES_PTS && gMain.newKeys & A_BUTTON)
+            if (listItemId == LIST_ITEM_AI_MOVES_PTS && JOY_NEW(A_BUTTON))
             {
                 SwitchToAiPointsView(taskId);
+                return;
+            }
+            else if (listItemId == LIST_ITEM_AI_INFO && JOY_NEW(A_BUTTON))
+            {
+                SwitchToAiInfoView(taskId);
+                return;
+            }
+            else if (listItemId == LIST_ITEM_AI_PARTY && JOY_NEW(A_BUTTON))
+            {
+                SwitchToAiPartyView(taskId);
                 return;
             }
             data->currentMainListItemId = listItemId;
@@ -878,32 +1186,32 @@ static void Task_DebugMenuProcessInput(u8 taskId)
     // Handle value modifying.
     else if (data->activeWindow == ACTIVE_WIN_MODIFY)
     {
-        if (gMain.newKeys & (B_BUTTON | A_BUTTON))
+        if (JOY_NEW(B_BUTTON | A_BUTTON))
         {
             ClearStdWindowAndFrameToTransparent(data->modifyWindowId, TRUE);
             RemoveWindow(data->modifyWindowId);
             DestroyModifyArrows(data);
             data->activeWindow = ACTIVE_WIN_SECONDARY;
         }
-        else if (gMain.newKeys & DPAD_RIGHT)
+        else if (JOY_NEW(DPAD_RIGHT))
         {
             if (data->modifyArrows.currentDigit != (data->modifyArrows.maxDigits - 1))
             {
                 data->modifyArrows.currentDigit++;
-                gSprites[data->modifyArrows.arrowSpriteId[0]].pos2.x += 6;
-                gSprites[data->modifyArrows.arrowSpriteId[1]].pos2.x += 6;
+                gSprites[data->modifyArrows.arrowSpriteId[0]].x2 += 6;
+                gSprites[data->modifyArrows.arrowSpriteId[1]].x2 += 6;
             }
         }
-        else if (gMain.newKeys & DPAD_LEFT)
+        else if (JOY_NEW(DPAD_LEFT))
         {
             if (data->modifyArrows.currentDigit != 0)
             {
                 data->modifyArrows.currentDigit--;
-                gSprites[data->modifyArrows.arrowSpriteId[0]].pos2.x -= 6;
-                gSprites[data->modifyArrows.arrowSpriteId[1]].pos2.x -= 6;
+                gSprites[data->modifyArrows.arrowSpriteId[0]].x2 -= 6;
+                gSprites[data->modifyArrows.arrowSpriteId[1]].x2 -= 6;
             }
         }
-        else if (gMain.newKeys & DPAD_UP)
+        else if (JOY_NEW(DPAD_UP))
         {
             if (TryMoveDigit(&data->modifyArrows, TRUE))
             {
@@ -912,7 +1220,7 @@ static void Task_DebugMenuProcessInput(u8 taskId)
                 PrintSecondaryEntries(data);
             }
         }
-        else if (gMain.newKeys & DPAD_DOWN)
+        else if (JOY_NEW(DPAD_DOWN))
         {
             if (TryMoveDigit(&data->modifyArrows, FALSE))
             {
@@ -992,7 +1300,7 @@ static void CreateSecondaryListMenu(struct BattleDebugMenu *data)
         itemsCount = 1;
         break;
     case LIST_ITEM_HELD_ITEM:
-        itemsCount = 2;
+        itemsCount = 1;
         break;
     case LIST_ITEM_TYPES:
         itemsCount = 3;
@@ -1026,6 +1334,11 @@ static void CreateSecondaryListMenu(struct BattleDebugMenu *data)
         itemsCount = ARRAY_COUNT(sStatus3ListItems);
         data->bitfield = sStatus3Bitfield;
         break;
+    case LIST_ITEM_STATUS4:
+        listTemplate.items = sStatus4ListItems;
+        itemsCount = ARRAY_COUNT(sStatus4ListItems);
+        data->bitfield = sStatus4Bitfield;
+        break;
     case LIST_ITEM_AI:
         listTemplate.items = sAIListItems;
         itemsCount = ARRAY_COUNT(sAIListItems);
@@ -1040,6 +1353,7 @@ static void CreateSecondaryListMenu(struct BattleDebugMenu *data)
         itemsCount = ARRAY_COUNT(sSideStatusListItems);
         break;
     case LIST_ITEM_AI_MOVES_PTS:
+    case LIST_ITEM_AI_INFO:
         return;
     }
 
@@ -1124,11 +1438,6 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
         PadString(ItemId_GetName(gBattleMons[data->battlerId].item), text);
         printer.currentY = printer.y = sSecondaryListTemplate.upText_Y;
         AddTextPrinter(&printer, 0, NULL);
-
-        PadString(sText_EffectOverride, text);
-        printer.fontId = 0;
-        printer.currentY = printer.y = sSecondaryListTemplate.upText_Y + yMultiplier;
-        AddTextPrinter(&printer, 0, NULL);
         break;
     case LIST_ITEM_TYPES:
         for (i = 0; i < 3; i++)
@@ -1145,10 +1454,10 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
         {
             u8 *txtPtr = StringCopy(text, gStatNamesTable[STAT_ATK + i]);
             txtPtr[0] = CHAR_SPACE;
-            if (gBattleMons[data->battlerId].statStages[STAT_ATK + i] >= 6)
+            if (gBattleMons[data->battlerId].statStages[STAT_ATK + i] >= DEFAULT_STAT_STAGE)
             {
                 txtPtr[1] = CHAR_PLUS;
-                txtPtr[2] = CHAR_0 + (gBattleMons[data->battlerId].statStages[STAT_ATK + i] - 6);
+                txtPtr[2] = CHAR_0 + (gBattleMons[data->battlerId].statStages[STAT_ATK + i] - DEFAULT_STAT_STAGE);
             }
             else
             {
@@ -1171,7 +1480,7 @@ static void PrintSecondaryEntries(struct BattleDebugMenu *data)
 
 static void DestroyModifyArrows(struct BattleDebugMenu *data)
 {
-    FreeSpritePaletteByTag(gSpritePalette_RtcArrow.tag);
+    FreeSpritePaletteByTag(gSpritePalette_Arrow.tag);
     if (data->modifyArrows.arrowSpriteId[0] != 0xFF)
         DestroySprite(&gSprites[data->modifyArrows.arrowSpriteId[0]]);
     if (data->modifyArrows.arrowSpriteId[1] != 0xFF)
@@ -1213,30 +1522,30 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
     switch (data->modifyArrows.typeOfVal)
     {
     case VAL_U8:
-        *(u8*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
+        *(u8 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         break;
     case VAL_S8:
-        *(s8*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
+        *(s8 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         break;
     case VAL_U16:
-        *(u16*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
+        *(u16 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         break;
     case VAR_U16_4_ENTRIES:
-        ((u16*)(data->modifyArrows.modifiedValPtr))[0] = data->modifyArrows.currValue;
-        ((u16*)(data->modifyArrows.modifiedValPtr))[1] = data->modifyArrows.currValue;
-        ((u16*)(data->modifyArrows.modifiedValPtr))[2] = data->modifyArrows.currValue;
-        ((u16*)(data->modifyArrows.modifiedValPtr))[3] = data->modifyArrows.currValue;
+        ((u16 *)(data->modifyArrows.modifiedValPtr))[0] = data->modifyArrows.currValue;
+        ((u16 *)(data->modifyArrows.modifiedValPtr))[1] = data->modifyArrows.currValue;
+        ((u16 *)(data->modifyArrows.modifiedValPtr))[2] = data->modifyArrows.currValue;
+        ((u16 *)(data->modifyArrows.modifiedValPtr))[3] = data->modifyArrows.currValue;
         break;
     case VAL_ALL_STAT_STAGES:
         for (i = 0; i < NUM_BATTLE_STATS; i++)
             gBattleMons[data->battlerId].statStages[i] = data->modifyArrows.currValue;
         break;
     case VAL_U32:
-        *(u32*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
+        *(u32 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
         break;
     case VAL_BITFIELD_32:
-        *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(GetBitfieldToAndValue(data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount));
-        *(u32*)(data->modifyArrows.modifiedValPtr) |= (data->modifyArrows.currValue << data->bitfield[data->currentSecondaryListItemId].currBit);
+        *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~(GetBitfieldToAndValue(data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount));
+        *(u32 *)(data->modifyArrows.modifiedValPtr) |= (data->modifyArrows.currValue << data->bitfield[data->currentSecondaryListItemId].currBit);
         break;
     case VAR_SIDE_STATUS:
         *GetSideStatusValue(data, TRUE, data->modifyArrows.currValue != 0) = data->modifyArrows.currValue;
@@ -1245,10 +1554,10 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         (*(struct BattleSpriteInfo*)(data->modifyArrows.modifiedValPtr)).hpNumbersNoBars = data->modifyArrows.currValue;
         break;
     case VAR_SUBSTITUTE:
-        *(u8*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
-        if (*(u8*)(data->modifyArrows.modifiedValPtr) == 0)
+        *(u8 *)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
+        if (*(u8 *)(data->modifyArrows.modifiedValPtr) == 0)
         {
-            gBattleMons[data->battlerId].status2 &= ~(STATUS2_SUBSTITUTE);
+            gBattleMons[data->battlerId].status2 &= ~STATUS2_SUBSTITUTE;
             gBattleSpritesDataPtr->battlerData[data->battlerId].behindSubstitute = 0;
         }
         else
@@ -1267,14 +1576,8 @@ static void UpdateBattlerValue(struct BattleDebugMenu *data)
         }
         else
         {
-            gBattleMons[data->battlerId].status2 &= ~(STATUS2_INFATUATION);
+            gBattleMons[data->battlerId].status2 &= ~STATUS2_INFATUATION;
         }
-        break;
-    case VAL_ITEM:
-        if (data->currentSecondaryListItemId == 0)
-            *(u16*)(data->modifyArrows.modifiedValPtr) = data->modifyArrows.currValue;
-        else if (data->currentSecondaryListItemId == 1)
-            gBattleStruct->debugHoldEffects[data->battlerId] = data->modifyArrows.currValue;
         break;
     }
     data->battlerWasChanged[data->battlerId] = TRUE;
@@ -1323,7 +1626,7 @@ static void ValueToCharDigits(u8 *charDigits, u32 newValue, u8 maxDigits)
 
 static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus, bool32 statusTrue)
 {
-    struct SideTimer *sideTimer = &gSideTimers[GET_BATTLER_SIDE(data->battlerId)];
+    struct SideTimer *sideTimer = &gSideTimers[GetBattlerSide(data->battlerId)];
 
     switch (data->currentSecondaryListItemId)
     {
@@ -1331,9 +1634,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_REFLECT;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_REFLECT;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_REFLECT);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_REFLECT;
             sideTimer->reflectBattlerId = data->battlerId;
         }
         return &sideTimer->reflectTimer;
@@ -1341,9 +1644,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_LIGHTSCREEN;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_LIGHTSCREEN;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_LIGHTSCREEN);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_LIGHTSCREEN;
             sideTimer->lightscreenBattlerId = data->battlerId;
         }
         return &sideTimer->lightscreenTimer;
@@ -1351,18 +1654,18 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SPIKES;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SPIKES;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_SPIKES);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_SPIKES;
         }
         return &sideTimer->spikesAmount;
     case LIST_SIDE_SAFEGUARD:
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SAFEGUARD;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_SAFEGUARD;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_SAFEGUARD);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_SAFEGUARD;
             sideTimer->safeguardBattlerId = data->battlerId;
         }
         return &sideTimer->safeguardTimer;
@@ -1370,9 +1673,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_MIST;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_MIST;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_MIST);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_MIST;
             sideTimer->mistBattlerId = data->battlerId;
         }
         return &sideTimer->mistTimer;
@@ -1380,9 +1683,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_AURORA_VEIL;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_AURORA_VEIL;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_AURORA_VEIL);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_AURORA_VEIL;
             sideTimer->auroraVeilBattlerId = data->battlerId;
         }
         return &sideTimer->auroraVeilTimer;
@@ -1390,9 +1693,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_LUCKY_CHANT;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_LUCKY_CHANT;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_LUCKY_CHANT);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_LUCKY_CHANT;
             sideTimer->luckyChantBattlerId = data->battlerId;
         }
         return &sideTimer->luckyChantTimer;
@@ -1400,9 +1703,9 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_TAILWIND;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_TAILWIND;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_TAILWIND);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_TAILWIND;
             sideTimer->tailwindBattlerId = data->battlerId;
         }
         return &sideTimer->tailwindTimer;
@@ -1410,27 +1713,27 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STEALTH_ROCK;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STEALTH_ROCK;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_STEALTH_ROCK);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STEALTH_ROCK;
         }
         return &sideTimer->stealthRockAmount;
     case LIST_SIDE_TOXIC_SPIKES:
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_TOXIC_SPIKES;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_TOXIC_SPIKES;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_TOXIC_SPIKES);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_TOXIC_SPIKES;
         }
         return &sideTimer->toxicSpikesAmount;
     case LIST_SIDE_STICKY_WEB:
         if (changeStatus)
         {
             if (statusTrue)
-                *(u32*)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STICKY_WEB;
+                *(u32 *)(data->modifyArrows.modifiedValPtr) |= SIDE_STATUS_STICKY_WEB;
             else
-                *(u32*)(data->modifyArrows.modifiedValPtr) &= ~(SIDE_STATUS_STICKY_WEB);
+                *(u32 *)(data->modifyArrows.modifiedValPtr) &= ~SIDE_STATUS_STICKY_WEB;
         }
         return &sideTimer->stickyWebAmount;
     default:
@@ -1440,15 +1743,15 @@ static u8 *GetSideStatusValue(struct BattleDebugMenu *data, bool32 changeStatus,
 
 static void SetUpModifyArrows(struct BattleDebugMenu *data)
 {
-    LoadSpritePalette(&gSpritePalette_RtcArrow);
-    data->modifyArrows.arrowSpriteId[0] = CreateSprite(&gSpriteTemplate_RtcArrow, 207, 12, 0);
-    data->modifyArrows.arrowSpriteId[1] = CreateSprite(&gSpriteTemplate_RtcArrow, 207, 36, 0);
+    LoadSpritePalette(&gSpritePalette_Arrow);
+    data->modifyArrows.arrowSpriteId[0] = CreateSprite(&gSpriteTemplate_Arrow, 207, 12, 0);
+    data->modifyArrows.arrowSpriteId[1] = CreateSprite(&gSpriteTemplate_Arrow, 207, 36, 0);
     gSprites[data->modifyArrows.arrowSpriteId[1]].animNum = 1;
     switch (data->currentMainListItemId)
     {
     case LIST_ITEM_ABILITY:
         data->modifyArrows.minValue = 0;
-        data->modifyArrows.maxValue = ABILITIES_COUNT_GEN8 - 1;
+        data->modifyArrows.maxValue = ABILITIES_COUNT - 1;
         data->modifyArrows.maxDigits = 3;
         data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].ability;
         data->modifyArrows.typeOfVal = VAL_U16;
@@ -1456,7 +1759,7 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         break;
     case LIST_ITEM_MOVES:
         data->modifyArrows.minValue = 0;
-        data->modifyArrows.maxValue = MOVES_COUNT_GEN8 - 1;
+        data->modifyArrows.maxValue = MOVES_COUNT - 1;
         data->modifyArrows.maxDigits = 3;
         if (data->currentSecondaryListItemId == 4)
         {
@@ -1484,19 +1787,16 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.maxValue = ITEMS_COUNT - 1;
         data->modifyArrows.maxDigits = 3;
         data->modifyArrows.modifiedValPtr = &gBattleMons[data->battlerId].item;
-        data->modifyArrows.typeOfVal = VAL_ITEM;
-        if (data->currentSecondaryListItemId == 0)
-            data->modifyArrows.currValue = gBattleMons[data->battlerId].item;
-        else
-            data->modifyArrows.currValue = gBattleStruct->debugHoldEffects[data->battlerId];
+        data->modifyArrows.typeOfVal = VAL_U16;
+        data->modifyArrows.currValue = gBattleMons[data->battlerId].item;
         break;
     case LIST_ITEM_TYPES:
         data->modifyArrows.minValue = 0;
         data->modifyArrows.maxValue = NUMBER_OF_MON_TYPES - 1;
         data->modifyArrows.maxDigits = 2;
-        data->modifyArrows.modifiedValPtr = (u8*)((&gBattleMons[data->battlerId].type1) + data->currentSecondaryListItemId);
+        data->modifyArrows.modifiedValPtr = (u8 *)((&gBattleMons[data->battlerId].type1) + data->currentSecondaryListItemId);
         data->modifyArrows.typeOfVal = VAL_U8;
-        data->modifyArrows.currValue = *(u8*)((&gBattleMons[data->battlerId].type1) + data->currentSecondaryListItemId);
+        data->modifyArrows.currValue = *(u8 *)((&gBattleMons[data->battlerId].type1) + data->currentSecondaryListItemId);
         break;
     case LIST_ITEM_STATS:
         data->modifyArrows.minValue = 0;
@@ -1517,8 +1817,8 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         }
         else
         {
-            data->modifyArrows.modifiedValPtr = (u16*)((&gBattleMons[data->battlerId].attack) + (data->currentSecondaryListItemId - 2));
-            data->modifyArrows.currValue = *(u16*)((&gBattleMons[data->battlerId].attack) + (data->currentSecondaryListItemId - 2));
+            data->modifyArrows.modifiedValPtr = (u16 *)((&gBattleMons[data->battlerId].attack) + (data->currentSecondaryListItemId - 2));
+            data->modifyArrows.currValue = *(u16 *)((&gBattleMons[data->battlerId].attack) + (data->currentSecondaryListItemId - 2));
         }
         data->modifyArrows.typeOfVal = VAL_U16;
         break;
@@ -1583,6 +1883,11 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
         data->modifyArrows.currValue = GetBitfieldValue(gStatuses3[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
         data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
         goto CASE_ITEM_STATUS;
+    case LIST_ITEM_STATUS4:
+        data->modifyArrows.modifiedValPtr = &gStatuses4[data->battlerId];
+        data->modifyArrows.currValue = GetBitfieldValue(gStatuses4[data->battlerId], data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
+        data->modifyArrows.typeOfVal = VAL_BITFIELD_32;
+        goto CASE_ITEM_STATUS;
     case LIST_ITEM_AI:
         data->modifyArrows.modifiedValPtr = &gBattleResources->ai->aiFlags;
         data->modifyArrows.currValue = GetBitfieldValue(gBattleResources->ai->aiFlags, data->bitfield[data->currentSecondaryListItemId].currBit, data->bitfield[data->currentSecondaryListItemId].bitsCount);
@@ -1604,7 +1909,7 @@ static void SetUpModifyArrows(struct BattleDebugMenu *data)
             data->modifyArrows.maxValue = 9;
 
         data->modifyArrows.maxDigits = 2;
-        data->modifyArrows.modifiedValPtr = &gSideStatuses[GET_BATTLER_SIDE(data->battlerId)];
+        data->modifyArrows.modifiedValPtr = &gSideStatuses[GetBattlerSide(data->battlerId)];
         data->modifyArrows.typeOfVal = VAR_SIDE_STATUS;
         data->modifyArrows.currValue = *GetSideStatusValue(data, FALSE, FALSE);
         break;
@@ -1626,14 +1931,42 @@ static bool32 TryMoveDigit(struct BattleDebugModifyArrows *modArrows, bool32 mov
     if (moveUp)
     {
         if (charDigits[modArrows->currentDigit] == CHAR_9)
+        {
             charDigits[modArrows->currentDigit] = CHAR_0;
+            for (i = modArrows->currentDigit - 1; i >= 0; i--)
+            {
+                if (charDigits[i] == CHAR_9)
+                {
+                    charDigits[i] = CHAR_0;
+                }
+                else
+                {
+                    charDigits[i]++;
+                    break;
+                }
+            }
+        }
         else
             charDigits[modArrows->currentDigit]++;
     }
     else
     {
         if (charDigits[modArrows->currentDigit] == CHAR_0)
+        {
             charDigits[modArrows->currentDigit] = CHAR_9;
+            for (i = modArrows->currentDigit - 1; i >= 0; i--)
+            {
+                if (charDigits[i] == CHAR_0)
+                {
+                    charDigits[i] = CHAR_9;
+                }
+                else
+                {
+                    charDigits[i]--;
+                    break;
+                }
+            }
+        }
         else
             charDigits[modArrows->currentDigit]--;
     }
@@ -1676,4 +2009,294 @@ static void UpdateMonData(struct BattleDebugMenu *data)
                 SetMonData(mon, MON_DATA_MOVE1 + j, &battleMon->moves[j]);
         }
     }
+}
+
+static const u8 sText_HoldEffectNone[] = _("????????");
+static const u8 sText_HoldEffectRestoreHp[] = _("Restore Hp");
+static const u8 sText_HoldEffectCurePar[] = _("Cure Par");
+static const u8 sText_HoldEffectCureSlp[] = _("Cure Slp");
+static const u8 sText_HoldEffectCurePsn[] = _("Cure Psn");
+static const u8 sText_HoldEffectCureBrn[] = _("Cure Brn");
+static const u8 sText_HoldEffectCureFrz[] = _("Cure Frz");
+static const u8 sText_HoldEffectRestorePp[] = _("Restore Pp");
+static const u8 sText_HoldEffectCureConfusion[] = _("Cure Confusion");
+static const u8 sText_HoldEffectCureStatus[] = _("Cure Status");
+static const u8 sText_HoldEffectConfuseSpicy[] = _("Confuse Spicy");
+static const u8 sText_HoldEffectConfuseDry[] = _("Confuse Dry");
+static const u8 sText_HoldEffectConfuseSweet[] = _("Confuse Sweet");
+static const u8 sText_HoldEffectConfuseBitter[] = _("Confuse Bitter");
+static const u8 sText_HoldEffectConfuseSour[] = _("Confuse Sour");
+static const u8 sText_HoldEffectAttackUp[] = _("Attack Up");
+static const u8 sText_HoldEffectDefenseUp[] = _("Defense Up");
+static const u8 sText_HoldEffectSpeedUp[] = _("Speed Up");
+static const u8 sText_HoldEffectSpAttackUp[] = _("Sp Attack Up");
+static const u8 sText_HoldEffectSpDefenseUp[] = _("Sp Defense Up");
+static const u8 sText_HoldEffectCriticalUp[] = _("Critical Up");
+static const u8 sText_HoldEffectRandomStatUp[] = _("Random Stat Up");
+static const u8 sText_HoldEffectEvasionUp[] = _("Evasion Up");
+static const u8 sText_HoldEffectRestoreStats[] = _("Restore Stats");
+static const u8 sText_HoldEffectMachoBrace[] = _("Macho Brace");
+static const u8 sText_HoldEffectExpShare[] = _("Exp Share");
+static const u8 sText_HoldEffectQuickClaw[] = _("Quick Claw");
+static const u8 sText_HoldEffectFriendshipUp[] = _("Friendship Up");
+static const u8 sText_HoldEffectMentalHerb[] = _("Mental Herb");
+static const u8 sText_HoldEffectChoiceBand[] = _("Choice Band");
+static const u8 sText_HoldEffectFlinch[] = _("Flinch");
+static const u8 sText_HoldEffectBugPower[] = _("Bug Power");
+static const u8 sText_HoldEffectDoublePrize[] = _("Double Prize");
+static const u8 sText_HoldEffectRepel[] = _("Repel");
+static const u8 sText_HoldEffectSoulDew[] = _("Soul Dew");
+static const u8 sText_HoldEffectDeepSeaTooth[] = _("Deep Sea Tooth");
+static const u8 sText_HoldEffectDeepSeaScale[] = _("Deep Sea Scale");
+static const u8 sText_HoldEffectCanAlwaysRun[] = _("Can Always Run");
+static const u8 sText_HoldEffectPreventEvolve[] = _("Prevent Evolve");
+static const u8 sText_HoldEffectFocusBand[] = _("Focus Band");
+static const u8 sText_HoldEffectLuckyEgg[] = _("Lucky Egg");
+static const u8 sText_HoldEffectScopeLens[] = _("Scope Lens");
+static const u8 sText_HoldEffectSteelPower[] = _("Steel Power");
+static const u8 sText_HoldEffectLeftovers[] = _("Leftovers");
+static const u8 sText_HoldEffectDragonScale[] = _("Dragon Scale");
+static const u8 sText_HoldEffectLightBall[] = _("Light Ball");
+static const u8 sText_HoldEffectGroundPower[] = _("Ground Power");
+static const u8 sText_HoldEffectRockPower[] = _("Rock Power");
+static const u8 sText_HoldEffectGrassPower[] = _("Grass Power");
+static const u8 sText_HoldEffectDarkPower[] = _("Dark Power");
+static const u8 sText_HoldEffectFightingPower[] = _("Fighting Power");
+static const u8 sText_HoldEffectElectricPower[] = _("Electric Power");
+static const u8 sText_HoldEffectWaterPower[] = _("Water Power");
+static const u8 sText_HoldEffectFlyingPower[] = _("Flying Power");
+static const u8 sText_HoldEffectPoisonPower[] = _("Poison Power");
+static const u8 sText_HoldEffectIcePower[] = _("Ice Power");
+static const u8 sText_HoldEffectGhostPower[] = _("Ghost Power");
+static const u8 sText_HoldEffectPsychicPower[] = _("Psychic Power");
+static const u8 sText_HoldEffectFirePower[] = _("Fire Power");
+static const u8 sText_HoldEffectDragonPower[] = _("Dragon Power");
+static const u8 sText_HoldEffectNormalPower[] = _("Normal Power");
+static const u8 sText_HoldEffectUpgrade[] = _("Upgrade");
+static const u8 sText_HoldEffectShellBell[] = _("Shell Bell");
+static const u8 sText_HoldEffectLuckyPunch[] = _("Lucky Punch");
+static const u8 sText_HoldEffectMetalPowder[] = _("Metal Powder");
+static const u8 sText_HoldEffectThickClub[] = _("Thick Club");
+static const u8 sText_HoldEffectLeek[] = _("Leek");
+static const u8 sText_HoldEffectChoiceScarf[] = _("Choice Scarf");
+static const u8 sText_HoldEffectChoiceSpecs[] = _("Choice Specs");
+static const u8 sText_HoldEffectDampRock[] = _("Damp Rock");
+static const u8 sText_HoldEffectGripClaw[] = _("Grip Claw");
+static const u8 sText_HoldEffectHeatRock[] = _("Heat Rock");
+static const u8 sText_HoldEffectIcyRock[] = _("Icy Rock");
+static const u8 sText_HoldEffectLightClay[] = _("Light Clay");
+static const u8 sText_HoldEffectSmoothRock[] = _("Smooth Rock");
+static const u8 sText_HoldEffectPowerHerb[] = _("Power Herb");
+static const u8 sText_HoldEffectBigRoot[] = _("Big Root");
+static const u8 sText_HoldEffectExpertBelt[] = _("Expert Belt");
+static const u8 sText_HoldEffectLifeOrb[] = _("Life Orb");
+static const u8 sText_HoldEffectMetronome[] = _("Metronome");
+static const u8 sText_HoldEffectMuscleBand[] = _("Muscle Band");
+static const u8 sText_HoldEffectWideLens[] = _("Wide Lens");
+static const u8 sText_HoldEffectWiseGlasses[] = _("Wise Glasses");
+static const u8 sText_HoldEffectZoomLens[] = _("Zoom Lens");
+static const u8 sText_HoldEffectLaggingTail[] = _("Lagging Tail");
+static const u8 sText_HoldEffectFocusSash[] = _("Focus Sash");
+static const u8 sText_HoldEffectFlameOrb[] = _("Flame Orb");
+static const u8 sText_HoldEffectToxicOrb[] = _("Toxic Orb");
+static const u8 sText_HoldEffectStickyBarb[] = _("Sticky Barb");
+static const u8 sText_HoldEffectIronBall[] = _("Iron Ball");
+static const u8 sText_HoldEffectBlackSludge[] = _("Black Sludge");
+static const u8 sText_HoldEffectDestinyKnot[] = _("Destiny Knot");
+static const u8 sText_HoldEffectShedShell[] = _("Shed Shell");
+static const u8 sText_HoldEffectQuickPowder[] = _("Quick Powder");
+static const u8 sText_HoldEffectAdamantOrb[] = _("Adamant Orb");
+static const u8 sText_HoldEffectLustrousOrb[] = _("Lustrous Orb");
+static const u8 sText_HoldEffectGriseousOrb[] = _("Griseous Orb");
+static const u8 sText_HoldEffectEnigmaBerry[] = _("Enigma Berry");
+static const u8 sText_HoldEffectResistBerry[] = _("Resist Berry");
+static const u8 sText_HoldEffectPowerItem[] = _("Power Item");
+static const u8 sText_HoldEffectRestorePctHp[] = _("Restore Pct Hp");
+static const u8 sText_HoldEffectMicleBerry[] = _("Micle Berry");
+static const u8 sText_HoldEffectCustapBerry[] = _("Custap Berry");
+static const u8 sText_HoldEffectJabocaBerry[] = _("Jaboca Berry");
+static const u8 sText_HoldEffectRowapBerry[] = _("Rowap Berry");
+static const u8 sText_HoldEffectKeeBerry[] = _("Kee Berry");
+static const u8 sText_HoldEffectMarangaBerry[] = _("Maranga Berry");
+static const u8 sText_HoldEffectFloatStone[] = _("Float Stone");
+static const u8 sText_HoldEffectEviolite[] = _("Eviolite");
+static const u8 sText_HoldEffectAssaultVest[] = _("Assault Vest");
+static const u8 sText_HoldEffectDrive[] = _("Drive");
+static const u8 sText_HoldEffectGems[] = _("Gems");
+static const u8 sText_HoldEffectRockyHelmet[] = _("Rocky Helmet");
+static const u8 sText_HoldEffectAirBalloon[] = _("Air Balloon");
+static const u8 sText_HoldEffectRedCard[] = _("Red Card");
+static const u8 sText_HoldEffectRingTarget[] = _("Ring Target");
+static const u8 sText_HoldEffectBindingBand[] = _("Binding Band");
+static const u8 sText_HoldEffectEjectButton[] = _("Eject Button");
+static const u8 sText_HoldEffectAbsorbBulb[] = _("Absorb Bulb");
+static const u8 sText_HoldEffectCellBattery[] = _("Cell Battery");
+static const u8 sText_HoldEffectFairyPower[] = _("Fairy Power");
+static const u8 sText_HoldEffectMegaStone[] = _("Mega Stone");
+static const u8 sText_HoldEffectSafetyGoggles[] = _("Safety Goggles");
+static const u8 sText_HoldEffectLuminousMoss[] = _("Luminous Moss");
+static const u8 sText_HoldEffectSnowball[] = _("Snowball");
+static const u8 sText_HoldEffectWeaknessPolicy[] = _("Weakness Policy");
+static const u8 sText_HoldEffectPrimalOrb[] = _("Primal Orb");
+static const u8 sText_HoldEffectProtectivePads[] = _("Protective Pads");
+static const u8 sText_HoldEffectTerrainExtender[] = _("Terrain Extender");
+static const u8 sText_HoldEffectSeeds[] = _("Seeds");
+static const u8 sText_HoldEffectAdrenalineOrb[] = _("Adrenaline Orb");
+static const u8 sText_HoldEffectMemory[] = _("Memory");
+static const u8 sText_HoldEffectZCrystal[] = _("Z-Crystal");
+static const u8 sText_HoldEffectPlate[] = _("Plate");
+static const u8 sText_HoldEffectUtilityUmbrella[] = _("Utility Umbrella");
+static const u8 sText_HoldEffectEjectPack[] = _("Eject Pack");
+static const u8 sText_HoldEffectRoomService[] = _("Room Service");
+static const u8 sText_HoldEffectBlunderPolicy[] = _("Blunder Policy");
+static const u8 sText_HoldEffectHeavyDutyBoots[] = _("Heavy Duty Boots");
+static const u8 sText_HoldEffectThroatSpray[] = _("Throat Spray");
+static const u8 *const sHoldEffectNames[] =
+{
+    [HOLD_EFFECT_NONE] = sText_HoldEffectNone,
+    [HOLD_EFFECT_RESTORE_HP] = sText_HoldEffectRestoreHp,
+    [HOLD_EFFECT_CURE_PAR] = sText_HoldEffectCurePar,
+    [HOLD_EFFECT_CURE_SLP] = sText_HoldEffectCureSlp,
+    [HOLD_EFFECT_CURE_PSN] = sText_HoldEffectCurePsn,
+    [HOLD_EFFECT_CURE_BRN] = sText_HoldEffectCureBrn,
+    [HOLD_EFFECT_CURE_FRZ] = sText_HoldEffectCureFrz,
+    [HOLD_EFFECT_RESTORE_PP] = sText_HoldEffectRestorePp,
+    [HOLD_EFFECT_CURE_CONFUSION] = sText_HoldEffectCureConfusion,
+    [HOLD_EFFECT_CURE_STATUS] = sText_HoldEffectCureStatus,
+    [HOLD_EFFECT_CONFUSE_SPICY] = sText_HoldEffectConfuseSpicy,
+    [HOLD_EFFECT_CONFUSE_DRY] = sText_HoldEffectConfuseDry,
+    [HOLD_EFFECT_CONFUSE_SWEET] = sText_HoldEffectConfuseSweet,
+    [HOLD_EFFECT_CONFUSE_BITTER] = sText_HoldEffectConfuseBitter,
+    [HOLD_EFFECT_CONFUSE_SOUR] = sText_HoldEffectConfuseSour,
+    [HOLD_EFFECT_ATTACK_UP] = sText_HoldEffectAttackUp,
+    [HOLD_EFFECT_DEFENSE_UP] = sText_HoldEffectDefenseUp,
+    [HOLD_EFFECT_SPEED_UP] = sText_HoldEffectSpeedUp,
+    [HOLD_EFFECT_SP_ATTACK_UP] = sText_HoldEffectSpAttackUp,
+    [HOLD_EFFECT_SP_DEFENSE_UP] = sText_HoldEffectSpDefenseUp,
+    [HOLD_EFFECT_CRITICAL_UP] = sText_HoldEffectCriticalUp,
+    [HOLD_EFFECT_RANDOM_STAT_UP] = sText_HoldEffectRandomStatUp,
+    [HOLD_EFFECT_EVASION_UP] = sText_HoldEffectEvasionUp,
+    [HOLD_EFFECT_RESTORE_STATS] = sText_HoldEffectRestoreStats,
+    [HOLD_EFFECT_MACHO_BRACE] = sText_HoldEffectMachoBrace,
+    [HOLD_EFFECT_EXP_SHARE] = sText_HoldEffectExpShare,
+    [HOLD_EFFECT_QUICK_CLAW] = sText_HoldEffectQuickClaw,
+    [HOLD_EFFECT_FRIENDSHIP_UP] = sText_HoldEffectFriendshipUp,
+    [HOLD_EFFECT_MENTAL_HERB] = sText_HoldEffectMentalHerb,
+    [HOLD_EFFECT_CHOICE_BAND] = sText_HoldEffectChoiceBand,
+    [HOLD_EFFECT_FLINCH] = sText_HoldEffectFlinch,
+    [HOLD_EFFECT_BUG_POWER] = sText_HoldEffectBugPower,
+    [HOLD_EFFECT_DOUBLE_PRIZE] = sText_HoldEffectDoublePrize,
+    [HOLD_EFFECT_REPEL] = sText_HoldEffectRepel,
+    [HOLD_EFFECT_SOUL_DEW] = sText_HoldEffectSoulDew,
+    [HOLD_EFFECT_DEEP_SEA_TOOTH] = sText_HoldEffectDeepSeaTooth,
+    [HOLD_EFFECT_DEEP_SEA_SCALE] = sText_HoldEffectDeepSeaScale,
+    [HOLD_EFFECT_CAN_ALWAYS_RUN] = sText_HoldEffectCanAlwaysRun,
+    [HOLD_EFFECT_PREVENT_EVOLVE] = sText_HoldEffectPreventEvolve,
+    [HOLD_EFFECT_FOCUS_BAND] = sText_HoldEffectFocusBand,
+    [HOLD_EFFECT_LUCKY_EGG] = sText_HoldEffectLuckyEgg,
+    [HOLD_EFFECT_SCOPE_LENS] = sText_HoldEffectScopeLens,
+    [HOLD_EFFECT_STEEL_POWER] = sText_HoldEffectSteelPower,
+    [HOLD_EFFECT_LEFTOVERS] = sText_HoldEffectLeftovers,
+    [HOLD_EFFECT_DRAGON_SCALE] = sText_HoldEffectDragonScale,
+    [HOLD_EFFECT_LIGHT_BALL] = sText_HoldEffectLightBall,
+    [HOLD_EFFECT_GROUND_POWER] = sText_HoldEffectGroundPower,
+    [HOLD_EFFECT_ROCK_POWER] = sText_HoldEffectRockPower,
+    [HOLD_EFFECT_GRASS_POWER] = sText_HoldEffectGrassPower,
+    [HOLD_EFFECT_DARK_POWER] = sText_HoldEffectDarkPower,
+    [HOLD_EFFECT_FIGHTING_POWER] = sText_HoldEffectFightingPower,
+    [HOLD_EFFECT_ELECTRIC_POWER] = sText_HoldEffectElectricPower,
+    [HOLD_EFFECT_WATER_POWER] = sText_HoldEffectWaterPower,
+    [HOLD_EFFECT_FLYING_POWER] = sText_HoldEffectFlyingPower,
+    [HOLD_EFFECT_POISON_POWER] = sText_HoldEffectPoisonPower,
+    [HOLD_EFFECT_ICE_POWER] = sText_HoldEffectIcePower,
+    [HOLD_EFFECT_GHOST_POWER] = sText_HoldEffectGhostPower,
+    [HOLD_EFFECT_PSYCHIC_POWER] = sText_HoldEffectPsychicPower,
+    [HOLD_EFFECT_FIRE_POWER] = sText_HoldEffectFirePower,
+    [HOLD_EFFECT_DRAGON_POWER] = sText_HoldEffectDragonPower,
+    [HOLD_EFFECT_NORMAL_POWER] = sText_HoldEffectNormalPower,
+    [HOLD_EFFECT_UPGRADE] = sText_HoldEffectUpgrade,
+    [HOLD_EFFECT_SHELL_BELL] = sText_HoldEffectShellBell,
+    [HOLD_EFFECT_LUCKY_PUNCH] = sText_HoldEffectLuckyPunch,
+    [HOLD_EFFECT_METAL_POWDER] = sText_HoldEffectMetalPowder,
+    [HOLD_EFFECT_THICK_CLUB] = sText_HoldEffectThickClub,
+    [HOLD_EFFECT_LEEK] = sText_HoldEffectLeek,
+    [HOLD_EFFECT_CHOICE_SCARF] = sText_HoldEffectChoiceScarf,
+    [HOLD_EFFECT_CHOICE_SPECS] = sText_HoldEffectChoiceSpecs,
+    [HOLD_EFFECT_DAMP_ROCK] = sText_HoldEffectDampRock,
+    [HOLD_EFFECT_GRIP_CLAW] = sText_HoldEffectGripClaw,
+    [HOLD_EFFECT_HEAT_ROCK] = sText_HoldEffectHeatRock,
+    [HOLD_EFFECT_ICY_ROCK] = sText_HoldEffectIcyRock,
+    [HOLD_EFFECT_LIGHT_CLAY] = sText_HoldEffectLightClay,
+    [HOLD_EFFECT_SMOOTH_ROCK] = sText_HoldEffectSmoothRock,
+    [HOLD_EFFECT_POWER_HERB] = sText_HoldEffectPowerHerb,
+    [HOLD_EFFECT_BIG_ROOT] = sText_HoldEffectBigRoot,
+    [HOLD_EFFECT_EXPERT_BELT] = sText_HoldEffectExpertBelt,
+    [HOLD_EFFECT_LIFE_ORB] = sText_HoldEffectLifeOrb,
+    [HOLD_EFFECT_METRONOME] = sText_HoldEffectMetronome,
+    [HOLD_EFFECT_MUSCLE_BAND] = sText_HoldEffectMuscleBand,
+    [HOLD_EFFECT_WIDE_LENS] = sText_HoldEffectWideLens,
+    [HOLD_EFFECT_WISE_GLASSES] = sText_HoldEffectWiseGlasses,
+    [HOLD_EFFECT_ZOOM_LENS] = sText_HoldEffectZoomLens,
+    [HOLD_EFFECT_LAGGING_TAIL] = sText_HoldEffectLaggingTail,
+    [HOLD_EFFECT_FOCUS_SASH] = sText_HoldEffectFocusSash,
+    [HOLD_EFFECT_FLAME_ORB] = sText_HoldEffectFlameOrb,
+    [HOLD_EFFECT_TOXIC_ORB] = sText_HoldEffectToxicOrb,
+    [HOLD_EFFECT_STICKY_BARB] = sText_HoldEffectStickyBarb,
+    [HOLD_EFFECT_IRON_BALL] = sText_HoldEffectIronBall,
+    [HOLD_EFFECT_BLACK_SLUDGE] = sText_HoldEffectBlackSludge,
+    [HOLD_EFFECT_DESTINY_KNOT] = sText_HoldEffectDestinyKnot,
+    [HOLD_EFFECT_SHED_SHELL] = sText_HoldEffectShedShell,
+    [HOLD_EFFECT_QUICK_POWDER] = sText_HoldEffectQuickPowder,
+    [HOLD_EFFECT_ADAMANT_ORB] = sText_HoldEffectAdamantOrb,
+    [HOLD_EFFECT_LUSTROUS_ORB] = sText_HoldEffectLustrousOrb,
+    [HOLD_EFFECT_GRISEOUS_ORB] = sText_HoldEffectGriseousOrb,
+    [HOLD_EFFECT_ENIGMA_BERRY] = sText_HoldEffectEnigmaBerry,
+    [HOLD_EFFECT_RESIST_BERRY] = sText_HoldEffectResistBerry,
+    [HOLD_EFFECT_POWER_ITEM] = sText_HoldEffectPowerItem,
+    [HOLD_EFFECT_RESTORE_PCT_HP] = sText_HoldEffectRestorePctHp,
+    [HOLD_EFFECT_MICLE_BERRY] = sText_HoldEffectMicleBerry,
+    [HOLD_EFFECT_CUSTAP_BERRY] = sText_HoldEffectCustapBerry,
+    [HOLD_EFFECT_JABOCA_BERRY] = sText_HoldEffectJabocaBerry,
+    [HOLD_EFFECT_ROWAP_BERRY] = sText_HoldEffectRowapBerry,
+    [HOLD_EFFECT_KEE_BERRY] = sText_HoldEffectKeeBerry,
+    [HOLD_EFFECT_MARANGA_BERRY] = sText_HoldEffectMarangaBerry,
+    [HOLD_EFFECT_PLATE] = sText_HoldEffectPlate,
+    [HOLD_EFFECT_FLOAT_STONE] = sText_HoldEffectFloatStone,
+    [HOLD_EFFECT_EVIOLITE] = sText_HoldEffectEviolite,
+    [HOLD_EFFECT_ASSAULT_VEST] = sText_HoldEffectAssaultVest,
+    [HOLD_EFFECT_DRIVE] = sText_HoldEffectDrive,
+    [HOLD_EFFECT_GEMS] = sText_HoldEffectGems,
+    [HOLD_EFFECT_ROCKY_HELMET] = sText_HoldEffectRockyHelmet,
+    [HOLD_EFFECT_AIR_BALLOON] = sText_HoldEffectAirBalloon,
+    [HOLD_EFFECT_RED_CARD] = sText_HoldEffectRedCard,
+    [HOLD_EFFECT_RING_TARGET] = sText_HoldEffectRingTarget,
+    [HOLD_EFFECT_BINDING_BAND] = sText_HoldEffectBindingBand,
+    [HOLD_EFFECT_EJECT_BUTTON] = sText_HoldEffectEjectButton,
+    [HOLD_EFFECT_ABSORB_BULB] = sText_HoldEffectAbsorbBulb,
+    [HOLD_EFFECT_CELL_BATTERY] = sText_HoldEffectCellBattery,
+    [HOLD_EFFECT_FAIRY_POWER] = sText_HoldEffectFairyPower,
+    [HOLD_EFFECT_MEGA_STONE] = sText_HoldEffectMegaStone,
+    [HOLD_EFFECT_SAFETY_GOGGLES] = sText_HoldEffectSafetyGoggles,
+    [HOLD_EFFECT_LUMINOUS_MOSS] = sText_HoldEffectLuminousMoss,
+    [HOLD_EFFECT_SNOWBALL] = sText_HoldEffectSnowball,
+    [HOLD_EFFECT_WEAKNESS_POLICY] = sText_HoldEffectWeaknessPolicy,
+    [HOLD_EFFECT_PRIMAL_ORB] = sText_HoldEffectPrimalOrb,
+    [HOLD_EFFECT_PROTECTIVE_PADS] = sText_HoldEffectProtectivePads,
+    [HOLD_EFFECT_TERRAIN_EXTENDER] = sText_HoldEffectTerrainExtender,
+    [HOLD_EFFECT_SEEDS] = sText_HoldEffectSeeds,
+    [HOLD_EFFECT_ADRENALINE_ORB] = sText_HoldEffectAdrenalineOrb,
+    [HOLD_EFFECT_MEMORY] = sText_HoldEffectMemory,
+    [HOLD_EFFECT_Z_CRYSTAL] = sText_HoldEffectZCrystal,
+    [HOLD_EFFECT_UTILITY_UMBRELLA] = sText_HoldEffectUtilityUmbrella,
+    [HOLD_EFFECT_EJECT_PACK] = sText_HoldEffectEjectPack,
+    [HOLD_EFFECT_ROOM_SERVICE] = sText_HoldEffectRoomService,
+    [HOLD_EFFECT_BLUNDER_POLICY] = sText_HoldEffectBlunderPolicy,
+    [HOLD_EFFECT_HEAVY_DUTY_BOOTS] = sText_HoldEffectHeavyDutyBoots,
+    [HOLD_EFFECT_THROAT_SPRAY] = sText_HoldEffectThroatSpray,
+};
+static const u8 *GetHoldEffectName(u16 holdEffect)
+{
+    if (holdEffect > ARRAY_COUNT(sHoldEffectNames))
+        return sHoldEffectNames[0];
+    return sHoldEffectNames[holdEffect];
 }

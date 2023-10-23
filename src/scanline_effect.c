@@ -13,7 +13,7 @@ static void CopyValue32Bit(void);
 // Per-scanline register values.
 // This is double buffered so that it can be safely written to at any time
 // without overwriting the buffer that the DMA is currently reading
-EWRAM_DATA u16 gScanlineEffectRegBuffers[2][0x3C0] = {0};
+EWRAM_DATA u16 ALIGNED(4) gScanlineEffectRegBuffers[2][0x3C0] = {0};
 
 EWRAM_DATA struct ScanlineEffect gScanlineEffect = {0};
 EWRAM_DATA static bool8 sShouldStopWaveTask = FALSE;
@@ -22,10 +22,10 @@ void ScanlineEffect_Stop(void)
 {
     gScanlineEffect.state = 0;
     DmaStop(0);
-    if (gScanlineEffect.waveTaskId != 0xFF)
+    if (gScanlineEffect.waveTaskId != TASK_NONE)
     {
         DestroyTask(gScanlineEffect.waveTaskId);
-        gScanlineEffect.waveTaskId = 0xFF;
+        gScanlineEffect.waveTaskId = TASK_NONE;
     }
 }
 
@@ -40,7 +40,7 @@ void ScanlineEffect_Clear(void)
     gScanlineEffect.state = 0;
     gScanlineEffect.unused16 = 0;
     gScanlineEffect.unused17 = 0;
-    gScanlineEffect.waveTaskId = 0xFF;
+    gScanlineEffect.waveTaskId = TASK_NONE;
 }
 
 void ScanlineEffect_SetParams(struct ScanlineEffectParams params)
@@ -132,7 +132,7 @@ static void TaskFunc_UpdateWavePerFrame(u8 taskId)
     if (sShouldStopWaveTask)
     {
         DestroyTask(taskId);
-        gScanlineEffect.waveTaskId = 0xFF;
+        gScanlineEffect.waveTaskId = TASK_NONE;
     }
     else
     {

@@ -563,37 +563,49 @@ $(OBJEVENTGFXDIR)/berry_trees/wepear.4bpp: %.4bpp: %.png
 $(OBJEVENTGFXDIR)/berry_trees/wiki.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/occa.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/occa.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/yache.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/yache.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/chople.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/chople.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/kebia.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/kebia.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/shuca.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/shuca.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/payapa.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/payapa.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/tanga.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/tanga.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/kasib.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/kasib.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/haban.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/haban.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/colbur.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/colbur.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(EVENTOBJGFXDIR)/berry_trees/roseli.4bpp: %.4bpp: %.png
+$(OBJEVENTGFXDIR)/berry_trees/roseli.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+$(OBJEVENTGFXDIR)/berry_trees/custap.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+$(OBJEVENTGFXDIR)/berry_trees/jaboca.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+$(OBJEVENTGFXDIR)/berry_trees/rowap.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+$(OBJEVENTGFXDIR)/berry_trees/micle.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
 
@@ -668,7 +680,7 @@ $(FLDEFFGFXDIR)/tall_grass.4bpp: %.4bpp: %.png
 $(FLDEFFGFXDIR)/tree_disguise.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
 
-$(FLDEFFGFXDIR)/unknown_16.4bpp: %.4bpp: %.png
+$(FLDEFFGFXDIR)/jump_long_grass.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 2
 
 $(FLDEFFGFXDIR)/unknown_17.4bpp: %.4bpp: %.png
@@ -706,3 +718,6 @@ $(FLDEFFGFXDIR)/secret_power_tree.4bpp: %.4bpp: %.png
 
 $(FLDEFFGFXDIR)/record_mix_lights.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 4 -mheight 1
+
+graphics/door_anims/battle_tower_multi_corridor.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 2 -mheight 4

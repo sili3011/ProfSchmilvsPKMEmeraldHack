@@ -2,6 +2,7 @@
 #include "util.h"
 #include "sprite.h"
 #include "palette.h"
+#include "constants/rgb.h"
 
 const u32 gBitTable[] =
 {
@@ -117,7 +118,7 @@ const u8 gMiscBlank_Gfx[] = INCBIN_U8("graphics/interface/blank.4bpp");
 
 u8 CreateInvisibleSpriteWithCallback(void (*callback)(struct Sprite *))
 {
-    u8 sprite = CreateSprite(&sInvisibleSpriteTemplate, 248, 168, 14);
+    u8 sprite = CreateSprite(&sInvisibleSpriteTemplate, DISPLAY_WIDTH + 8, DISPLAY_HEIGHT + 8, 14);
     gSprites[sprite].invisible = TRUE;
     gSprites[sprite].callback = callback;
     return sprite;
@@ -157,7 +158,7 @@ void CopySpriteTiles(u8 shape, u8 size, u8 *tiles, u16 *tilemap, u8 *output)
 {
     u8 x, y;
     s8 i, j;
-    u8 xflip[32];
+    u8 ALIGNED(4) xflip[32];
     u8 h = sSpriteDimensions[shape][size][1];
     u8 w = sSpriteDimensions[shape][size][0];
 
@@ -252,7 +253,7 @@ u16 CalcCRC16WithTable(const u8 *data, u32 length)
     return ~crc;
 }
 
-u32 CalcByteArraySum(const u8* data, u32 length)
+u32 CalcByteArraySum(const u8 *data, u32 length)
 {
     u32 sum, i;
     for (sum = 0, i = 0; i < length; i++)
@@ -271,8 +272,8 @@ void BlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor)
         s8 g = data1->g;
         s8 b = data1->b;
         struct PlttData *data2 = (struct PlttData *)&blendColor;
-        gPlttBufferFaded[index] = ((r + (((data2->r - r) * coeff) >> 4)) << 0)
-                                | ((g + (((data2->g - g) * coeff) >> 4)) << 5)
-                                | ((b + (((data2->b - b) * coeff) >> 4)) << 10);
+        gPlttBufferFaded[index] = RGB(r + (((data2->r - r) * coeff) >> 4),
+                                      g + (((data2->g - g) * coeff) >> 4),
+                                      b + (((data2->b - b) * coeff) >> 4));
     }
 }

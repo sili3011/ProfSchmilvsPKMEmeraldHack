@@ -22,7 +22,6 @@
 #include "string_util.h"
 #include "tv.h"
 #include "constants/items.h"
-#include "constants/tv.h"
 #include "constants/battle_frontier.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
@@ -65,18 +64,29 @@ u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 u
     int sentToPc;
     u8 heldItem[2];
     struct Pokemon mon;
+    u16 targetSpecies;
 
-    CreateMon(&mon, species, level, USE_RANDOM_IVS, 0, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(&mon, species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     heldItem[0] = item;
     heldItem[1] = item >> 8;
     SetMonData(&mon, MON_DATA_HELD_ITEM, heldItem);
+
+    // In case a mon with a form changing item is given. Eg: SPECIES_ARCEUS with ITEM_SPLASH_PLATE will transform into SPECIES_ARCEUS_WATER upon gifted.
+    targetSpecies = GetFormChangeTargetSpecies(&mon, FORM_CHANGE_ITEM_HOLD, 0);
+    if (targetSpecies != SPECIES_NONE)
+    {
+        SetMonData(&mon, MON_DATA_SPECIES, &targetSpecies);
+        CalculateMonStats(&mon);
+    }
+
     sentToPc = GiveMonToPlayer(&mon);
     nationalDexNum = SpeciesToNationalPokedexNum(species);
 
+    // Don't set Pokédex flag for MON_CANT_GIVE
     switch(sentToPc)
     {
-    case 0:
-    case 1:
+    case MON_GIVEN_TO_PARTY:
+    case MON_GIVEN_TO_PC:
         GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
         GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
         break;
@@ -118,7 +128,7 @@ static bool8 CheckPartyMonHasHeldItem(u16 item)
 
     for(i = 0; i < PARTY_SIZE; i++)
     {
-        u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
+        u16 species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES_OR_EGG);
         if (species != SPECIES_NONE && species != SPECIES_EGG && GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM) == item)
             return TRUE;
     }
@@ -127,9 +137,9 @@ static bool8 CheckPartyMonHasHeldItem(u16 item)
 
 bool8 DoesPartyHaveEnigmaBerry(void)
 {
-    bool8 hasItem = CheckPartyMonHasHeldItem(ITEM_ENIGMA_BERRY);
+    bool8 hasItem = CheckPartyMonHasHeldItem(ITEM_ENIGMA_BERRY_E_READER);
     if (hasItem == TRUE)
-        GetBerryNameByBerryType(ItemIdToBerryType(ITEM_ENIGMA_BERRY), gStringVar1);
+        GetBerryNameByBerryType(ItemIdToBerryType(ITEM_ENIGMA_BERRY_E_READER), gStringVar1);
 
     return hasItem;
 }
@@ -162,18 +172,23 @@ void CreateScriptedDoubleWildMon(u16 species1, u8 level1, u16 item1, u16 species
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem1);
     }
 
-    CreateMon(&gEnemyParty[3], species2, level2, 32, 0, 0, OT_ID_PLAYER_ID, 0);
+    CreateMon(&gEnemyParty[1], species2, level2, 32, 0, 0, OT_ID_PLAYER_ID, 0);
     if (item2)
     {
         heldItem2[0] = item2;
         heldItem2[1] = item2 >> 8;
-        SetMonData(&gEnemyParty[3], MON_DATA_HELD_ITEM, heldItem2);
+        SetMonData(&gEnemyParty[1], MON_DATA_HELD_ITEM, heldItem2);
     }
 }
 
 void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)
 {
+// Allows monIndex to go out of bounds of gPlayerParty. Doesn't occur in vanilla
+#ifdef BUGFIX
+    if (monIndex >= PARTY_SIZE)
+#else
     if (monIndex > PARTY_SIZE)
+#endif
         monIndex = gPlayerPartyCount - 1;
 
     SetMonMoveSlot(&gPlayerParty[monIndex], move, slot);

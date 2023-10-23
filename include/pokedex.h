@@ -3,6 +3,7 @@
 
 extern u8 gUnusedPokedexU8;
 extern void (*gPokedexVBlankCB)(void);
+extern const u8 *const gMonFootprintTable[];
 
 enum
 {

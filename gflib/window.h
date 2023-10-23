@@ -1,10 +1,11 @@
 #ifndef GUARD_WINDOW_H
 #define GUARD_WINDOW_H
 
+#define WINDOWS_MAX  32
+
 #define PIXEL_FILL(num) ((num) | ((num) << 4))
 
-enum
-{
+enum {
     WINDOW_BG,
     WINDOW_TILEMAP_LEFT,
     WINDOW_TILEMAP_TOP,
@@ -13,6 +14,14 @@ enum
     WINDOW_PALETTE_NUM,
     WINDOW_BASE_BLOCK,
     WINDOW_TILE_DATA
+};
+
+// Mode for CopyWindowToVram, CopyWindowRectToVram and CopyWindowToVram8Bit
+enum {
+    COPYWIN_NONE,
+    COPYWIN_MAP,
+    COPYWIN_GFX,
+    COPYWIN_FULL,
 };
 
 struct WindowTemplate
@@ -28,14 +37,10 @@ struct WindowTemplate
 
 #define DUMMY_WIN_TEMPLATE          \
 {                                   \
-    0xFF,                           \
-    0,                              \
-    0,                              \
-    0,                              \
-    0,                              \
-    0,                              \
-    0,                              \
+    .bg = 0xFF,                     \
 }
+
+#define WINDOW_NONE 0xFF
 
 struct Window
 {
@@ -70,9 +75,6 @@ void BlitBitmapRectToWindow4BitTo8Bit(u8 windowId, const u8 *pixels, u16 srcX, u
 void CopyWindowToVram8Bit(u8 windowId, u8 mode);
 
 extern struct Window gWindows[];
-extern void* gUnknown_03002F70[];
-extern u32 filler_03002F58;
-extern u32 filler_03002F5C;
-extern u32 filler_03002F64;
+extern void *gWindowBgTilemapBuffers[];
 
 #endif // GUARD_WINDOW_H

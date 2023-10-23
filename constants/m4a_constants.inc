@@ -1,6 +1,10 @@
+#ifndef GUARD_CONSTANTS_M4A_CONSTANTS_INC
+#define GUARD_CONSTANTS_M4A_CONSTANTS_INC
+
 	.equiv ID_NUMBER, 0x68736d53
 
 	.equiv PCM_DMA_BUF_SIZE, 1584
+	.equiv MAX_DIRECTSOUND_CHANNELS, 12
 
 	.equiv C_V, 0x40
 
@@ -93,7 +97,7 @@
 	struct_field o_SoundInfo_plynote, 4
 	struct_field o_SoundInfo_ExtVolPit, 4
 	struct_field o_SoundInfo_gap2, 16
-	struct_field o_SoundInfo_chans, 768
+	struct_field o_SoundInfo_chans, MAX_DIRECTSOUND_CHANNELS * 64
 	struct_field o_SoundInfo_pcmBuffer, PCM_DMA_BUF_SIZE * 2
 	struct_field SoundInfo_size, 0
 
@@ -249,3 +253,5 @@
 	struct_field o_CgbChannel_nextChannelPointer, 4
 	struct_field o_CgbChannel_dummy4, 8
 	struct_field CgbChannel_size, 0
+
+#endif  @ GUARD_CONSTANTS_M4A_CONSTANTS_INC
