@@ -1,7 +1,6 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_pike.h"
-#include "battle_pyramid.h"
 #include "event_data.h"
 #include "field_message_box.h"
 #include "field_poison.h"
@@ -66,7 +65,7 @@ static bool32 MonFaintedFromPoison(u8 partyIdx)
     return FALSE;
 }
 
-#define tState    data[0]
+#define tState data[0]
 #define tPartyIdx data[1]
 
 static void Task_TryFieldPoisonWhiteOut(u8 taskId)
@@ -96,7 +95,7 @@ static void Task_TryFieldPoisonWhiteOut(u8 taskId)
         if (AllMonsFainted())
         {
             // Battle facilities have their own white out script to handle the challenge loss
-            if (InBattlePyramid() | InBattlePike() || InTrainerHillChallenge())
+            if (InBattlePike() || InTrainerHillChallenge())
                 gSpecialVar_Result = FLDPSN_FRONTIER_WHITEOUT;
             else
                 gSpecialVar_Result = FLDPSN_WHITEOUT;
@@ -134,16 +133,16 @@ s32 DoPoisonFieldEffect(void)
         {
             // Apply poison damage
             hp = GetMonData(pokemon, MON_DATA_HP);
-        #if OW_POISON_DAMAGE < GEN_4
+#if OW_POISON_DAMAGE < GEN_4
             if (hp == 0 || --hp == 0)
             {
                 TryFormChange(i, B_SIDE_PLAYER, FORM_CHANGE_FAINT);
                 numFainted++;
             }
-        #else
+#else
             if (hp == 1 || --hp == 1)
                 numFainted++;
-        #endif
+#endif
 
             SetMonData(pokemon, MON_DATA_HP, &hp);
             numPoisoned++;

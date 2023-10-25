@@ -18,7 +18,6 @@
 #include "new_game.h"
 #include "link.h"
 #include "tv.h"
-#include "apprentice.h"
 #include "pokedex.h"
 #include "recorded_battle.h"
 #include "data.h"
@@ -84,649 +83,644 @@ static void CopyFrontierBrainText(bool8 playerWonText);
 
 // const rom data
 static const u8 sFrontierBrainStreakAppearances[NUM_FRONTIER_FACILITIES][4] =
-{
-    [FRONTIER_FACILITY_TOWER]   = {35,  70, 35, 1},
-    [FRONTIER_FACILITY_DOME]    = { 4,   9,  5, 0},
-    [FRONTIER_FACILITY_PALACE]  = {21,  42, 21, 1},
-    [FRONTIER_FACILITY_ARENA]   = {28,  56, 28, 1},
-    [FRONTIER_FACILITY_FACTORY] = {21,  42, 21, 1},
-    [FRONTIER_FACILITY_PIKE]    = {28, 140, 56, 1},
-    [FRONTIER_FACILITY_PYRAMID] = {21,  70, 35, 0},
+    {
+        [FRONTIER_FACILITY_TOWER] = {35, 70, 35, 1},
+        [FRONTIER_FACILITY_DOME] = {4, 9, 5, 0},
+        [FRONTIER_FACILITY_PALACE] = {21, 42, 21, 1},
+        [FRONTIER_FACILITY_ARENA] = {28, 56, 28, 1},
+        [FRONTIER_FACILITY_FACTORY] = {21, 42, 21, 1},
+        [FRONTIER_FACILITY_PIKE] = {28, 140, 56, 1},
+        [FRONTIER_FACILITY_PYRAMID] = {21, 70, 35, 0},
 };
 
 static const struct FrontierBrainMon sFrontierBrainsMons[][2][FRONTIER_PARTY_SIZE] =
-{
-    [FRONTIER_FACILITY_TOWER] =
     {
-        // Silver Symbol.
-        {
+        [FRONTIER_FACILITY_TOWER] =
             {
-                .species = SPECIES_ALAKAZAM,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = 24,
-                .nature = NATURE_MODEST,
-                .evs = {106, 0, 152, 152, 100, 0},
-                .moves = {MOVE_THUNDER_PUNCH, MOVE_FIRE_PUNCH, MOVE_ICE_PUNCH, MOVE_DISABLE},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_ALAKAZAM,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = 24,
+                        .nature = NATURE_MODEST,
+                        .evs = {106, 0, 152, 152, 100, 0},
+                        .moves = {MOVE_THUNDER_PUNCH, MOVE_FIRE_PUNCH, MOVE_ICE_PUNCH, MOVE_DISABLE},
+                    },
+                    {
+                        .species = SPECIES_ENTEI,
+                        .heldItem = ITEM_LUM_BERRY,
+                        .fixedIV = 24,
+                        .nature = NATURE_LONELY,
+                        .evs = {100, 152, 152, 0, 100, 6},
+                        .moves = {MOVE_FIRE_BLAST, MOVE_CALM_MIND, MOVE_RETURN, MOVE_ROAR},
+                    },
+                    {
+                        .species = SPECIES_SNORLAX,
+                        .heldItem = ITEM_QUICK_CLAW,
+                        .fixedIV = 24,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {152, 152, 0, 0, 106, 100},
+                        .moves = {MOVE_BODY_SLAM, MOVE_BELLY_DRUM, MOVE_YAWN, MOVE_SHADOW_BALL},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_RAIKOU,
+                        .heldItem = ITEM_LUM_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MODEST,
+                        .evs = {158, 0, 252, 100, 0, 0},
+                        .moves = {MOVE_THUNDERBOLT, MOVE_CALM_MIND, MOVE_REFLECT, MOVE_REST},
+                    },
+                    {
+                        .species = SPECIES_LATIOS,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MODEST,
+                        .evs = {252, 0, 252, 6, 0, 0},
+                        .moves = {MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_RECOVER, MOVE_DRAGON_CLAW},
+                    },
+                    {
+                        .species = SPECIES_SNORLAX,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {252, 252, 0, 0, 6, 0},
+                        .moves = {MOVE_CURSE, MOVE_RETURN, MOVE_REST, MOVE_SHADOW_BALL},
+                    },
+                },
             },
+        [FRONTIER_FACILITY_DOME] =
             {
-                .species = SPECIES_ENTEI,
-                .heldItem = ITEM_LUM_BERRY,
-                .fixedIV = 24,
-                .nature = NATURE_LONELY,
-                .evs = {100, 152, 152, 0, 100, 6},
-                .moves = {MOVE_FIRE_BLAST, MOVE_CALM_MIND, MOVE_RETURN, MOVE_ROAR},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_SWAMPERT,
+                        .heldItem = ITEM_FOCUS_BAND,
+                        .fixedIV = 20,
+                        .nature = NATURE_BRAVE,
+                        .evs = {152, 152, 106, 0, 100, 0},
+                        .moves = {MOVE_SURF, MOVE_EARTHQUAKE, MOVE_ICE_BEAM, MOVE_COUNTER},
+                    },
+                    {
+                        .species = SPECIES_SALAMENCE,
+                        .heldItem = ITEM_LUM_BERRY,
+                        .fixedIV = 20,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {152, 152, 106, 100, 0, 0},
+                        .moves = {MOVE_EARTHQUAKE, MOVE_BRICK_BREAK, MOVE_DRAGON_CLAW, MOVE_AERIAL_ACE},
+                    },
+                    {
+                        .species = SPECIES_CHARIZARD,
+                        .heldItem = ITEM_WHITE_HERB,
+                        .fixedIV = 20,
+                        .nature = NATURE_QUIET,
+                        .evs = {100, 152, 106, 152, 0, 0},
+                        .moves = {MOVE_OVERHEAT, MOVE_ROCK_SLIDE, MOVE_AERIAL_ACE, MOVE_EARTHQUAKE},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_SWAMPERT,
+                        .heldItem = ITEM_LEFTOVERS,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BRAVE,
+                        .evs = {252, 252, 6, 0, 0, 0},
+                        .moves = {MOVE_SURF, MOVE_EARTHQUAKE, MOVE_ICE_BEAM, MOVE_MIRROR_COAT},
+                    },
+                    {
+                        .species = SPECIES_METAGROSS,
+                        .heldItem = ITEM_QUICK_CLAW,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BRAVE,
+                        .evs = {252, 252, 6, 0, 0, 0},
+                        .moves = {MOVE_PSYCHIC, MOVE_METEOR_MASH, MOVE_EARTHQUAKE, MOVE_PROTECT},
+                    },
+                    {
+                        .species = SPECIES_LATIAS,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MODEST,
+                        .evs = {252, 0, 252, 6, 0, 0},
+                        .moves = {MOVE_THUNDERBOLT, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_REST},
+                    },
+                },
             },
+        [FRONTIER_FACILITY_PALACE] =
             {
-                .species = SPECIES_SNORLAX,
-                .heldItem = ITEM_QUICK_CLAW,
-                .fixedIV = 24,
-                .nature = NATURE_ADAMANT,
-                .evs = {152, 152, 0, 0, 106, 100},
-                .moves = {MOVE_BODY_SLAM, MOVE_BELLY_DRUM, MOVE_YAWN, MOVE_SHADOW_BALL},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_CROBAT,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = 16,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {152, 0, 0, 152, 100, 106},
+                        .moves = {MOVE_CONFUSE_RAY, MOVE_DOUBLE_TEAM, MOVE_TOXIC, MOVE_FLY},
+                    },
+                    {
+                        .species = SPECIES_SLAKING,
+                        .heldItem = ITEM_SCOPE_LENS,
+                        .fixedIV = 16,
+                        .nature = NATURE_HARDY,
+                        .evs = {152, 152, 0, 106, 100, 0},
+                        .moves = {MOVE_EARTHQUAKE, MOVE_SWAGGER, MOVE_SHADOW_BALL, MOVE_BRICK_BREAK},
+                    },
+                    {
+                        .species = SPECIES_LAPRAS,
+                        .heldItem = ITEM_QUICK_CLAW,
+                        .fixedIV = 16,
+                        .nature = NATURE_QUIET,
+                        .evs = {0, 0, 252, 0, 106, 152},
+                        .moves = {MOVE_ICE_BEAM, MOVE_HORN_DRILL, MOVE_CONFUSE_RAY, MOVE_PROTECT},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_ARCANINE,
+                        .heldItem = ITEM_WHITE_HERB,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_HASTY,
+                        .evs = {6, 252, 252, 0, 0, 0},
+                        .moves = {MOVE_OVERHEAT, MOVE_EXTREME_SPEED, MOVE_ROAR, MOVE_PROTECT},
+                    },
+                    {
+                        .species = SPECIES_SLAKING,
+                        .heldItem = ITEM_SCOPE_LENS,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_HARDY,
+                        .evs = {6, 252, 0, 252, 0, 0},
+                        .moves = {MOVE_HYPER_BEAM, MOVE_EARTHQUAKE, MOVE_SHADOW_BALL, MOVE_YAWN},
+                    },
+                    {
+                        .species = SPECIES_SUICUNE,
+                        .heldItem = ITEM_KINGS_ROCK,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_HASTY,
+                        .evs = {252, 0, 252, 6, 0, 0},
+                        .moves = {MOVE_BLIZZARD, MOVE_SURF, MOVE_BITE, MOVE_CALM_MIND},
+                    },
+                },
             },
-        },
-        // Gold Symbol.
-        {
+        [FRONTIER_FACILITY_ARENA] =
             {
-                .species = SPECIES_RAIKOU,
-                .heldItem = ITEM_LUM_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MODEST,
-                .evs = {158, 0, 252, 100, 0, 0},
-                .moves = {MOVE_THUNDERBOLT, MOVE_CALM_MIND, MOVE_REFLECT, MOVE_REST},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_HERACROSS,
+                        .heldItem = ITEM_SALAC_BERRY,
+                        .fixedIV = 20,
+                        .nature = NATURE_JOLLY,
+                        .evs = {106, 152, 0, 152, 0, 100},
+                        .moves = {MOVE_MEGAHORN, MOVE_ROCK_TOMB, MOVE_ENDURE, MOVE_REVERSAL},
+                    },
+                    {
+                        .species = SPECIES_UMBREON,
+                        .heldItem = ITEM_LEFTOVERS,
+                        .fixedIV = 20,
+                        .nature = NATURE_CALM,
+                        .evs = {152, 0, 100, 0, 152, 106},
+                        .moves = {MOVE_BODY_SLAM, MOVE_CONFUSE_RAY, MOVE_PSYCHIC, MOVE_FEINT_ATTACK},
+                    },
+                    {
+                        .species = SPECIES_SHEDINJA,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = 20,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {0, 252, 6, 252, 0, 0},
+                        .moves = {MOVE_SHADOW_BALL, MOVE_RETURN, MOVE_CONFUSE_RAY, MOVE_AERIAL_ACE},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_UMBREON,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_CALM,
+                        .evs = {252, 0, 0, 0, 252, 6},
+                        .moves = {MOVE_DOUBLE_EDGE, MOVE_CONFUSE_RAY, MOVE_REST, MOVE_PSYCHIC},
+                    },
+                    {
+                        .species = SPECIES_GENGAR,
+                        .heldItem = ITEM_LEFTOVERS,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MODEST,
+                        .evs = {252, 0, 252, 0, 6, 0},
+                        .moves = {MOVE_PSYCHIC, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_DESTINY_BOND},
+                    },
+                    {
+                        .species = SPECIES_BRELOOM,
+                        .heldItem = ITEM_LUM_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_JOLLY,
+                        .evs = {6, 252, 0, 252, 0, 0},
+                        .moves = {MOVE_SPORE, MOVE_FOCUS_PUNCH, MOVE_GIGA_DRAIN, MOVE_HEADBUTT},
+                    },
+                },
             },
+        [FRONTIER_FACILITY_FACTORY] =
             {
-                .species = SPECIES_LATIOS,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MODEST,
-                .evs = {252, 0, 252, 6, 0, 0},
-                .moves = {MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_RECOVER, MOVE_DRAGON_CLAW},
+                // Because Factory's pokemon are random, this facility's Brain also uses random pokemon.
+                // What is interesting, this team is actually the one Steven uses in the multi tag battle alongside the player.
+                {
+                    {
+                        .species = SPECIES_METANG,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BRAVE,
+                        .evs = {0, 252, 252, 0, 6, 0},
+                        .moves = {MOVE_LIGHT_SCREEN, MOVE_PSYCHIC, MOVE_REFLECT, MOVE_METAL_CLAW},
+                    },
+                    {
+                        .species = SPECIES_SKARMORY,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_IMPISH,
+                        .evs = {252, 0, 0, 0, 6, 252},
+                        .moves = {MOVE_TOXIC, MOVE_AERIAL_ACE, MOVE_PROTECT, MOVE_STEEL_WING},
+                    },
+                    {
+                        .species = SPECIES_AGGRON,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {0, 252, 0, 0, 252, 6},
+                        .moves = {MOVE_THUNDERBOLT, MOVE_PROTECT, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW},
+                    },
+                },
+                {
+                    {
+                        .species = SPECIES_METANG,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BRAVE,
+                        .evs = {0, 252, 252, 0, 6, 0},
+                        .moves = {MOVE_LIGHT_SCREEN, MOVE_PSYCHIC, MOVE_REFLECT, MOVE_METAL_CLAW},
+                    },
+                    {
+                        .species = SPECIES_SKARMORY,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_IMPISH,
+                        .evs = {252, 0, 0, 0, 6, 252},
+                        .moves = {MOVE_TOXIC, MOVE_AERIAL_ACE, MOVE_PROTECT, MOVE_STEEL_WING},
+                    },
+                    {
+                        .species = SPECIES_AGGRON,
+                        .heldItem = ITEM_SITRUS_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {0, 252, 0, 0, 252, 6},
+                        .moves = {MOVE_THUNDERBOLT, MOVE_PROTECT, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW},
+                    },
+                },
             },
+        [FRONTIER_FACILITY_PIKE] =
             {
-                .species = SPECIES_SNORLAX,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_ADAMANT,
-                .evs = {252, 252, 0, 0, 6, 0},
-                .moves = {MOVE_CURSE, MOVE_RETURN, MOVE_REST, MOVE_SHADOW_BALL},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_SEVIPER,
+                        .heldItem = ITEM_QUICK_CLAW,
+                        .fixedIV = 16,
+                        .nature = NATURE_BRAVE,
+                        .evs = {252, 0, 252, 0, 6, 0},
+                        .moves = {MOVE_SWAGGER, MOVE_CRUNCH, MOVE_POISON_FANG, MOVE_GIGA_DRAIN},
+                    },
+                    {
+                        .species = SPECIES_SHUCKLE,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = 16,
+                        .nature = NATURE_BOLD,
+                        .evs = {252, 0, 0, 0, 106, 252},
+                        .moves = {MOVE_TOXIC, MOVE_SANDSTORM, MOVE_PROTECT, MOVE_REST},
+                    },
+                    {
+                        .species = SPECIES_MILOTIC,
+                        .heldItem = ITEM_LEFTOVERS,
+                        .fixedIV = 16,
+                        .nature = NATURE_MODEST,
+                        .evs = {152, 0, 100, 0, 152, 106},
+                        .moves = {MOVE_ICE_BEAM, MOVE_MIRROR_COAT, MOVE_SURF, MOVE_RECOVER},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_SEVIPER,
+                        .heldItem = ITEM_FOCUS_BAND,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BOLD,
+                        .evs = {252, 0, 0, 0, 252, 6},
+                        .moves = {MOVE_SWAGGER, MOVE_CRUNCH, MOVE_SLUDGE_BOMB, MOVE_GIGA_DRAIN},
+                    },
+                    {
+                        .species = SPECIES_STEELIX,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_BRAVE,
+                        .evs = {252, 0, 0, 0, 6, 252},
+                        .moves = {MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_EXPLOSION, MOVE_SCREECH},
+                    },
+                    {
+                        .species = SPECIES_GYARADOS,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {252, 6, 0, 0, 0, 252},
+                        .moves = {MOVE_DRAGON_DANCE, MOVE_RETURN, MOVE_ROAR, MOVE_REST},
+                    },
+                },
             },
-        },
-    },
-    [FRONTIER_FACILITY_DOME] =
-    {
-        // Silver Symbol.
-        {
+        [FRONTIER_FACILITY_PYRAMID] =
             {
-                .species = SPECIES_SWAMPERT,
-                .heldItem = ITEM_FOCUS_BAND,
-                .fixedIV = 20,
-                .nature = NATURE_BRAVE,
-                .evs = {152, 152, 106, 0, 100, 0},
-                .moves = {MOVE_SURF, MOVE_EARTHQUAKE, MOVE_ICE_BEAM, MOVE_COUNTER},
+                // Silver Symbol.
+                {
+                    {
+                        .species = SPECIES_REGIROCK,
+                        .heldItem = ITEM_QUICK_CLAW,
+                        .fixedIV = 16,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {152, 152, 0, 0, 106, 100},
+                        .moves = {MOVE_EXPLOSION, MOVE_SUPERPOWER, MOVE_EARTHQUAKE, MOVE_ANCIENT_POWER},
+                    },
+                    {
+                        .species = SPECIES_REGISTEEL,
+                        .heldItem = ITEM_LEFTOVERS,
+                        .fixedIV = 16,
+                        .nature = NATURE_ADAMANT,
+                        .evs = {152, 152, 0, 0, 6, 200},
+                        .moves = {MOVE_EARTHQUAKE, MOVE_METAL_CLAW, MOVE_TOXIC, MOVE_IRON_DEFENSE},
+                    },
+                    {
+                        .species = SPECIES_REGICE,
+                        .heldItem = ITEM_CHESTO_BERRY,
+                        .fixedIV = 16,
+                        .nature = NATURE_MODEST,
+                        .evs = {106, 0, 152, 0, 100, 152},
+                        .moves = {MOVE_ICE_BEAM, MOVE_AMNESIA, MOVE_THUNDER, MOVE_REST},
+                    },
+                },
+                // Gold Symbol.
+                {
+                    {
+                        .species = SPECIES_ARTICUNO,
+                        .heldItem = ITEM_SCOPE_LENS,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MILD,
+                        .evs = {6, 0, 252, 252, 0, 0},
+                        .moves = {MOVE_BLIZZARD, MOVE_WATER_PULSE, MOVE_AERIAL_ACE, MOVE_REFLECT},
+                    },
+                    {
+                        .species = SPECIES_ZAPDOS,
+                        .heldItem = ITEM_LUM_BERRY,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MILD,
+                        .evs = {6, 0, 252, 252, 0, 0},
+                        .moves = {MOVE_THUNDER, MOVE_DETECT, MOVE_DRILL_PECK, MOVE_LIGHT_SCREEN},
+                    },
+                    {
+                        .species = SPECIES_MOLTRES,
+                        .heldItem = ITEM_BRIGHT_POWDER,
+                        .fixedIV = MAX_PER_STAT_IVS,
+                        .nature = NATURE_MILD,
+                        .evs = {6, 0, 252, 252, 0, 0},
+                        .moves = {MOVE_FIRE_BLAST, MOVE_HYPER_BEAM, MOVE_AERIAL_ACE, MOVE_SAFEGUARD},
+                    },
+                },
             },
-            {
-                .species = SPECIES_SALAMENCE,
-                .heldItem = ITEM_LUM_BERRY,
-                .fixedIV = 20,
-                .nature = NATURE_ADAMANT,
-                .evs = {152, 152, 106, 100, 0, 0},
-                .moves = {MOVE_EARTHQUAKE, MOVE_BRICK_BREAK, MOVE_DRAGON_CLAW, MOVE_AERIAL_ACE},
-            },
-            {
-                .species = SPECIES_CHARIZARD,
-                .heldItem = ITEM_WHITE_HERB,
-                .fixedIV = 20,
-                .nature = NATURE_QUIET,
-                .evs = {100, 152, 106, 152, 0, 0},
-                .moves = {MOVE_OVERHEAT, MOVE_ROCK_SLIDE, MOVE_AERIAL_ACE, MOVE_EARTHQUAKE},
-            },
-        },
-        // Gold Symbol.
-        {
-            {
-                .species = SPECIES_SWAMPERT,
-                .heldItem = ITEM_LEFTOVERS,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BRAVE,
-                .evs = {252, 252, 6, 0, 0, 0},
-                .moves = {MOVE_SURF, MOVE_EARTHQUAKE, MOVE_ICE_BEAM, MOVE_MIRROR_COAT},
-            },
-            {
-                .species = SPECIES_METAGROSS,
-                .heldItem = ITEM_QUICK_CLAW,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BRAVE,
-                .evs = {252, 252, 6, 0, 0, 0},
-                .moves = {MOVE_PSYCHIC, MOVE_METEOR_MASH, MOVE_EARTHQUAKE, MOVE_PROTECT},
-            },
-            {
-                .species = SPECIES_LATIAS,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MODEST,
-                .evs = {252, 0, 252, 6, 0, 0},
-                .moves = {MOVE_THUNDERBOLT, MOVE_PSYCHIC, MOVE_CALM_MIND, MOVE_REST},
-            },
-        },
-    },
-    [FRONTIER_FACILITY_PALACE] =
-    {
-        // Silver Symbol.
-        {
-            {
-                .species = SPECIES_CROBAT,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = 16,
-                .nature = NATURE_ADAMANT,
-                .evs = {152, 0, 0, 152, 100, 106},
-                .moves = {MOVE_CONFUSE_RAY, MOVE_DOUBLE_TEAM, MOVE_TOXIC, MOVE_FLY},
-            },
-            {
-                .species = SPECIES_SLAKING,
-                .heldItem = ITEM_SCOPE_LENS,
-                .fixedIV = 16,
-                .nature = NATURE_HARDY,
-                .evs = {152, 152, 0, 106, 100, 0},
-                .moves = {MOVE_EARTHQUAKE, MOVE_SWAGGER, MOVE_SHADOW_BALL, MOVE_BRICK_BREAK},
-            },
-            {
-                .species = SPECIES_LAPRAS,
-                .heldItem = ITEM_QUICK_CLAW,
-                .fixedIV = 16,
-                .nature = NATURE_QUIET,
-                .evs = {0, 0, 252, 0, 106, 152},
-                .moves = {MOVE_ICE_BEAM, MOVE_HORN_DRILL, MOVE_CONFUSE_RAY, MOVE_PROTECT},
-            },
-        },
-        // Gold Symbol.
-        {
-            {
-                .species = SPECIES_ARCANINE,
-                .heldItem = ITEM_WHITE_HERB,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_HASTY,
-                .evs = {6, 252, 252, 0, 0, 0},
-                .moves = {MOVE_OVERHEAT, MOVE_EXTREME_SPEED, MOVE_ROAR, MOVE_PROTECT},
-            },
-            {
-                .species = SPECIES_SLAKING,
-                .heldItem = ITEM_SCOPE_LENS,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_HARDY,
-                .evs = {6, 252, 0, 252, 0, 0},
-                .moves = {MOVE_HYPER_BEAM, MOVE_EARTHQUAKE, MOVE_SHADOW_BALL, MOVE_YAWN},
-            },
-            {
-                .species = SPECIES_SUICUNE,
-                .heldItem = ITEM_KINGS_ROCK,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_HASTY,
-                .evs = {252, 0, 252, 6, 0, 0},
-                .moves = {MOVE_BLIZZARD, MOVE_SURF, MOVE_BITE, MOVE_CALM_MIND},
-            },
-        },
-    },
-    [FRONTIER_FACILITY_ARENA] =
-    {
-        // Silver Symbol.
-        {
-            {
-                .species = SPECIES_HERACROSS,
-                .heldItem = ITEM_SALAC_BERRY,
-                .fixedIV = 20,
-                .nature = NATURE_JOLLY,
-                .evs = {106, 152, 0, 152, 0, 100},
-                .moves = {MOVE_MEGAHORN, MOVE_ROCK_TOMB, MOVE_ENDURE, MOVE_REVERSAL},
-            },
-            {
-                .species = SPECIES_UMBREON,
-                .heldItem = ITEM_LEFTOVERS,
-                .fixedIV = 20,
-                .nature = NATURE_CALM,
-                .evs = {152, 0, 100, 0, 152, 106},
-                .moves = {MOVE_BODY_SLAM, MOVE_CONFUSE_RAY, MOVE_PSYCHIC, MOVE_FEINT_ATTACK},
-            },
-            {
-                .species = SPECIES_SHEDINJA,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = 20,
-                .nature = NATURE_ADAMANT,
-                .evs = {0, 252, 6, 252, 0, 0},
-                .moves = {MOVE_SHADOW_BALL, MOVE_RETURN, MOVE_CONFUSE_RAY, MOVE_AERIAL_ACE},
-            },
-        },
-        // Gold Symbol.
-        {
-            {
-                .species = SPECIES_UMBREON,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_CALM,
-                .evs = {252, 0, 0, 0, 252, 6},
-                .moves = {MOVE_DOUBLE_EDGE, MOVE_CONFUSE_RAY, MOVE_REST, MOVE_PSYCHIC},
-            },
-            {
-                .species = SPECIES_GENGAR,
-                .heldItem = ITEM_LEFTOVERS,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MODEST,
-                .evs = {252, 0, 252, 0, 6, 0},
-                .moves = {MOVE_PSYCHIC, MOVE_HYPNOSIS, MOVE_DREAM_EATER, MOVE_DESTINY_BOND},
-            },
-            {
-                .species = SPECIES_BRELOOM,
-                .heldItem = ITEM_LUM_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_JOLLY,
-                .evs = {6, 252, 0, 252, 0, 0},
-                .moves = {MOVE_SPORE, MOVE_FOCUS_PUNCH, MOVE_GIGA_DRAIN, MOVE_HEADBUTT},
-            },
-        },
-    },
-    [FRONTIER_FACILITY_FACTORY] =
-    {
-        // Because Factory's pokemon are random, this facility's Brain also uses random pokemon.
-        // What is interesting, this team is actually the one Steven uses in the multi tag battle alongside the player.
-        {
-            {
-                .species = SPECIES_METANG,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BRAVE,
-                .evs = {0, 252, 252, 0, 6, 0},
-                .moves = {MOVE_LIGHT_SCREEN, MOVE_PSYCHIC, MOVE_REFLECT, MOVE_METAL_CLAW},
-            },
-            {
-                .species = SPECIES_SKARMORY,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_IMPISH,
-                .evs = {252, 0, 0, 0, 6, 252},
-                .moves = {MOVE_TOXIC, MOVE_AERIAL_ACE, MOVE_PROTECT, MOVE_STEEL_WING},
-            },
-            {
-                .species = SPECIES_AGGRON,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_ADAMANT,
-                .evs = {0, 252, 0, 0, 252, 6},
-                .moves = {MOVE_THUNDERBOLT, MOVE_PROTECT, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW},
-            },
-        },
-        {
-            {
-                .species = SPECIES_METANG,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BRAVE,
-                .evs = {0, 252, 252, 0, 6, 0},
-                .moves = {MOVE_LIGHT_SCREEN, MOVE_PSYCHIC, MOVE_REFLECT, MOVE_METAL_CLAW},
-            },
-            {
-                .species = SPECIES_SKARMORY,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_IMPISH,
-                .evs = {252, 0, 0, 0, 6, 252},
-                .moves = {MOVE_TOXIC, MOVE_AERIAL_ACE, MOVE_PROTECT, MOVE_STEEL_WING},
-            },
-            {
-                .species = SPECIES_AGGRON,
-                .heldItem = ITEM_SITRUS_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_ADAMANT,
-                .evs = {0, 252, 0, 0, 252, 6},
-                .moves = {MOVE_THUNDERBOLT, MOVE_PROTECT, MOVE_SOLAR_BEAM, MOVE_DRAGON_CLAW},
-            },
-        },
-    },
-    [FRONTIER_FACILITY_PIKE] =
-    {
-        // Silver Symbol.
-        {
-            {
-                .species = SPECIES_SEVIPER,
-                .heldItem = ITEM_QUICK_CLAW,
-                .fixedIV = 16,
-                .nature = NATURE_BRAVE,
-                .evs = {252, 0, 252, 0, 6, 0},
-                .moves = {MOVE_SWAGGER, MOVE_CRUNCH, MOVE_POISON_FANG, MOVE_GIGA_DRAIN},
-            },
-            {
-                .species = SPECIES_SHUCKLE,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = 16,
-                .nature = NATURE_BOLD,
-                .evs = {252, 0, 0, 0, 106, 252},
-                .moves = {MOVE_TOXIC, MOVE_SANDSTORM, MOVE_PROTECT, MOVE_REST},
-            },
-            {
-                .species = SPECIES_MILOTIC,
-                .heldItem = ITEM_LEFTOVERS,
-                .fixedIV = 16,
-                .nature = NATURE_MODEST,
-                .evs = {152, 0, 100, 0, 152, 106},
-                .moves = {MOVE_ICE_BEAM, MOVE_MIRROR_COAT, MOVE_SURF, MOVE_RECOVER},
-            },
-        },
-        // Gold Symbol.
-        {
-            {
-                .species = SPECIES_SEVIPER,
-                .heldItem = ITEM_FOCUS_BAND,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BOLD,
-                .evs = {252, 0, 0, 0, 252, 6},
-                .moves = {MOVE_SWAGGER, MOVE_CRUNCH, MOVE_SLUDGE_BOMB, MOVE_GIGA_DRAIN},
-            },
-            {
-                .species = SPECIES_STEELIX,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_BRAVE,
-                .evs = {252, 0, 0, 0, 6, 252},
-                .moves = {MOVE_EARTHQUAKE, MOVE_ROCK_SLIDE, MOVE_EXPLOSION, MOVE_SCREECH},
-            },
-            {
-                .species = SPECIES_GYARADOS,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_ADAMANT,
-                .evs = {252, 6, 0, 0, 0, 252},
-                .moves = {MOVE_DRAGON_DANCE, MOVE_RETURN, MOVE_ROAR, MOVE_REST},
-            },
-        },
-    },
-    [FRONTIER_FACILITY_PYRAMID] =
-    {
-        // Silver Symbol.
-        {
-            {
-                .species = SPECIES_REGIROCK,
-                .heldItem = ITEM_QUICK_CLAW,
-                .fixedIV = 16,
-                .nature = NATURE_ADAMANT,
-                .evs = {152, 152, 0, 0, 106, 100},
-                .moves = {MOVE_EXPLOSION, MOVE_SUPERPOWER, MOVE_EARTHQUAKE, MOVE_ANCIENT_POWER},
-            },
-            {
-                .species = SPECIES_REGISTEEL,
-                .heldItem = ITEM_LEFTOVERS,
-                .fixedIV = 16,
-                .nature = NATURE_ADAMANT,
-                .evs = {152, 152, 0, 0, 6, 200},
-                .moves = {MOVE_EARTHQUAKE, MOVE_METAL_CLAW, MOVE_TOXIC, MOVE_IRON_DEFENSE},
-            },
-            {
-                .species = SPECIES_REGICE,
-                .heldItem = ITEM_CHESTO_BERRY,
-                .fixedIV = 16,
-                .nature = NATURE_MODEST,
-                .evs = {106, 0, 152, 0, 100, 152},
-                .moves = {MOVE_ICE_BEAM, MOVE_AMNESIA, MOVE_THUNDER, MOVE_REST},
-            },
-        },
-        // Gold Symbol.
-        {
-            {
-                .species = SPECIES_ARTICUNO,
-                .heldItem = ITEM_SCOPE_LENS,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MILD,
-                .evs = {6, 0, 252, 252, 0, 0},
-                .moves = {MOVE_BLIZZARD, MOVE_WATER_PULSE, MOVE_AERIAL_ACE, MOVE_REFLECT},
-            },
-            {
-                .species = SPECIES_ZAPDOS,
-                .heldItem = ITEM_LUM_BERRY,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MILD,
-                .evs = {6, 0, 252, 252, 0, 0},
-                .moves = {MOVE_THUNDER, MOVE_DETECT, MOVE_DRILL_PECK, MOVE_LIGHT_SCREEN},
-            },
-            {
-                .species = SPECIES_MOLTRES,
-                .heldItem = ITEM_BRIGHT_POWDER,
-                .fixedIV = MAX_PER_STAT_IVS,
-                .nature = NATURE_MILD,
-                .evs = {6, 0, 252, 252, 0, 0},
-                .moves = {MOVE_FIRE_BLAST, MOVE_HYPER_BEAM, MOVE_AERIAL_ACE, MOVE_SAFEGUARD},
-            },
-        },
-    },
 };
 
 static const u8 sBattlePointAwards[NUM_FRONTIER_FACILITIES][FRONTIER_MODE_COUNT][30] =
-{
-    /* facility, mode, tier */
-    [FRONTIER_FACILITY_TOWER] = /* Tier: 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 */
     {
-        [FRONTIER_MODE_SINGLES]     = {  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-        [FRONTIER_MODE_DOUBLES]     = {  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-        [FRONTIER_MODE_MULTIS]      = {  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-        [FRONTIER_MODE_LINK_MULTIS] = {  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-    },
-    [FRONTIER_FACILITY_DOME] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15 },
-        [FRONTIER_MODE_DOUBLES]     = {  1,  1,  2,  2,  3,  3,  4,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15 },
-    },
-    [FRONTIER_FACILITY_PALACE] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  4,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15 },
-        [FRONTIER_MODE_DOUBLES]     = {  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-    },
-    [FRONTIER_FACILITY_ARENA] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  1,  1,  1,  2,  2,  2,  3,  3,  4,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-    },
-    [FRONTIER_FACILITY_FACTORY] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  3,  3,  4,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15 },
-        [FRONTIER_MODE_DOUBLES]     = {  4,  4,  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15 },
-    },
-    [FRONTIER_FACILITY_PIKE] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  1,  1,  2,  2,  2,  4,  4,  4,  8,  8,  8,  8, 10, 10, 10, 10, 12, 12, 12, 12, 12, 14, 14, 14, 14, 15, 15, 15, 15, 15 },
-    },
-    [FRONTIER_FACILITY_PYRAMID] =
-    {
-        [FRONTIER_MODE_SINGLES]     = {  5,  5,  6,  6,  7,  7,  8,  8,  9,  9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15 },
-    },
+        /* facility, mode, tier */
+        [FRONTIER_FACILITY_TOWER] = /* Tier: 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30 */
+        {
+            [FRONTIER_MODE_SINGLES] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            [FRONTIER_MODE_DOUBLES] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            [FRONTIER_MODE_MULTIS] = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            [FRONTIER_MODE_LINK_MULTIS] = {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+        },
+        [FRONTIER_FACILITY_DOME] =
+            {
+                [FRONTIER_MODE_SINGLES] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15},
+                [FRONTIER_MODE_DOUBLES] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15},
+            },
+        [FRONTIER_FACILITY_PALACE] =
+            {
+                [FRONTIER_MODE_SINGLES] = {4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15},
+                [FRONTIER_MODE_DOUBLES] = {5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            },
+        [FRONTIER_FACILITY_ARENA] =
+            {
+                [FRONTIER_MODE_SINGLES] = {1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            },
+        [FRONTIER_FACILITY_FACTORY] =
+            {
+                [FRONTIER_MODE_SINGLES] = {3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15},
+                [FRONTIER_MODE_DOUBLES] = {4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15},
+            },
+        [FRONTIER_FACILITY_PIKE] =
+            {
+                [FRONTIER_MODE_SINGLES] = {1, 1, 2, 2, 2, 4, 4, 4, 8, 8, 8, 8, 10, 10, 10, 10, 12, 12, 12, 12, 12, 14, 14, 14, 14, 15, 15, 15, 15, 15},
+            },
+        [FRONTIER_FACILITY_PYRAMID] =
+            {
+                [FRONTIER_MODE_SINGLES] = {5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15},
+            },
 };
-
 
 // Flags to change the conversation when the Frontier Brain is encountered for a battle
 // First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)
 static const u16 sBattledBrainBitFlags[NUM_FRONTIER_FACILITIES][2] =
-{
-    [FRONTIER_FACILITY_TOWER]   = {1 << 0, 1 << 1},
-    [FRONTIER_FACILITY_DOME]    = {1 << 2, 1 << 3},
-    [FRONTIER_FACILITY_PALACE]  = {1 << 4, 1 << 5},
-    [FRONTIER_FACILITY_ARENA]   = {1 << 6, 1 << 7},
-    [FRONTIER_FACILITY_FACTORY] = {1 << 8, 1 << 9},
-    [FRONTIER_FACILITY_PIKE]    = {1 << 10, 1 << 11},
-    [FRONTIER_FACILITY_PYRAMID] = {1 << 12, 1 << 13},
+    {
+        [FRONTIER_FACILITY_TOWER] = {1 << 0, 1 << 1},
+        [FRONTIER_FACILITY_DOME] = {1 << 2, 1 << 3},
+        [FRONTIER_FACILITY_PALACE] = {1 << 4, 1 << 5},
+        [FRONTIER_FACILITY_ARENA] = {1 << 6, 1 << 7},
+        [FRONTIER_FACILITY_FACTORY] = {1 << 8, 1 << 9},
+        [FRONTIER_FACILITY_PIKE] = {1 << 10, 1 << 11},
+        [FRONTIER_FACILITY_PYRAMID] = {1 << 12, 1 << 13},
 };
 
-static void (* const sFrontierUtilFuncs[])(void) =
-{
-    [FRONTIER_UTIL_FUNC_GET_STATUS]            = GetChallengeStatus,
-    [FRONTIER_UTIL_FUNC_GET_DATA]              = GetFrontierData,
-    [FRONTIER_UTIL_FUNC_SET_DATA]              = SetFrontierData,
-    [FRONTIER_UTIL_FUNC_SET_PARTY_ORDER]       = SetSelectedPartyOrder,
-    [FRONTIER_UTIL_FUNC_SOFT_RESET]            = DoSoftReset_,
-    [FRONTIER_UTIL_FUNC_SET_TRAINERS]          = SetFrontierTrainers,
-    [FRONTIER_UTIL_FUNC_SAVE_PARTY]            = SaveSelectedParty,
-    [FRONTIER_UTIL_FUNC_RESULTS_WINDOW]        = ShowFacilityResultsWindow,
-    [FRONTIER_UTIL_FUNC_CHECK_AIR_TV_SHOW]     = CheckPutFrontierTVShowOnAir,
-    [FRONTIER_UTIL_FUNC_GET_BRAIN_STATUS]      = Script_GetFrontierBrainStatus,
-    [FRONTIER_UTIL_FUNC_IS_BRAIN]              = IsTrainerFrontierBrain,
-    [FRONTIER_UTIL_FUNC_GIVE_BATTLE_POINTS]    = GiveBattlePoints,
-    [FRONTIER_UTIL_FUNC_GET_FACILITY_SYMBOLS]  = GetFacilitySymbolCount,
-    [FRONTIER_UTIL_FUNC_GIVE_FACILITY_SYMBOL]  = GiveFacilitySymbol,
-    [FRONTIER_UTIL_FUNC_CHECK_BATTLE_TYPE]     = CheckBattleTypeFlag,
-    [FRONTIER_UTIL_FUNC_CHECK_INELIGIBLE]      = CheckPartyIneligibility,
-    [FRONTIER_UTIL_FUNC_CHECK_VISIT_TRAINER]   = ValidateVisitingTrainer,
-    [FRONTIER_UTIL_FUNC_INCREMENT_STREAK]      = IncrementWinStreak,
-    [FRONTIER_UTIL_FUNC_RESTORE_HELD_ITEMS]    = RestoreHeldItems,
-    [FRONTIER_UTIL_FUNC_SAVE_BATTLE]           = SaveRecordBattle,
-    [FRONTIER_UTIL_FUNC_BUFFER_TRAINER_NAME]   = BufferFrontierTrainerName,
-    [FRONTIER_UTIL_FUNC_RESET_SKETCH_MOVES]    = ResetSketchedMoves,
-    [FRONTIER_UTIL_FUNC_SET_BRAIN_OBJECT]      = SetFacilityBrainObjectEvent,
+static void (*const sFrontierUtilFuncs[])(void) =
+    {
+        [FRONTIER_UTIL_FUNC_GET_STATUS] = GetChallengeStatus,
+        [FRONTIER_UTIL_FUNC_GET_DATA] = GetFrontierData,
+        [FRONTIER_UTIL_FUNC_SET_DATA] = SetFrontierData,
+        [FRONTIER_UTIL_FUNC_SET_PARTY_ORDER] = SetSelectedPartyOrder,
+        [FRONTIER_UTIL_FUNC_SOFT_RESET] = DoSoftReset_,
+        [FRONTIER_UTIL_FUNC_SET_TRAINERS] = SetFrontierTrainers,
+        [FRONTIER_UTIL_FUNC_SAVE_PARTY] = SaveSelectedParty,
+        [FRONTIER_UTIL_FUNC_RESULTS_WINDOW] = ShowFacilityResultsWindow,
+        [FRONTIER_UTIL_FUNC_CHECK_AIR_TV_SHOW] = CheckPutFrontierTVShowOnAir,
+        [FRONTIER_UTIL_FUNC_GET_BRAIN_STATUS] = Script_GetFrontierBrainStatus,
+        [FRONTIER_UTIL_FUNC_IS_BRAIN] = IsTrainerFrontierBrain,
+        [FRONTIER_UTIL_FUNC_GIVE_BATTLE_POINTS] = GiveBattlePoints,
+        [FRONTIER_UTIL_FUNC_GET_FACILITY_SYMBOLS] = GetFacilitySymbolCount,
+        [FRONTIER_UTIL_FUNC_GIVE_FACILITY_SYMBOL] = GiveFacilitySymbol,
+        [FRONTIER_UTIL_FUNC_CHECK_BATTLE_TYPE] = CheckBattleTypeFlag,
+        [FRONTIER_UTIL_FUNC_CHECK_INELIGIBLE] = CheckPartyIneligibility,
+        [FRONTIER_UTIL_FUNC_CHECK_VISIT_TRAINER] = ValidateVisitingTrainer,
+        [FRONTIER_UTIL_FUNC_INCREMENT_STREAK] = IncrementWinStreak,
+        [FRONTIER_UTIL_FUNC_RESTORE_HELD_ITEMS] = RestoreHeldItems,
+        [FRONTIER_UTIL_FUNC_SAVE_BATTLE] = SaveRecordBattle,
+        [FRONTIER_UTIL_FUNC_BUFFER_TRAINER_NAME] = BufferFrontierTrainerName,
+        [FRONTIER_UTIL_FUNC_RESET_SKETCH_MOVES] = ResetSketchedMoves,
+        [FRONTIER_UTIL_FUNC_SET_BRAIN_OBJECT] = SetFacilityBrainObjectEvent,
 };
 
 static const struct WindowTemplate sFrontierResultsWindowTemplate =
-{
-    .bg = 0,
-    .tilemapLeft = 1,
-    .tilemapTop = 1,
-    .width = 28,
-    .height = 18,
-    .paletteNum = 15,
-    .baseBlock = 1
-};
+    {
+        .bg = 0,
+        .tilemapLeft = 1,
+        .tilemapTop = 1,
+        .width = 28,
+        .height = 18,
+        .paletteNum = 15,
+        .baseBlock = 1};
 
 static const struct WindowTemplate sLinkContestResultsWindowTemplate =
-{
-    .bg = 0,
-    .tilemapLeft = 2,
-    .tilemapTop = 2,
-    .width = 26,
-    .height = 15,
-    .paletteNum = 15,
-    .baseBlock = 1
-};
+    {
+        .bg = 0,
+        .tilemapLeft = 2,
+        .tilemapTop = 2,
+        .width = 26,
+        .height = 15,
+        .paletteNum = 15,
+        .baseBlock = 1};
 
 static const struct WindowTemplate sRankingHallRecordsWindowTemplate =
-{
-    .bg = 0,
-    .tilemapLeft = 2,
-    .tilemapTop = 1,
-    .width = 26,
-    .height = 17,
-    .paletteNum = 15,
-    .baseBlock = 1
-};
+    {
+        .bg = 0,
+        .tilemapLeft = 2,
+        .tilemapTop = 1,
+        .width = 26,
+        .height = 17,
+        .paletteNum = 15,
+        .baseBlock = 1};
 
 // Second field - whether the character is female.
 static const u8 sFrontierBrainObjEventGfx[NUM_FRONTIER_FACILITIES][2] =
-{
-    [FRONTIER_FACILITY_TOWER]   = {OBJ_EVENT_GFX_ANABEL,  TRUE},
-    [FRONTIER_FACILITY_DOME]    = {OBJ_EVENT_GFX_TUCKER,  FALSE},
-    [FRONTIER_FACILITY_PALACE]  = {OBJ_EVENT_GFX_SPENSER, FALSE},
-    [FRONTIER_FACILITY_ARENA]   = {OBJ_EVENT_GFX_GRETA,   TRUE},
-    [FRONTIER_FACILITY_FACTORY] = {OBJ_EVENT_GFX_NOLAND,  FALSE},
-    [FRONTIER_FACILITY_PIKE]    = {OBJ_EVENT_GFX_LUCY,    TRUE},
-    [FRONTIER_FACILITY_PYRAMID] = {OBJ_EVENT_GFX_BRANDON, FALSE},
+    {
+        [FRONTIER_FACILITY_TOWER] = {OBJ_EVENT_GFX_ANABEL, TRUE},
+        [FRONTIER_FACILITY_DOME] = {OBJ_EVENT_GFX_TUCKER, FALSE},
+        [FRONTIER_FACILITY_PALACE] = {OBJ_EVENT_GFX_SPENSER, FALSE},
+        [FRONTIER_FACILITY_ARENA] = {OBJ_EVENT_GFX_GRETA, TRUE},
+        [FRONTIER_FACILITY_FACTORY] = {OBJ_EVENT_GFX_NOLAND, FALSE},
+        [FRONTIER_FACILITY_PIKE] = {OBJ_EVENT_GFX_LUCY, TRUE},
+        [FRONTIER_FACILITY_PYRAMID] = {OBJ_EVENT_GFX_BRANDON, FALSE},
 };
 
 const u16 gFrontierBannedSpecies[] =
-{
-    SPECIES_MEW, SPECIES_MEWTWO, SPECIES_HO_OH, SPECIES_LUGIA, SPECIES_CELEBI,
-    SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, 0xFFFF
-};
+    {
+        SPECIES_MEW, SPECIES_MEWTWO, SPECIES_HO_OH, SPECIES_LUGIA, SPECIES_CELEBI,
+        SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, 0xFFFF};
 
 static const u8 *const sRecordsWindowChallengeTexts[][2] =
-{
-    [RANKING_HALL_TOWER_SINGLES] = {gText_BattleTower2,  gText_FacilitySingle},
-    [RANKING_HALL_TOWER_DOUBLES] = {gText_BattleTower2,  gText_FacilityDouble},
-    [RANKING_HALL_TOWER_MULTIS]  = {gText_BattleTower2,  gText_FacilityMulti},
-    [RANKING_HALL_DOME]          = {gText_BattleDome,    gText_FacilitySingle},
-    [RANKING_HALL_PALACE]        = {gText_BattlePalace,  gText_FacilitySingle},
-    [RANKING_HALL_ARENA]         = {gText_BattleArena,   gText_Facility},
-    [RANKING_HALL_FACTORY]       = {gText_BattleFactory, gText_FacilitySingle},
-    [RANKING_HALL_PIKE]          = {gText_BattlePike,    gText_Facility},
-    [RANKING_HALL_PYRAMID]       = {gText_BattlePyramid, gText_Facility},
-    [RANKING_HALL_TOWER_LINK]    = {gText_BattleTower2,  gText_FacilityLink},
+    {
+        [RANKING_HALL_TOWER_SINGLES] = {gText_BattleTower2, gText_FacilitySingle},
+        [RANKING_HALL_TOWER_DOUBLES] = {gText_BattleTower2, gText_FacilityDouble},
+        [RANKING_HALL_TOWER_MULTIS] = {gText_BattleTower2, gText_FacilityMulti},
+        [RANKING_HALL_DOME] = {gText_BattleDome, gText_FacilitySingle},
+        [RANKING_HALL_PALACE] = {gText_BattlePalace, gText_FacilitySingle},
+        [RANKING_HALL_ARENA] = {gText_BattleArena, gText_Facility},
+        [RANKING_HALL_FACTORY] = {gText_BattleFactory, gText_FacilitySingle},
+        [RANKING_HALL_PIKE] = {gText_BattlePike, gText_Facility},
+        [RANKING_HALL_PYRAMID] = {gText_BattlePyramid, gText_Facility},
+        [RANKING_HALL_TOWER_LINK] = {gText_BattleTower2, gText_FacilityLink},
 };
 
 static const u8 *const sLevelModeText[] =
-{
-    [FRONTIER_LVL_50]   = gText_RecordsLv50,
-    [FRONTIER_LVL_OPEN] = gText_RecordsOpenLevel,
+    {
+        [FRONTIER_LVL_50] = gText_RecordsLv50,
+        [FRONTIER_LVL_OPEN] = gText_RecordsOpenLevel,
 };
 
 static const u8 *const sHallFacilityToRecordsText[] =
-{
-    [RANKING_HALL_TOWER_SINGLES] = gText_FrontierFacilityWinStreak,
-    [RANKING_HALL_TOWER_DOUBLES] = gText_FrontierFacilityWinStreak,
-    [RANKING_HALL_TOWER_MULTIS]  = gText_FrontierFacilityWinStreak,
-    [RANKING_HALL_DOME]          = gText_FrontierFacilityClearStreak,
-    [RANKING_HALL_PALACE]        = gText_FrontierFacilityWinStreak,
-    [RANKING_HALL_ARENA]         = gText_FrontierFacilityKOsStreak,
-    [RANKING_HALL_FACTORY]       = gText_FrontierFacilityWinStreak,
-    [RANKING_HALL_PIKE]          = gText_FrontierFacilityRoomsCleared,
-    [RANKING_HALL_PYRAMID]       = gText_FrontierFacilityFloorsCleared,
-    [RANKING_HALL_TOWER_LINK]    = gText_FrontierFacilityWinStreak,
+    {
+        [RANKING_HALL_TOWER_SINGLES] = gText_FrontierFacilityWinStreak,
+        [RANKING_HALL_TOWER_DOUBLES] = gText_FrontierFacilityWinStreak,
+        [RANKING_HALL_TOWER_MULTIS] = gText_FrontierFacilityWinStreak,
+        [RANKING_HALL_DOME] = gText_FrontierFacilityClearStreak,
+        [RANKING_HALL_PALACE] = gText_FrontierFacilityWinStreak,
+        [RANKING_HALL_ARENA] = gText_FrontierFacilityKOsStreak,
+        [RANKING_HALL_FACTORY] = gText_FrontierFacilityWinStreak,
+        [RANKING_HALL_PIKE] = gText_FrontierFacilityRoomsCleared,
+        [RANKING_HALL_PYRAMID] = gText_FrontierFacilityFloorsCleared,
+        [RANKING_HALL_TOWER_LINK] = gText_FrontierFacilityWinStreak,
 };
 
 static const u16 sFrontierBrainTrainerIds[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = TRAINER_ANABEL,
-    [FRONTIER_FACILITY_DOME]    = TRAINER_TUCKER,
-    [FRONTIER_FACILITY_PALACE]  = TRAINER_SPENSER,
-    [FRONTIER_FACILITY_ARENA]   = TRAINER_GRETA,
-    [FRONTIER_FACILITY_FACTORY] = TRAINER_NOLAND,
-    [FRONTIER_FACILITY_PIKE]    = TRAINER_LUCY,
-    [FRONTIER_FACILITY_PYRAMID] = TRAINER_BRANDON,
+    {
+        [FRONTIER_FACILITY_TOWER] = TRAINER_ANABEL,
+        [FRONTIER_FACILITY_DOME] = TRAINER_TUCKER,
+        [FRONTIER_FACILITY_PALACE] = TRAINER_SPENSER,
+        [FRONTIER_FACILITY_ARENA] = TRAINER_GRETA,
+        [FRONTIER_FACILITY_FACTORY] = TRAINER_NOLAND,
+        [FRONTIER_FACILITY_PIKE] = TRAINER_LUCY,
+        [FRONTIER_FACILITY_PYRAMID] = TRAINER_BRANDON,
 };
 
 static const u8 *const sFrontierBrainPlayerLostSilverTexts[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = gText_AnabelWonSilver,
-    [FRONTIER_FACILITY_DOME]    = gText_TuckerWonSilver,
-    [FRONTIER_FACILITY_PALACE]  = gText_SpenserWonSilver,
-    [FRONTIER_FACILITY_ARENA]   = gText_GretaWonSilver,
-    [FRONTIER_FACILITY_FACTORY] = gText_NolandWonSilver,
-    [FRONTIER_FACILITY_PIKE]    = gText_LucyWonSilver,
-    [FRONTIER_FACILITY_PYRAMID] = gText_BrandonWonSilver,
+    {
+        [FRONTIER_FACILITY_TOWER] = gText_AnabelWonSilver,
+        [FRONTIER_FACILITY_DOME] = gText_TuckerWonSilver,
+        [FRONTIER_FACILITY_PALACE] = gText_SpenserWonSilver,
+        [FRONTIER_FACILITY_ARENA] = gText_GretaWonSilver,
+        [FRONTIER_FACILITY_FACTORY] = gText_NolandWonSilver,
+        [FRONTIER_FACILITY_PIKE] = gText_LucyWonSilver,
+        [FRONTIER_FACILITY_PYRAMID] = gText_BrandonWonSilver,
 };
 
 static const u8 *const sFrontierBrainPlayerWonSilverTexts[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = gText_AnabelDefeatSilver,
-    [FRONTIER_FACILITY_DOME]    = gText_TuckerDefeatSilver,
-    [FRONTIER_FACILITY_PALACE]  = gText_SpenserDefeatSilver,
-    [FRONTIER_FACILITY_ARENA]   = gText_GretaDefeatSilver,
-    [FRONTIER_FACILITY_FACTORY] = gText_NolandDefeatSilver,
-    [FRONTIER_FACILITY_PIKE]    = gText_LucyDefeatSilver,
-    [FRONTIER_FACILITY_PYRAMID] = gText_BrandonDefeatSilver,
+    {
+        [FRONTIER_FACILITY_TOWER] = gText_AnabelDefeatSilver,
+        [FRONTIER_FACILITY_DOME] = gText_TuckerDefeatSilver,
+        [FRONTIER_FACILITY_PALACE] = gText_SpenserDefeatSilver,
+        [FRONTIER_FACILITY_ARENA] = gText_GretaDefeatSilver,
+        [FRONTIER_FACILITY_FACTORY] = gText_NolandDefeatSilver,
+        [FRONTIER_FACILITY_PIKE] = gText_LucyDefeatSilver,
+        [FRONTIER_FACILITY_PYRAMID] = gText_BrandonDefeatSilver,
 };
 
 static const u8 *const sFrontierBrainPlayerLostGoldTexts[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = gText_AnabelWonGold,
-    [FRONTIER_FACILITY_DOME]    = gText_TuckerWonGold,
-    [FRONTIER_FACILITY_PALACE]  = gText_SpenserWonGold,
-    [FRONTIER_FACILITY_ARENA]   = gText_GretaWonGold,
-    [FRONTIER_FACILITY_FACTORY] = gText_NolandWonGold,
-    [FRONTIER_FACILITY_PIKE]    = gText_LucyWonGold,
-    [FRONTIER_FACILITY_PYRAMID] = gText_BrandonWonGold,
+    {
+        [FRONTIER_FACILITY_TOWER] = gText_AnabelWonGold,
+        [FRONTIER_FACILITY_DOME] = gText_TuckerWonGold,
+        [FRONTIER_FACILITY_PALACE] = gText_SpenserWonGold,
+        [FRONTIER_FACILITY_ARENA] = gText_GretaWonGold,
+        [FRONTIER_FACILITY_FACTORY] = gText_NolandWonGold,
+        [FRONTIER_FACILITY_PIKE] = gText_LucyWonGold,
+        [FRONTIER_FACILITY_PYRAMID] = gText_BrandonWonGold,
 };
 
 static const u8 *const sFrontierBrainPlayerWonGoldTexts[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = gText_AnabelDefeatGold,
-    [FRONTIER_FACILITY_DOME]    = gText_TuckerDefeatGold,
-    [FRONTIER_FACILITY_PALACE]  = gText_SpenserDefeatGold,
-    [FRONTIER_FACILITY_ARENA]   = gText_GretaDefeatGold,
-    [FRONTIER_FACILITY_FACTORY] = gText_NolandDefeatGold,
-    [FRONTIER_FACILITY_PIKE]    = gText_LucyDefeatGold,
-    [FRONTIER_FACILITY_PYRAMID] = gText_BrandonDefeatGold,
+    {
+        [FRONTIER_FACILITY_TOWER] = gText_AnabelDefeatGold,
+        [FRONTIER_FACILITY_DOME] = gText_TuckerDefeatGold,
+        [FRONTIER_FACILITY_PALACE] = gText_SpenserDefeatGold,
+        [FRONTIER_FACILITY_ARENA] = gText_GretaDefeatGold,
+        [FRONTIER_FACILITY_FACTORY] = gText_NolandDefeatGold,
+        [FRONTIER_FACILITY_PIKE] = gText_LucyDefeatGold,
+        [FRONTIER_FACILITY_PYRAMID] = gText_BrandonDefeatGold,
 };
 
 static const u8 *const *const sFrontierBrainPlayerLostTexts[] =
-{
-    sFrontierBrainPlayerLostSilverTexts,
-    sFrontierBrainPlayerLostGoldTexts,
+    {
+        sFrontierBrainPlayerLostSilverTexts,
+        sFrontierBrainPlayerLostGoldTexts,
 };
 
 static const u8 *const *const sFrontierBrainPlayerWonTexts[] =
-{
-    sFrontierBrainPlayerWonSilverTexts,
-    sFrontierBrainPlayerWonGoldTexts,
+    {
+        sFrontierBrainPlayerWonSilverTexts,
+        sFrontierBrainPlayerWonGoldTexts,
 };
 
 // code
@@ -1493,8 +1487,7 @@ static void CheckPutFrontierTVShowOnAir(void)
                 StringCopy(gSaveBlock2Ptr->frontier.opponentNames[lvlMode], name);
                 SetTrainerId(gLinkPlayers[gBattleScripting.multiplayerId ^ 1].trainerId, gSaveBlock2Ptr->frontier.opponentTrainerIds[lvlMode]);
             }
-            if (gSaveBlock2Ptr->frontier.towerWinStreaks[battleMode][lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.towerWinStreaks[battleMode][lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 switch (battleMode)
                 {
@@ -1518,8 +1511,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         if (gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode] > gSaveBlock2Ptr->frontier.domeRecordWinStreaks[battleMode][lvlMode])
         {
             gSaveBlock2Ptr->frontier.domeRecordWinStreaks[battleMode][lvlMode] = gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode];
-            if (gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 if (battleMode == FRONTIER_MODE_SINGLES)
                     TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.domeWinStreaks[battleMode][lvlMode], FRONTIER_SHOW_DOME_SINGLES);
@@ -1532,8 +1524,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         if (gSaveBlock2Ptr->frontier.palaceWinStreaks[battleMode][lvlMode] > gSaveBlock2Ptr->frontier.palaceRecordWinStreaks[battleMode][lvlMode])
         {
             gSaveBlock2Ptr->frontier.palaceRecordWinStreaks[battleMode][lvlMode] = gSaveBlock2Ptr->frontier.palaceWinStreaks[battleMode][lvlMode];
-            if (gSaveBlock2Ptr->frontier.palaceWinStreaks[battleMode][lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.palaceWinStreaks[battleMode][lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 if (battleMode == FRONTIER_MODE_SINGLES)
                     TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.palaceWinStreaks[battleMode][lvlMode], FRONTIER_SHOW_PALACE_SINGLES);
@@ -1546,8 +1537,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         if (gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode] > gSaveBlock2Ptr->frontier.arenaRecordStreaks[lvlMode])
         {
             gSaveBlock2Ptr->frontier.arenaRecordStreaks[lvlMode] = gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode];
-            if (gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.arenaWinStreaks[lvlMode], FRONTIER_SHOW_ARENA);
             }
@@ -1558,8 +1548,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         {
             gSaveBlock2Ptr->frontier.factoryRecordWinStreaks[battleMode][lvlMode] = gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode];
             gSaveBlock2Ptr->frontier.factoryRecordRentsCount[battleMode][lvlMode] = gSaveBlock2Ptr->frontier.factoryRentsCount[battleMode][lvlMode];
-            if (gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 if (battleMode == FRONTIER_MODE_SINGLES)
                     TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode], FRONTIER_SHOW_FACTORY_SINGLES);
@@ -1572,8 +1561,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         if (gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] > gSaveBlock2Ptr->frontier.pikeRecordStreaks[lvlMode])
         {
             gSaveBlock2Ptr->frontier.pikeRecordStreaks[lvlMode] = gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode];
-            if (gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.pikeWinStreaks[lvlMode], FRONTIER_SHOW_PIKE);
             }
@@ -1583,8 +1571,7 @@ static void CheckPutFrontierTVShowOnAir(void)
         if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode] > gSaveBlock2Ptr->frontier.pyramidRecordStreaks[lvlMode])
         {
             gSaveBlock2Ptr->frontier.pyramidRecordStreaks[lvlMode] = gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode];
-            if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode] > 1
-                && ShouldAirFrontierTVShow())
+            if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode] > 1 && ShouldAirFrontierTVShow())
             {
                 TryPutFrontierTVShowOnAir(gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvlMode], FRONTIER_SHOW_PYRAMID);
             }
@@ -1649,10 +1636,6 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
             CopyFrontierBrainText(FALSE);
         else if (trainerId < FRONTIER_TRAINERS_COUNT)
             FrontierSpeechToString(gFacilityTrainers[trainerId].speechBefore);
-        else if (trainerId < TRAINER_RECORD_MIXING_APPRENTICE)
-            FrontierSpeechToString(gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].greeting);
-        else
-            BufferApprenticeChallengeText(trainerId - TRAINER_RECORD_MIXING_APPRENTICE);
         break;
     case FRONTIER_PLAYER_LOST_TEXT:
         if (trainerId == TRAINER_EREADER)
@@ -1667,20 +1650,6 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
         {
             FrontierSpeechToString(gFacilityTrainers[trainerId].speechWin);
         }
-        else if (trainerId < TRAINER_RECORD_MIXING_APPRENTICE)
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
-                FrontierSpeechToString(GetRecordedBattleEasyChatSpeech());
-            else
-                FrontierSpeechToString(gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].speechWon);
-        }
-        else
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
-                FrontierSpeechToString(GetRecordedBattleEasyChatSpeech());
-            else
-                FrontierSpeechToString(gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE].speechWon);
-        }
         break;
     case FRONTIER_PLAYER_WON_TEXT:
         if (trainerId == TRAINER_EREADER)
@@ -1694,26 +1663,6 @@ void CopyFrontierTrainerText(u8 whichText, u16 trainerId)
         else if (trainerId < FRONTIER_TRAINERS_COUNT)
         {
             FrontierSpeechToString(gFacilityTrainers[trainerId].speechLose);
-        }
-        else if (trainerId < TRAINER_RECORD_MIXING_APPRENTICE)
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
-                FrontierSpeechToString(GetRecordedBattleEasyChatSpeech());
-            else
-                FrontierSpeechToString(gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].speechLost);
-        }
-        else
-        {
-            if (gBattleTypeFlags & BATTLE_TYPE_RECORDED)
-            {
-                trainerId = GetRecordedBattleApprenticeId();
-                FrontierSpeechToString(gApprentices[trainerId].speechLost);
-            }
-            else
-            {
-                trainerId = gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE].id;
-                FrontierSpeechToString(gApprentices[trainerId].speechLost);
-            }
         }
         break;
     }
@@ -1792,8 +1741,7 @@ static void IsTrainerFrontierBrain(void)
 
 u8 GetPlayerSymbolCountForFacility(u8 facility)
 {
-    return FlagGet(FLAG_SYS_TOWER_SILVER + facility * 2)
-         + FlagGet(FLAG_SYS_TOWER_GOLD + facility * 2);
+    return FlagGet(FLAG_SYS_TOWER_SILVER + facility * 2) + FlagGet(FLAG_SYS_TOWER_GOLD + facility * 2);
 }
 
 static void GiveBattlePoints(void)
@@ -1963,8 +1911,8 @@ static void CheckPartyIneligibility(void)
     s32 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
     s32 monIdLooper;
 
-    // count is re-used, define for clarity
-    #define numEligibleMons count
+// count is re-used, define for clarity
+#define numEligibleMons count
 
     switch (battleMode)
     {
@@ -2046,7 +1994,7 @@ static void CheckPartyIneligibility(void)
         gSpecialVar_0x8004 = FALSE;
         gSaveBlock2Ptr->frontier.lvlMode = gSpecialVar_Result;
     }
-    #undef numEligibleMons
+#undef numEligibleMons
 }
 
 static void ValidateVisitingTrainer(void)
@@ -2148,8 +2096,7 @@ static void ResetSketchedMoves(void)
             {
                 for (k = 0; k < MAX_MON_MOVES; k++)
                 {
-                    if (GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_MOVE1 + k, NULL)
-                        == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + j, NULL))
+                    if (GetMonData(&gSaveBlock1Ptr->playerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_MOVE1 + k, NULL) == GetMonData(&gPlayerParty[i], MON_DATA_MOVE1 + j, NULL))
                         break;
                 }
                 if (k == MAX_MON_MOVES)
@@ -2333,9 +2280,9 @@ void ClearRankingHallRecords(void)
     // UB: Passing 0 as a pointer instead of a pointer holding a value of 0.
 #ifdef UBFIX
     u8 emptyId[TRAINER_ID_LENGTH] = {0};
-    #define ZERO emptyId
+#define ZERO emptyId
 #else
-    #define ZERO 0
+#define ZERO 0
 #endif
 
     for (i = 0; i < HALL_FACILITIES_COUNT; i++)
@@ -2467,7 +2414,7 @@ void CreateFrontierBrainPokemon(void)
         {
             do
             {
-                j = Random32(); //should just be one while loop, but that doesn't match
+                j = Random32(); // should just be one while loop, but that doesn't match
             } while (IsShinyOtIdPersonality(FRONTIER_BRAIN_OTID, j));
         } while (sFrontierBrainsMons[facility][symbol][i].nature != GetNatureFromPersonality(j));
         CreateMon(&gEnemyParty[monPartyId],
@@ -2542,8 +2489,7 @@ s32 GetFronterBrainSymbol(void)
             symbol = 0;
         else if (winStreak + sFrontierBrainStreakAppearances[facility][3] == sFrontierBrainStreakAppearances[facility][1])
             symbol = 1;
-        else if (winStreak + sFrontierBrainStreakAppearances[facility][3] > sFrontierBrainStreakAppearances[facility][1]
-                 && (winStreak + sFrontierBrainStreakAppearances[facility][3] - sFrontierBrainStreakAppearances[facility][1]) % sFrontierBrainStreakAppearances[facility][2] == 0)
+        else if (winStreak + sFrontierBrainStreakAppearances[facility][3] > sFrontierBrainStreakAppearances[facility][1] && (winStreak + sFrontierBrainStreakAppearances[facility][3] - sFrontierBrainStreakAppearances[facility][1]) % sFrontierBrainStreakAppearances[facility][2] == 0)
             symbol = 1;
     }
     return symbol;

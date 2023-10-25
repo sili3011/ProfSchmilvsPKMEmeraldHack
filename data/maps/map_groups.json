@@ -226,8 +226,6 @@
     "LilycoveCity_CoveLilyMotel_2F",
     "LilycoveCity_LilycoveMuseum_1F",
     "LilycoveCity_LilycoveMuseum_2F",
-    "LilycoveCity_ContestLobby",
-    "LilycoveCity_ContestHall",
     "LilycoveCity_PokemonCenter_1F",
     "LilycoveCity_PokemonCenter_2F",
     "LilycoveCity_UnusedMart",
@@ -312,15 +310,9 @@
     "Route114_FossilManiacsTunnel",
     "Route114_LanettesHouse"
   ],
-  "gMapGroup_IndoorRoute116": [
-    "Route116_TunnelersRestHouse"
-  ],
-  "gMapGroup_IndoorRoute117": [
-    "Route117_PokemonDayCare"
-  ],
-  "gMapGroup_IndoorRoute121": [
-    "Route121_SafariZoneEntrance"
-  ],
+  "gMapGroup_IndoorRoute116": ["Route116_TunnelersRestHouse"],
+  "gMapGroup_IndoorRoute117": ["Route117_PokemonDayCare"],
+  "gMapGroup_IndoorRoute121": ["Route121_SafariZoneEntrance"],
   "gMapGroup_Dungeons": [
     "MeteorFalls_1F_1R",
     "MeteorFalls_1F_2R",
@@ -460,38 +452,10 @@
     "TradeCenter",
     "RecordCorner",
     "BattleColosseum_4P",
-    "ContestHall",
-    "UnusedContestHall1",
-    "UnusedContestHall2",
-    "UnusedContestHall3",
-    "UnusedContestHall4",
-    "UnusedContestHall5",
-    "UnusedContestHall6",
-    "ContestHallBeauty",
-    "ContestHallTough",
-    "ContestHallCool",
-    "ContestHallSmart",
-    "ContestHallCute",
     "InsideOfTruck",
     "SSTidalCorridor",
     "SSTidalLowerDeck",
     "SSTidalRooms",
-    "BattlePyramidSquare01",
-    "BattlePyramidSquare02",
-    "BattlePyramidSquare03",
-    "BattlePyramidSquare04",
-    "BattlePyramidSquare05",
-    "BattlePyramidSquare06",
-    "BattlePyramidSquare07",
-    "BattlePyramidSquare08",
-    "BattlePyramidSquare09",
-    "BattlePyramidSquare10",
-    "BattlePyramidSquare11",
-    "BattlePyramidSquare12",
-    "BattlePyramidSquare13",
-    "BattlePyramidSquare14",
-    "BattlePyramidSquare15",
-    "BattlePyramidSquare16",
     "UnionRoom"
   ],
   "gMapGroup_SpecialArea": [
@@ -589,9 +553,7 @@
     "Route104_Prototype",
     "Route104_PrototypePrettyPetalFlowerShop"
   ],
-  "gMapGroup_IndoorRoute109": [
-    "Route109_SeashoreHouse"
-  ],
+  "gMapGroup_IndoorRoute109": ["Route109_SeashoreHouse"],
   "gMapGroup_IndoorRoute110": [
     "Route110_TrickHouseEntrance",
     "Route110_TrickHouseEnd",
@@ -607,20 +569,14 @@
     "Route110_SeasideCyclingRoadNorthEntrance",
     "Route110_SeasideCyclingRoadSouthEntrance"
   ],
-  "gMapGroup_IndoorRoute113": [
-    "Route113_GlassWorkshop"
-  ],
-  "gMapGroup_IndoorRoute123": [
-    "Route123_BerryMastersHouse"
-  ],
+  "gMapGroup_IndoorRoute113": ["Route113_GlassWorkshop"],
+  "gMapGroup_IndoorRoute123": ["Route123_BerryMastersHouse"],
   "gMapGroup_IndoorRoute119": [
     "Route119_WeatherInstitute_1F",
     "Route119_WeatherInstitute_2F",
     "Route119_House"
   ],
-  "gMapGroup_IndoorRoute124": [
-    "Route124_DivingTreasureHuntersHouse"
-  ],
+  "gMapGroup_IndoorRoute124": ["Route124_DivingTreasureHuntersHouse"],
   "connections_include_order": [
     "LittlerootTown",
     "OldaleTown",

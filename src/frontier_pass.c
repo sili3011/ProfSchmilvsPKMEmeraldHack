@@ -22,7 +22,6 @@
 #include "bg.h"
 #include "sound.h"
 #include "string_util.h"
-#include "battle_pyramid.h"
 #include "overworld.h"
 #include "math_util.h"
 #include "constants/battle_frontier.h"
@@ -83,12 +82,14 @@ enum
 // Start of symbol cursor areas
 #define CURSOR_AREA_SYMBOL CURSOR_AREA_SYMBOL_TOWER
 
-enum {
+enum
+{
     MAP_INDICATOR_RECTANGLE,
     MAP_INDICATOR_SQUARE,
 };
 
-enum {
+enum
+{
     TAG_CURSOR,
     TAG_MAP_INDICATOR,
     TAG_MEDAL_SILVER,
@@ -98,7 +99,8 @@ enum {
 };
 
 // Error return codes. Never read
-enum {
+enum
+{
     SUCCESS,
     ERR_ALREADY_DONE,
     ERR_ALLOC_FAILED,
@@ -113,9 +115,9 @@ struct FrontierPassData
     s16 cursorY;
     u8 cursorArea;
     u8 previousCursorArea;
-    bool8 hasBattleRecord:1;
-    u8 areaToShow:3;
-    u8 trainerStars:4;
+    bool8 hasBattleRecord : 1;
+    u8 areaToShow : 3;
+    u8 trainerStars : 4;
     u8 facilitySymbols[NUM_FRONTIER_FACILITIES]; // 0: no symbol, 1: silver, 2: gold
 };
 
@@ -176,164 +178,149 @@ static void PrintAreaDescription(u8);
 static void ShowHideZoomingArea(bool8, bool8);
 static void SpriteCB_PlayerHead(struct Sprite *);
 
-static const u16 sMaleHead_Pal[]                 = INCBIN_U16("graphics/frontier_pass/map_heads.gbapal");
-static const u16 sFemaleHead_Pal[]               = INCBIN_U16("graphics/frontier_pass/map_heads_female.gbapal");
-static const u32 sMapScreen_Gfx[]                = INCBIN_U32("graphics/frontier_pass/map_screen.4bpp.lz");
-static const u32 sCursor_Gfx[]                   = INCBIN_U32("graphics/frontier_pass/cursor.4bpp.lz");
-static const u32 sHeads_Gfx[]                    = INCBIN_U32("graphics/frontier_pass/map_heads.4bpp.lz");
-static const u32 sMapCursor_Gfx[]                = INCBIN_U32("graphics/frontier_pass/map_cursor.4bpp.lz");
-static const u32 sMapScreen_Tilemap[]            = INCBIN_U32("graphics/frontier_pass/map_screen.bin.lz");
+static const u16 sMaleHead_Pal[] = INCBIN_U16("graphics/frontier_pass/map_heads.gbapal");
+static const u16 sFemaleHead_Pal[] = INCBIN_U16("graphics/frontier_pass/map_heads_female.gbapal");
+static const u32 sMapScreen_Gfx[] = INCBIN_U32("graphics/frontier_pass/map_screen.4bpp.lz");
+static const u32 sCursor_Gfx[] = INCBIN_U32("graphics/frontier_pass/cursor.4bpp.lz");
+static const u32 sHeads_Gfx[] = INCBIN_U32("graphics/frontier_pass/map_heads.4bpp.lz");
+static const u32 sMapCursor_Gfx[] = INCBIN_U32("graphics/frontier_pass/map_cursor.4bpp.lz");
+static const u32 sMapScreen_Tilemap[] = INCBIN_U32("graphics/frontier_pass/map_screen.bin.lz");
 static const u32 sMapAndCard_ZoomedOut_Tilemap[] = INCBIN_U32("graphics/frontier_pass/small_map_and_card.bin.lz");
-static const u32 sCardBall_Filled_Tilemap[]      = INCBIN_U32("graphics/frontier_pass/card_ball_filled.bin"); // Unused
-static const u32 sBattleRecord_Tilemap[]         = INCBIN_U32("graphics/frontier_pass/record_frame.bin.lz");
-static const u32 sMapAndCard_Zooming_Tilemap[]   = INCBIN_U32("graphics/frontier_pass/small_map_and_card_affine.bin.lz");
+static const u32 sCardBall_Filled_Tilemap[] = INCBIN_U32("graphics/frontier_pass/card_ball_filled.bin"); // Unused
+static const u32 sBattleRecord_Tilemap[] = INCBIN_U32("graphics/frontier_pass/record_frame.bin.lz");
+static const u32 sMapAndCard_Zooming_Tilemap[] = INCBIN_U32("graphics/frontier_pass/small_map_and_card_affine.bin.lz");
 
 static const s16 sBgAffineCoords[][2] =
-{
-    [CURSOR_AREA_MAP - 1]  = {216,  32},
-    [CURSOR_AREA_CARD - 1] = {216, 128}
-};
+    {
+        [CURSOR_AREA_MAP - 1] = {216, 32},
+        [CURSOR_AREA_CARD - 1] = {216, 128}};
 
 static const struct BgTemplate sPassBgTemplates[] =
-{
     {
-        .bg = 0,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = 1,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 30,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0
-    },
-    {
-        .bg = 2,
-        .charBaseIndex = 1,
-        .mapBaseIndex = 29,
-        .screenSize = 1,
-        .paletteMode = 1,
-        .priority = 0,
-        .baseTile = 0
-    },
+        {.bg = 0,
+         .charBaseIndex = 2,
+         .mapBaseIndex = 31,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 1,
+         .baseTile = 0},
+        {.bg = 1,
+         .charBaseIndex = 0,
+         .mapBaseIndex = 30,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 2,
+         .baseTile = 0},
+        {.bg = 2,
+         .charBaseIndex = 1,
+         .mapBaseIndex = 29,
+         .screenSize = 1,
+         .paletteMode = 1,
+         .priority = 0,
+         .baseTile = 0},
 };
 
 static const struct BgTemplate sMapBgTemplates[] =
-{
     {
-        .bg = 0,
-        .charBaseIndex = 2,
-        .mapBaseIndex = 31,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 0,
-        .baseTile = 0
-    },
-    {
-        .bg = 1,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 30,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 1,
-        .baseTile = 0
-    },
-    {
-        .bg = 2,
-        .charBaseIndex = 0,
-        .mapBaseIndex = 29,
-        .screenSize = 0,
-        .paletteMode = 0,
-        .priority = 2,
-        .baseTile = 0
-    },
+        {.bg = 0,
+         .charBaseIndex = 2,
+         .mapBaseIndex = 31,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 0,
+         .baseTile = 0},
+        {.bg = 1,
+         .charBaseIndex = 0,
+         .mapBaseIndex = 30,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 1,
+         .baseTile = 0},
+        {.bg = 2,
+         .charBaseIndex = 0,
+         .mapBaseIndex = 29,
+         .screenSize = 0,
+         .paletteMode = 0,
+         .priority = 2,
+         .baseTile = 0},
 };
 
 static const struct WindowTemplate sPassWindowTemplates[WINDOW_COUNT] =
-{
-    [WINDOW_EARNED_SYMBOLS] = {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 3,
-        .width = 12,
-        .height = 3,
-        .paletteNum = 15,
-        .baseBlock = 0x1,
-    },
-    [WINDOW_BATTLE_RECORD] = {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 10,
-        .width = 12,
-        .height = 3,
-        .paletteNum = 15,
-        .baseBlock = 0x26,
-    },
-    [WINDOW_BATTLE_POINTS] = {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 13,
-        .width = 12,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0x4B,
-    },
-    [WINDOW_DESCRIPTION] = {
-        .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 18,
-        .width = 30,
-        .height = 3,
-        .paletteNum = 15,
-        .baseBlock = 0x7C,
-    },
-    DUMMY_WIN_TEMPLATE
-};
+    {
+        [WINDOW_EARNED_SYMBOLS] = {
+            .bg = 0,
+            .tilemapLeft = 2,
+            .tilemapTop = 3,
+            .width = 12,
+            .height = 3,
+            .paletteNum = 15,
+            .baseBlock = 0x1,
+        },
+        [WINDOW_BATTLE_RECORD] = {
+            .bg = 0,
+            .tilemapLeft = 2,
+            .tilemapTop = 10,
+            .width = 12,
+            .height = 3,
+            .paletteNum = 15,
+            .baseBlock = 0x26,
+        },
+        [WINDOW_BATTLE_POINTS] = {
+            .bg = 0,
+            .tilemapLeft = 2,
+            .tilemapTop = 13,
+            .width = 12,
+            .height = 4,
+            .paletteNum = 15,
+            .baseBlock = 0x4B,
+        },
+        [WINDOW_DESCRIPTION] = {
+            .bg = 0,
+            .tilemapLeft = 0,
+            .tilemapTop = 18,
+            .width = 30,
+            .height = 3,
+            .paletteNum = 15,
+            .baseBlock = 0x7C,
+        },
+        DUMMY_WIN_TEMPLATE};
 
 static const struct WindowTemplate sMapWindowTemplates[] =
-{
-    [MAP_WINDOW_UNUSED] = {
-        .bg = 0,
-        .tilemapLeft = 0,
-        .tilemapTop = 1,
-        .width = 15,
-        .height = 5,
-        .paletteNum = 15,
-        .baseBlock = 0x1,
-    },
-    [MAP_WINDOW_NAME] = {
-        .bg = 0,
-        .tilemapLeft = 20,
-        .tilemapTop = 1,
-        .width = 10,
-        .height = 14,
-        .paletteNum = 15,
-        .baseBlock = 0x4D,
-    },
-    [MAP_WINDOW_DESCRIPTION] = {
-        .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 16,
-        .width = 26,
-        .height = 4,
-        .paletteNum = 15,
-        .baseBlock = 0xDA,
-    },
-    DUMMY_WIN_TEMPLATE
-};
+    {
+        [MAP_WINDOW_UNUSED] = {
+            .bg = 0,
+            .tilemapLeft = 0,
+            .tilemapTop = 1,
+            .width = 15,
+            .height = 5,
+            .paletteNum = 15,
+            .baseBlock = 0x1,
+        },
+        [MAP_WINDOW_NAME] = {
+            .bg = 0,
+            .tilemapLeft = 20,
+            .tilemapTop = 1,
+            .width = 10,
+            .height = 14,
+            .paletteNum = 15,
+            .baseBlock = 0x4D,
+        },
+        [MAP_WINDOW_DESCRIPTION] = {
+            .bg = 0,
+            .tilemapLeft = 2,
+            .tilemapTop = 16,
+            .width = 26,
+            .height = 4,
+            .paletteNum = 15,
+            .baseBlock = 0xDA,
+        },
+        DUMMY_WIN_TEMPLATE};
 
 static const u8 sTextColors[][3] =
-{
-    {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY},
-    {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_BLUE},
-    {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_RED, TEXT_COLOR_LIGHT_RED},
+    {
+        {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY},
+        {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_BLUE},
+        {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_RED, TEXT_COLOR_LIGHT_RED},
 };
 
 struct
@@ -342,208 +329,196 @@ struct
     s16 yEnd;
     s16 xStart;
     s16 xEnd;
-}
-static const sPassAreasLayout[CURSOR_AREA_COUNT - 1] =
-{
-    [CURSOR_AREA_MAP - 1]            = { 28,  76, 132, 220},
-    [CURSOR_AREA_CARD - 1]           = { 84, 132, 132, 220},
-    [CURSOR_AREA_RECORD - 1]         = { 80, 102,  20, 108},
-    [CURSOR_AREA_CANCEL - 1]         = {  0,  16, 152, 240},
-    [CURSOR_AREA_POINTS - 1]         = {108, 134,  20, 108},
-    [CURSOR_AREA_EARNED_SYMBOLS - 1] = { 24,  48,  20, 108},
-    [CURSOR_AREA_SYMBOL_TOWER - 1]   = { 50,  66,  20,  36},
-    [CURSOR_AREA_SYMBOL_DOME - 1]    = { 66,  82,  32,  48},
-    [CURSOR_AREA_SYMBOL_PALACE - 1]  = { 50,  66,  44,  60},
-    [CURSOR_AREA_SYMBOL_ARENA - 1]   = { 66,  82,  56,  72},
-    [CURSOR_AREA_SYMBOL_FACTORY - 1] = { 50,  66,  68,  84},
-    [CURSOR_AREA_SYMBOL_PIKE - 1]    = { 66,  82,  80,  96},
-    [CURSOR_AREA_SYMBOL_PYRAMID - 1] = { 50,  66,  92, 108},
+} static const sPassAreasLayout[CURSOR_AREA_COUNT - 1] =
+    {
+        [CURSOR_AREA_MAP - 1] = {28, 76, 132, 220},
+        [CURSOR_AREA_CARD - 1] = {84, 132, 132, 220},
+        [CURSOR_AREA_RECORD - 1] = {80, 102, 20, 108},
+        [CURSOR_AREA_CANCEL - 1] = {0, 16, 152, 240},
+        [CURSOR_AREA_POINTS - 1] = {108, 134, 20, 108},
+        [CURSOR_AREA_EARNED_SYMBOLS - 1] = {24, 48, 20, 108},
+        [CURSOR_AREA_SYMBOL_TOWER - 1] = {50, 66, 20, 36},
+        [CURSOR_AREA_SYMBOL_DOME - 1] = {66, 82, 32, 48},
+        [CURSOR_AREA_SYMBOL_PALACE - 1] = {50, 66, 44, 60},
+        [CURSOR_AREA_SYMBOL_ARENA - 1] = {66, 82, 56, 72},
+        [CURSOR_AREA_SYMBOL_FACTORY - 1] = {50, 66, 68, 84},
+        [CURSOR_AREA_SYMBOL_PIKE - 1] = {66, 82, 80, 96},
+        [CURSOR_AREA_SYMBOL_PYRAMID - 1] = {50, 66, 92, 108},
 };
 
 static const struct CompressedSpriteSheet sCursorSpriteSheets[] =
-{
-    {sCursor_Gfx, 0x100, TAG_CURSOR},
-    {sMapCursor_Gfx, 0x400, TAG_MAP_INDICATOR},
-    {gFrontierPassMedals_Gfx, 0x380, TAG_MEDAL_SILVER},
+    {
+        {sCursor_Gfx, 0x100, TAG_CURSOR},
+        {sMapCursor_Gfx, 0x400, TAG_MAP_INDICATOR},
+        {gFrontierPassMedals_Gfx, 0x380, TAG_MEDAL_SILVER},
 };
 
 static const struct CompressedSpriteSheet sHeadsSpriteSheet[] =
-{
-    {sHeads_Gfx, 0x100, TAG_HEAD_MALE},
-    {}
-};
+    {
+        {sHeads_Gfx, 0x100, TAG_HEAD_MALE},
+        {}};
 
 static const struct SpritePalette sSpritePalettes[] =
-{
-    {gFrontierPassCursor_Pal,       TAG_CURSOR},
-    {gFrontierPassMapCursor_Pal,    TAG_MAP_INDICATOR},
-    {gFrontierPassMedalsSilver_Pal, TAG_MEDAL_SILVER},
-    {gFrontierPassMedalsGold_Pal,   TAG_MEDAL_GOLD},
-    {sMaleHead_Pal,                 TAG_HEAD_MALE},
-    {sFemaleHead_Pal,               TAG_HEAD_FEMALE},
-    {}
-};
+    {
+        {gFrontierPassCursor_Pal, TAG_CURSOR},
+        {gFrontierPassMapCursor_Pal, TAG_MAP_INDICATOR},
+        {gFrontierPassMedalsSilver_Pal, TAG_MEDAL_SILVER},
+        {gFrontierPassMedalsGold_Pal, TAG_MEDAL_GOLD},
+        {sMaleHead_Pal, TAG_HEAD_MALE},
+        {sFemaleHead_Pal, TAG_HEAD_FEMALE},
+        {}};
 
 static const union AnimCmd sAnim_Frame1_Unused[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(0, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame1[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(0, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame2[] =
-{
-    ANIMCMD_FRAME(4, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(4, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame3[] =
-{
-    ANIMCMD_FRAME(8, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(8, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame4[] =
-{
-    ANIMCMD_FRAME(12, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(12, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame5[] =
-{
-    ANIMCMD_FRAME(16, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(16, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame6[] =
-{
-    ANIMCMD_FRAME(20, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(20, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_Frame7[] =
-{
-    ANIMCMD_FRAME(24, 0),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(24, 0),
+        ANIMCMD_END};
 
 static const union AnimCmd sAnim_MapIndicatorCursor_Rectangle[] =
-{
-    ANIMCMD_FRAME(0, 45),
-    ANIMCMD_FRAME(8, 45),
-    ANIMCMD_JUMP(0)
-};
+    {
+        ANIMCMD_FRAME(0, 45),
+        ANIMCMD_FRAME(8, 45),
+        ANIMCMD_JUMP(0)};
 
 static const union AnimCmd sAnim_MapIndicatorCursor_Square[] =
-{
-    ANIMCMD_FRAME(16, 45),
-    ANIMCMD_FRAME(24, 45),
-    ANIMCMD_JUMP(0)
-};
+    {
+        ANIMCMD_FRAME(16, 45),
+        ANIMCMD_FRAME(24, 45),
+        ANIMCMD_JUMP(0)};
 
 // Used both by the cursor and the map head icons
 static const union AnimCmd *const sAnims_TwoFrame[] =
-{
-    sAnim_Frame1,
-    sAnim_Frame2
-};
+    {
+        sAnim_Frame1,
+        sAnim_Frame2};
 
 static const union AnimCmd *const sAnims_Medal[] =
-{
-    [CURSOR_AREA_SYMBOL_TOWER   - CURSOR_AREA_SYMBOL] = sAnim_Frame1,
-    [CURSOR_AREA_SYMBOL_DOME    - CURSOR_AREA_SYMBOL] = sAnim_Frame2,
-    [CURSOR_AREA_SYMBOL_PALACE  - CURSOR_AREA_SYMBOL] = sAnim_Frame3,
-    [CURSOR_AREA_SYMBOL_ARENA   - CURSOR_AREA_SYMBOL] = sAnim_Frame4,
-    [CURSOR_AREA_SYMBOL_FACTORY - CURSOR_AREA_SYMBOL] = sAnim_Frame5,
-    [CURSOR_AREA_SYMBOL_PIKE    - CURSOR_AREA_SYMBOL] = sAnim_Frame6,
-    [CURSOR_AREA_SYMBOL_PYRAMID - CURSOR_AREA_SYMBOL] = sAnim_Frame7
-};
+    {
+        [CURSOR_AREA_SYMBOL_TOWER - CURSOR_AREA_SYMBOL] = sAnim_Frame1,
+        [CURSOR_AREA_SYMBOL_DOME -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame2,
+        [CURSOR_AREA_SYMBOL_PALACE -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame3,
+        [CURSOR_AREA_SYMBOL_ARENA -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame4,
+        [CURSOR_AREA_SYMBOL_FACTORY -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame5,
+        [CURSOR_AREA_SYMBOL_PIKE -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame6,
+        [CURSOR_AREA_SYMBOL_PYRAMID -
+            CURSOR_AREA_SYMBOL] = sAnim_Frame7};
 
 static const union AnimCmd *const sAnims_MapIndicatorCursor[] =
-{
-    [MAP_INDICATOR_RECTANGLE] = sAnim_MapIndicatorCursor_Rectangle,
-    [MAP_INDICATOR_SQUARE]    = sAnim_MapIndicatorCursor_Square
-};
+    {
+        [MAP_INDICATOR_RECTANGLE] = sAnim_MapIndicatorCursor_Rectangle,
+        [MAP_INDICATOR_SQUARE] = sAnim_MapIndicatorCursor_Square};
 
 static const union AffineAnimCmd sAffineAnim_Unused[] =
-{
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_END
-};
+    {
+        AFFINEANIMCMD_FRAME(256, 256, 0, 0),
+        AFFINEANIMCMD_END};
 
 static const union AffineAnimCmd *const sAffineAnims_Unused[] =
-{
-    sAffineAnim_Unused
-};
+    {
+        sAffineAnim_Unused};
 
 static const struct SpriteTemplate sSpriteTemplates_Cursors[] =
-{
-    // Triangular cursor
     {
-        .tileTag = TAG_CURSOR,
-        .paletteTag = TAG_CURSOR,
+        // Triangular cursor
+        {
+            .tileTag = TAG_CURSOR,
+            .paletteTag = TAG_CURSOR,
+            .oam = &gOamData_AffineOff_ObjNormal_16x16,
+            .anims = sAnims_TwoFrame,
+            .images = NULL,
+            .affineAnims = gDummySpriteAffineAnimTable,
+            .callback = SpriteCallbackDummy,
+        },
+        // Map indicator cursor
+        {
+            .tileTag = TAG_MAP_INDICATOR,
+            .paletteTag = TAG_MAP_INDICATOR,
+            .oam = &gOamData_AffineOff_ObjNormal_32x16,
+            .anims = sAnims_MapIndicatorCursor,
+            .images = NULL,
+            .affineAnims = gDummySpriteAffineAnimTable,
+            .callback = SpriteCallbackDummy,
+        },
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Medal =
+    {
+        .tileTag = TAG_MEDAL_SILVER,
+        .paletteTag = TAG_MEDAL_SILVER,
+        .oam = &gOamData_AffineOff_ObjNormal_16x16,
+        .anims = sAnims_Medal,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
+};
+
+static const struct SpriteTemplate sSpriteTemplate_PlayerHead =
+    {
+        .tileTag = TAG_HEAD_MALE,
+        .paletteTag = TAG_HEAD_MALE,
         .oam = &gOamData_AffineOff_ObjNormal_16x16,
         .anims = sAnims_TwoFrame,
         .images = NULL,
         .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    },
-    // Map indicator cursor
-    {
-        .tileTag = TAG_MAP_INDICATOR,
-        .paletteTag = TAG_MAP_INDICATOR,
-        .oam = &gOamData_AffineOff_ObjNormal_32x16,
-        .anims = sAnims_MapIndicatorCursor,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    },
-};
-
-static const struct SpriteTemplate sSpriteTemplate_Medal =
-{
-    .tileTag = TAG_MEDAL_SILVER,
-    .paletteTag = TAG_MEDAL_SILVER,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = sAnims_Medal,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
-};
-
-static const struct SpriteTemplate sSpriteTemplate_PlayerHead =
-{
-    .tileTag = TAG_HEAD_MALE,
-    .paletteTag = TAG_HEAD_MALE,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = sAnims_TwoFrame,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_PlayerHead,
+        .callback = SpriteCB_PlayerHead,
 };
 
 static const u8 *const sPassAreaDescriptions[CURSOR_AREA_COUNT + 1] =
-{
-    [CURSOR_AREA_NOTHING]        = gText_ThereIsNoBattleRecord, // NOTHING is re-used for CURSOR_AREA_RECORD when no Record is present
-    [CURSOR_AREA_MAP]            = gText_CheckFrontierMap,
-    [CURSOR_AREA_CARD]           = gText_CheckTrainerCard,
-    [CURSOR_AREA_RECORD]         = gText_ViewRecordedBattle,
-    [CURSOR_AREA_CANCEL]         = gText_PutAwayFrontierPass,
-    [CURSOR_AREA_POINTS]         = gText_CurrentBattlePoints,
-    [CURSOR_AREA_EARNED_SYMBOLS] = gText_CollectedSymbols,
-    [CURSOR_AREA_SYMBOL_TOWER]   = gText_BattleTowerAbilitySymbol,
-    [CURSOR_AREA_SYMBOL_DOME]    = gText_BattleDomeTacticsSymbol,
-    [CURSOR_AREA_SYMBOL_PALACE]  = gText_BattlePalaceSpiritsSymbol,
-    [CURSOR_AREA_SYMBOL_ARENA]   = gText_BattleArenaGutsSymbol,
-    [CURSOR_AREA_SYMBOL_FACTORY] = gText_BattleFactoryKnowledgeSymbol,
-    [CURSOR_AREA_SYMBOL_PIKE]    = gText_BattlePikeLuckSymbol,
-    [CURSOR_AREA_SYMBOL_PYRAMID] = gText_BattlePyramidBraveSymbol,
-    [CURSOR_AREA_COUNT]          = gText_EmptyString7,
+    {
+        [CURSOR_AREA_NOTHING] = gText_ThereIsNoBattleRecord, // NOTHING is re-used for CURSOR_AREA_RECORD when no Record is present
+        [CURSOR_AREA_MAP] = gText_CheckFrontierMap,
+        [CURSOR_AREA_CARD] = gText_CheckTrainerCard,
+        [CURSOR_AREA_RECORD] = gText_ViewRecordedBattle,
+        [CURSOR_AREA_CANCEL] = gText_PutAwayFrontierPass,
+        [CURSOR_AREA_POINTS] = gText_CurrentBattlePoints,
+        [CURSOR_AREA_EARNED_SYMBOLS] = gText_CollectedSymbols,
+        [CURSOR_AREA_SYMBOL_TOWER] = gText_BattleTowerAbilitySymbol,
+        [CURSOR_AREA_SYMBOL_DOME] = gText_BattleDomeTacticsSymbol,
+        [CURSOR_AREA_SYMBOL_PALACE] = gText_BattlePalaceSpiritsSymbol,
+        [CURSOR_AREA_SYMBOL_ARENA] = gText_BattleArenaGutsSymbol,
+        [CURSOR_AREA_SYMBOL_FACTORY] = gText_BattleFactoryKnowledgeSymbol,
+        [CURSOR_AREA_SYMBOL_PIKE] = gText_BattlePikeLuckSymbol,
+        [CURSOR_AREA_SYMBOL_PYRAMID] = gText_BattlePyramidBraveSymbol,
+        [CURSOR_AREA_COUNT] = gText_EmptyString7,
 };
 
 struct
@@ -554,14 +529,14 @@ struct
     s16 y;
     u8 animNum;
 } static const sMapLandmarks[NUM_FRONTIER_FACILITIES] =
-{
-    [FRONTIER_FACILITY_TOWER]   = {gText_BattleTower3,   gText_BattleTowerDesc,    89,  40, MAP_INDICATOR_SQUARE},
-    [FRONTIER_FACILITY_DOME]    = {gText_BattleDome2,    gText_BattleDomeDesc,     33,  42, MAP_INDICATOR_SQUARE},
-    [FRONTIER_FACILITY_PALACE]  = {gText_BattlePalace2,  gText_BattlePalaceDesc,  120,  86, MAP_INDICATOR_RECTANGLE},
-    [FRONTIER_FACILITY_ARENA]   = {gText_BattleArena2,   gText_BattleArenaDesc,   114,  59, MAP_INDICATOR_RECTANGLE},
-    [FRONTIER_FACILITY_FACTORY] = {gText_BattleFactory2, gText_BattleFactoryDesc,  25,  67, MAP_INDICATOR_RECTANGLE},
-    [FRONTIER_FACILITY_PIKE]    = {gText_BattlePike2,    gText_BattlePikeDesc,     57,  57, MAP_INDICATOR_SQUARE},
-    [FRONTIER_FACILITY_PYRAMID] = {gText_BattlePyramid2, gText_BattlePyramidDesc, 134,  41, MAP_INDICATOR_SQUARE},
+    {
+        [FRONTIER_FACILITY_TOWER] = {gText_BattleTower3, gText_BattleTowerDesc, 89, 40, MAP_INDICATOR_SQUARE},
+        [FRONTIER_FACILITY_DOME] = {gText_BattleDome2, gText_BattleDomeDesc, 33, 42, MAP_INDICATOR_SQUARE},
+        [FRONTIER_FACILITY_PALACE] = {gText_BattlePalace2, gText_BattlePalaceDesc, 120, 86, MAP_INDICATOR_RECTANGLE},
+        [FRONTIER_FACILITY_ARENA] = {gText_BattleArena2, gText_BattleArenaDesc, 114, 59, MAP_INDICATOR_RECTANGLE},
+        [FRONTIER_FACILITY_FACTORY] = {gText_BattleFactory2, gText_BattleFactoryDesc, 25, 67, MAP_INDICATOR_RECTANGLE},
+        [FRONTIER_FACILITY_PIKE] = {gText_BattlePike2, gText_BattlePikeDesc, 57, 57, MAP_INDICATOR_SQUARE},
+        [FRONTIER_FACILITY_PYRAMID] = {gText_BattlePyramid2, gText_BattlePyramidDesc, 134, 41, MAP_INDICATOR_SQUARE},
 };
 
 static void ResetGpuRegsAndBgs(void)
@@ -871,8 +846,7 @@ static u8 GetCursorAreaFromCoords(s16 x, s16 y)
     // Minus/Plus 1, because the table doesn't take CURSOR_AREA_NOTHING into account.
     for (i = 0; i < CURSOR_AREA_COUNT - 1; i++)
     {
-        if (sPassAreasLayout[i].yStart <= y && sPassAreasLayout[i].yEnd >= y
-         && sPassAreasLayout[i].xStart <= x && sPassAreasLayout[i].xEnd >= x)
+        if (sPassAreasLayout[i].yStart <= y && sPassAreasLayout[i].yEnd >= y && sPassAreasLayout[i].xStart <= x && sPassAreasLayout[i].xEnd >= x)
         {
             if (i >= CURSOR_AREA_SYMBOL - 1 && sPassData->facilitySymbols[i - CURSOR_AREA_SYMBOL + 1] == 0)
                 break;
@@ -917,19 +891,7 @@ static void CB2_ReturnFromRecord(void)
     sPassData->cursorX = sSavedPassData.cursorX;
     sPassData->cursorY = sSavedPassData.cursorY;
     memset(&sSavedPassData, 0, sizeof(sSavedPassData));
-    switch (InBattlePyramid())
-    {
-    case 1:
-        PlayBGM(MUS_B_PYRAMID);
-        break;
-    case 2:
-        PlayBGM(MUS_B_PYRAMID_TOP);
-        break;
-    default:
-        Overworld_PlaySpecialMapMusic();
-        break;
-    }
-
+    Overworld_PlaySpecialMapMusic();
     SetMainCallback2(CB2_ReshowFrontierPass);
 }
 
@@ -1031,10 +993,10 @@ static void Task_HandleFrontierPassInput(u8 taskId)
                 PlaySE(SE_PC_OFF);
                 SetMainCallback2(CB2_HideFrontierPass);
                 DestroyTask(taskId);
-                // BUG. The function should return here. Otherwise, it can play the same sound twice and destroy the same task twice.
-                #ifdef BUGFIX
+// BUG. The function should return here. Otherwise, it can play the same sound twice and destroy the same task twice.
+#ifdef BUGFIX
                 return;
-                #endif
+#endif
             }
         }
 
@@ -1058,8 +1020,8 @@ static void Task_HandleFrontierPassInput(u8 taskId)
     }
 }
 
-#define tScaleX      data[1]
-#define tScaleY      data[2]
+#define tScaleX data[1]
+#define tScaleY data[2]
 #define tScaleSpeedX data[3]
 #define tScaleSpeedY data[4]
 
@@ -1241,7 +1203,7 @@ static void ShowHideZoomingArea(bool8 show, bool8 zoomedIn)
 
 static void UpdateAreaHighlight(u8 cursorArea, u8 previousCursorArea)
 {
-    #define NON_HIGHLIGHT_AREA(area)((area) == CURSOR_AREA_NOTHING || (area) > CURSOR_AREA_CANCEL)
+#define NON_HIGHLIGHT_AREA(area) ((area) == CURSOR_AREA_NOTHING || (area) > CURSOR_AREA_CANCEL)
 
     // If moving off highlightable area, unhighlight it
     switch (previousCursorArea)
@@ -1352,7 +1314,6 @@ static void FreeCursorAndSymbolSprites(void)
 
 static void SpriteCB_PlayerHead(struct Sprite *sprite)
 {
-
 }
 
 // Frontier Map code.
@@ -1504,7 +1465,7 @@ static bool32 ExitFrontierMap(void)
     return FALSE;
 }
 
-#define tState     data[0]
+#define tState data[0]
 #define tMoveSteps data[1]
 
 static void Task_HandleFrontierMap(u8 taskId)
@@ -1580,49 +1541,28 @@ static void Task_HandleFrontierMap(u8 taskId)
 static u8 MapNumToFrontierFacilityId(u16 mapNum) // id + 1, zero means not a frontier map number
 {
     // In Battle Tower
-    if ((mapNum >= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_LOBBY) && mapNum <= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_BATTLE_ROOM))
-     || (mapNum >= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_PARTNER_ROOM) && mapNum <= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM)))
+    if ((mapNum >= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_LOBBY) && mapNum <= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_BATTLE_ROOM)) || (mapNum >= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_PARTNER_ROOM) && mapNum <= MAP_NUM(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_BATTLE_ROOM)))
         return FRONTIER_FACILITY_TOWER + 1;
 
     // In Battle Dome
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_LOBBY)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_CORRIDOR)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_PRE_BATTLE_ROOM)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_BATTLE_ROOM))
+    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_LOBBY) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_CORRIDOR) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_PRE_BATTLE_ROOM) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_DOME_BATTLE_ROOM))
         return FRONTIER_FACILITY_DOME + 1;
 
     // In Battle Palace
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_LOBBY)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_CORRIDOR)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_BATTLE_ROOM))
+    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_LOBBY) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_CORRIDOR) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PALACE_BATTLE_ROOM))
         return FRONTIER_FACILITY_PALACE + 1;
 
     // In Battle Arena
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_LOBBY)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_CORRIDOR)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_BATTLE_ROOM))
+    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_LOBBY) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_CORRIDOR) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_ARENA_BATTLE_ROOM))
         return FRONTIER_FACILITY_ARENA + 1;
 
     // In Battle Factory
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_LOBBY)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_PRE_BATTLE_ROOM)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_BATTLE_ROOM))
+    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_LOBBY) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_PRE_BATTLE_ROOM) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_FACTORY_BATTLE_ROOM))
         return FRONTIER_FACILITY_FACTORY + 1;
 
     // In Battle Pike
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_LOBBY)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_CORRIDOR)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_THREE_PATH_ROOM)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_NORMAL)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_FINAL)
-             || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS))
+    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_LOBBY) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_CORRIDOR) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_THREE_PATH_ROOM) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_NORMAL) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_FINAL) || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS))
         return FRONTIER_FACILITY_PIKE + 1;
-
-    // In Battle Pyramid
-    else if (mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PYRAMID_LOBBY)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
-        || mapNum == MAP_NUM(BATTLE_FRONTIER_BATTLE_PYRAMID_TOP))
-        return FRONTIER_FACILITY_PYRAMID + 1;
 
     else
         return 0;
@@ -1657,8 +1597,7 @@ static void InitFrontierMapSprites(void)
     {
         s8 mapNum = gSaveBlock1Ptr->location.mapNum;
 
-        if (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_WEST)
-            || (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST) && (x = 55)))
+        if (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_WEST) || (mapNum == MAP_NUM(BATTLE_FRONTIER_OUTSIDE_EAST) && (x = 55)))
         {
             x += gSaveBlock1Ptr->pos.x;
             y = gSaveBlock1Ptr->pos.y;

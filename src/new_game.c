@@ -27,7 +27,6 @@
 #include "battle_records.h"
 #include "item.h"
 #include "pokedex.h"
-#include "apprentice.h"
 #include "frontier_util.h"
 #include "pokedex.h"
 #include "save.h"
@@ -56,10 +55,9 @@ EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
 
 static const struct ContestWinner sContestWinnerPicDummy =
-{
-    .monName = _(""),
-    .trainerName = _("")
-};
+    {
+        .monName = _(""),
+        .trainerName = _("")};
 
 void SetTrainerId(u32 trainerId, u8 *dst)
 {
@@ -197,7 +195,6 @@ void NewGameInitData(void)
     ResetMiniGamesRecords();
     InitUnionRoomChatRegisteredTexts();
     InitLilycoveLady();
-    ResetAllApprenticeData();
     ClearRankingHallRecords();
     InitMatchCallCounters();
     ClearMysteryGift();

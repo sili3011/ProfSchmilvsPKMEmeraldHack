@@ -226,14 +226,16 @@ static void DoQuizQuestionEasyChatScreen(void);
 static void DoQuizSetAnswerEasyChatScreen(void);
 static void DoQuizSetQuestionEasyChatScreen(void);
 
-enum {
+enum
+{
     PALTAG_TRIANGLE_CURSOR,
     PALTAG_RECTANGLE_CURSOR,
     PALTAG_MISC_UI,
     PALTAG_RS_INTERVIEW_FRAME,
 };
 
-enum {
+enum
+{
     GFXTAG_TRIANGLE_CURSOR,
     GFXTAG_RECTANGLE_CURSOR,
     GFXTAG_SCROLL_INDICATOR,
@@ -243,10 +245,10 @@ enum {
     GFXTAG_BUTTON_WINDOW,
 };
 
-
 // State values for sEasyChatScreen->inputState
 // Control which input handler to use in HandleEasyChatInput
-enum {
+enum
+{
     INPUTSTATE_PHRASE,
     INPUTSTATE_MAIN_SCREEN_BUTTONS,
     INPUTSTATE_KEYBOARD,
@@ -261,7 +263,8 @@ enum {
 };
 
 // Task states for the 'main' task, Task_EasyChatScreen
-enum {
+enum
+{
     MAINSTATE_FADE_IN,
     MAINSTATE_HANDLE_INPUT,
     MAINSTATE_RUN_FUNC,
@@ -271,7 +274,8 @@ enum {
 };
 
 // IDs provided to PrintEasyChatStdMessage to print a standard message
-enum {
+enum
+{
     MSG_INSTRUCTIONS,
     MSG_CONFIRM_DELETE,
     MSG_CONFIRM_EXIT,
@@ -287,7 +291,8 @@ enum {
 // IDs for supplementary Easy Chat functions
 // Returned by the input handler functions, and run
 // in the main task (MAINSTATE_RUN_FUNC)
-enum {
+enum
+{
     ECFUNC_NONE,
     ECFUNC_REPRINT_PHRASE,
     ECFUNC_UPDATE_MAIN_CURSOR,
@@ -326,22 +331,24 @@ enum {
 };
 
 // IDs for InitLowerWindowText
-enum {
+enum
+{
     TEXT_GROUPS,
     TEXT_ALPHABET,
     TEXT_WORD_SELECT,
 };
 
-#define NUM_ALPHABET_ROWS    4
-#define NUM_GROUP_NAME_ROWS  4
+#define NUM_ALPHABET_ROWS 4
+#define NUM_GROUP_NAME_ROWS 4
 #define NUM_WORD_SELECT_ROWS 4
-#define NUM_BUTTON_ROWS      3
+#define NUM_BUTTON_ROWS 3
 
-#define NUM_ALPHABET_COLUMNS    7
-#define NUM_GROUP_NAME_COLUMNS  2
+#define NUM_ALPHABET_COLUMNS 7
+#define NUM_GROUP_NAME_COLUMNS 2
 #define NUM_WORD_SELECT_COLUMNS 2
 
-enum {
+enum
+{
     FRAMEID_GENERAL_2x2,
     FRAMEID_GENERAL_2x3,
     FRAMEID_MAIL,
@@ -354,14 +361,16 @@ enum {
 };
 
 // IDs for the footer row of buttons on the main screen
-enum {
+enum
+{
     FOOTER_NORMAL,
     FOOTER_QUIZ,
     FOOTER_ANSWER,
     NUM_FOOTER_TYPES
 };
 
-enum {
+enum
+{
     INPUT_RIGHT,
     INPUT_LEFT,
     INPUT_UP,
@@ -371,7 +380,8 @@ enum {
 };
 
 // Types of animations for the lower window (keyboard/word select), given to InitLowerWindowAnim
-enum {
+enum
+{
     WINANIM_OPEN_KEYBOARD,
     WINANIM_CLOSE_KEYBOARD,
     WINANIM_OPEN_WORD_SELECT,
@@ -382,7 +392,8 @@ enum {
 };
 
 // Window IDs
-enum {
+enum
+{
     WIN_TITLE,
     WIN_MSG,
     WIN_INPUT_SELECT, // Word groups, word list, and keyboard
@@ -390,16 +401,16 @@ enum {
 
 // Values for text frame tilemap
 #define FRAME_OFFSET_ORANGE 0x1000 // Orange frame, for phrase text
-#define FRAME_OFFSET_GREEN  0x4000 // Green frame, for keyboard/word select
+#define FRAME_OFFSET_GREEN 0x4000  // Green frame, for keyboard/word select
 
-#define FRAME_TILE_TRANSPARENT     0x0
-#define FRAME_TILE_TOP_L_CORNER    0x1
-#define FRAME_TILE_TOP_EDGE        0x2
-#define FRAME_TILE_TOP_R_CORNER    0x3
-#define FRAME_TILE_L_EDGE          0x5
-#define FRAME_TILE_R_EDGE          0x7
+#define FRAME_TILE_TRANSPARENT 0x0
+#define FRAME_TILE_TOP_L_CORNER 0x1
+#define FRAME_TILE_TOP_EDGE 0x2
+#define FRAME_TILE_TOP_R_CORNER 0x3
+#define FRAME_TILE_L_EDGE 0x5
+#define FRAME_TILE_R_EDGE 0x7
 #define FRAME_TILE_BOTTOM_L_CORNER 0x9
-#define FRAME_TILE_BOTTOM_EDGE     0xA
+#define FRAME_TILE_BOTTOM_EDGE 0xA
 #define FRAME_TILE_BOTTOM_R_CORNER 0xB
 
 struct
@@ -595,18 +606,6 @@ static const struct EasyChatScreenTemplate sEasyChatScreenTemplates[] = {
         .confirmText2 = gText_IsAsShownOkay,
     },
     {
-        .type = EASY_CHAT_TYPE_APPRENTICE,
-        .numColumns = 2,
-        .numRows = 3,
-        .frameId = FRAMEID_GENERAL_2x3,
-        .fourFooterOptions = FALSE,
-        .titleText = gText_ApprenticesPhrase,
-        .instructionsText1 = gText_FindWordsWhichFit,
-        .instructionsText2 = gText_TheTrainersImage,
-        .confirmText1 = gText_ApprenticePhrase,
-        .confirmText2 = gText_IsAsShownOkay,
-    },
-    {
         .type = EASY_CHAT_TYPE_GOOD_SAYING,
         .numColumns = 2,
         .numRows = 1,
@@ -684,8 +683,8 @@ static const struct EasyChatScreenTemplate sEasyChatScreenTemplates[] = {
 // 0 is 'Others', 1-26 are the letters A-Z
 // This array maps the group IDs to the alphabet keyboard
 static const u8 sAlphabetGroupIdMap[NUM_ALPHABET_ROWS][NUM_ALPHABET_COLUMNS] = {
-    { 1,  2,  3,  4,  5,  6,  0},
-    { 7,  8,  9, 10, 11, 12,  0},
+    {1, 2, 3, 4, 5, 6, 0},
+    {7, 8, 9, 10, 11, 12, 0},
     {13, 14, 15, 16, 17, 18, 19},
     {20, 21, 22, 23, 24, 25, 26},
 };
@@ -698,11 +697,11 @@ static const u16 sMysteryGiftPhrase[NUM_QUESTIONNAIRE_WORDS] = {
 };
 
 static const u16 sBerryMasterWifePhrases[][2] = {
-    [PHRASE_GREAT_BATTLE - 1]        = {EC_WORD_GREAT, EC_WORD_BATTLE},
-    [PHRASE_CHALLENGE_CONTEST - 1]   = {EC_WORD_CHALLENGE, EC_WORD_CONTEST},
+    [PHRASE_GREAT_BATTLE - 1] = {EC_WORD_GREAT, EC_WORD_BATTLE},
+    [PHRASE_CHALLENGE_CONTEST - 1] = {EC_WORD_CHALLENGE, EC_WORD_CONTEST},
     [PHRASE_OVERWHELMING_LATIAS - 1] = {EC_WORD_OVERWHELMING, EC_POKEMON(LATIAS)},
-    [PHRASE_COOL_LATIOS - 1]         = {EC_WORD_COOL, EC_POKEMON(LATIOS)},
-    [PHRASE_SUPER_HUSTLE - 1]        = {EC_WORD_SUPER, EC_WORD_HUSTLE},
+    [PHRASE_COOL_LATIOS - 1] = {EC_WORD_COOL, EC_POKEMON(LATIOS)},
+    [PHRASE_SUPER_HUSTLE - 1] = {EC_WORD_SUPER, EC_WORD_HUSTLE},
 };
 
 static const u16 sTriangleCursor_Pal[] = INCBIN_U16("graphics/easy_chat/triangle_cursor.gbapal");
@@ -869,31 +868,24 @@ static const struct WindowTemplate sEasyChatYesNoWindowTemplate = {
 static const u8 sText_Clear17[] = _("{CLEAR 17}");
 
 static const u8 *const sEasyChatKeyboardAlphabet[NUM_ALPHABET_ROWS] =
-{
-    gText_EasyChatKeyboard_ABCDEFothers,
-    gText_EasyChatKeyboard_GHIJKL,
-    gText_EasyChatKeyboard_MNOPQRS,
-    gText_EasyChatKeyboard_TUVWXYZ,
+    {
+        gText_EasyChatKeyboard_ABCDEFothers,
+        gText_EasyChatKeyboard_GHIJKL,
+        gText_EasyChatKeyboard_MNOPQRS,
+        gText_EasyChatKeyboard_TUVWXYZ,
 };
 
 static const struct SpriteSheet sSpriteSheets[] = {
-    {
-        .data = sTriangleCursor_Gfx,
-        .size = sizeof(sTriangleCursor_Gfx),
-        .tag = GFXTAG_TRIANGLE_CURSOR
-    },
-    {
-        .data = sScrollIndicator_Gfx,
-        .size = sizeof(sScrollIndicator_Gfx),
-        .tag = GFXTAG_SCROLL_INDICATOR
-    },
-    {
-        .data = sStartSelectButtons_Gfx,
-        .size = sizeof(sStartSelectButtons_Gfx),
-        .tag = GFXTAG_START_SELECT_BUTTONS
-    },
-    {0}
-};
+    {.data = sTriangleCursor_Gfx,
+     .size = sizeof(sTriangleCursor_Gfx),
+     .tag = GFXTAG_TRIANGLE_CURSOR},
+    {.data = sScrollIndicator_Gfx,
+     .size = sizeof(sScrollIndicator_Gfx),
+     .tag = GFXTAG_SCROLL_INDICATOR},
+    {.data = sStartSelectButtons_Gfx,
+     .size = sizeof(sStartSelectButtons_Gfx),
+     .tag = GFXTAG_START_SELECT_BUTTONS},
+    {0}};
 
 static const struct SpritePalette sSpritePalettes[] = {
     {
@@ -912,8 +904,7 @@ static const struct SpritePalette sSpritePalettes[] = {
         .data = sRSInterviewFrame_Pal,
         .tag = PALTAG_RS_INTERVIEW_FRAME,
     },
-    {0}
-};
+    {0}};
 
 static const struct CompressedSpriteSheet sCompressedSpriteSheets[] = {
     {
@@ -957,14 +948,14 @@ static const struct OamData sOamData_TriangleCursor = {
 };
 
 static const struct SpriteTemplate sSpriteTemplate_TriangleCursor =
-{
-    .tileTag = PALTAG_TRIANGLE_CURSOR,
-    .paletteTag = GFXTAG_TRIANGLE_CURSOR,
-    .oam = &sOamData_TriangleCursor,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Cursor,
+    {
+        .tileTag = PALTAG_TRIANGLE_CURSOR,
+        .paletteTag = GFXTAG_TRIANGLE_CURSOR,
+        .oam = &sOamData_TriangleCursor,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_Cursor,
 };
 
 static const struct OamData sOamData_RectangleCursor = {
@@ -1004,7 +995,8 @@ static const union AnimCmd sAnim_RectangleCursor_OnLetter[] = {
 };
 
 // Each anim changes the width of the rectangle cursor to fit what it should be selecting
-enum {
+enum
+{
     RECTCURSOR_ANIM_ON_GROUP,
     RECTCURSOR_ANIM_ON_BUTTON,
     RECTCURSOR_ANIM_ON_OTHERS,
@@ -1012,21 +1004,21 @@ enum {
 };
 
 static const union AnimCmd *const sAnims_RectangleCursor[] = {
-    [RECTCURSOR_ANIM_ON_GROUP]  = sAnim_RectangleCursor_OnGroup,
+    [RECTCURSOR_ANIM_ON_GROUP] = sAnim_RectangleCursor_OnGroup,
     [RECTCURSOR_ANIM_ON_BUTTON] = sAnim_RectangleCursor_OnButton,
     [RECTCURSOR_ANIM_ON_OTHERS] = sAnim_RectangleCursor_OnOthers,
     [RECTCURSOR_ANIM_ON_LETTER] = sAnim_RectangleCursor_OnLetter,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_RectangleCursor =
-{
-    .tileTag = GFXTAG_RECTANGLE_CURSOR,
-    .paletteTag = PALTAG_RECTANGLE_CURSOR,
-    .oam = &sOamData_RectangleCursor,
-    .anims = sAnims_RectangleCursor,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_Cursor,
+    {
+        .tileTag = GFXTAG_RECTANGLE_CURSOR,
+        .paletteTag = PALTAG_RECTANGLE_CURSOR,
+        .oam = &sOamData_RectangleCursor,
+        .anims = sAnims_RectangleCursor,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_Cursor,
 };
 
 static const struct OamData sOamData_ModeWindow = {
@@ -1073,7 +1065,8 @@ static const union AnimCmd sAnim_ModeWindow_Transition[] = {
     ANIMCMD_END,
 };
 
-enum {
+enum
+{
     MODEWINDOW_ANIM_HIDDEN,
     MODEWINDOW_ANIM_TO_GROUP,
     MODEWINDOW_ANIM_TO_ALPHABET,
@@ -1082,22 +1075,22 @@ enum {
 };
 
 static const union AnimCmd *const sAnims_ModeWindow[] = {
-    [MODEWINDOW_ANIM_HIDDEN]      = sAnim_ModeWindow_Hidden,
-    [MODEWINDOW_ANIM_TO_GROUP]    = sAnim_ModeWindow_ToGroup,
+    [MODEWINDOW_ANIM_HIDDEN] = sAnim_ModeWindow_Hidden,
+    [MODEWINDOW_ANIM_TO_GROUP] = sAnim_ModeWindow_ToGroup,
     [MODEWINDOW_ANIM_TO_ALPHABET] = sAnim_ModeWindow_ToAlphabet,
-    [MODEWINDOW_ANIM_TO_HIDDEN]   = sAnim_ModeWindow_ToHidden,
-    [MODEWINDOW_ANIM_TRANSITION]  = sAnim_ModeWindow_Transition,
+    [MODEWINDOW_ANIM_TO_HIDDEN] = sAnim_ModeWindow_ToHidden,
+    [MODEWINDOW_ANIM_TRANSITION] = sAnim_ModeWindow_Transition,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ModeWindow =
-{
-    .tileTag = GFXTAG_MODE_WINDOW,
-    .paletteTag = PALTAG_MISC_UI,
-    .oam = &sOamData_ModeWindow,
-    .anims = sAnims_ModeWindow,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = GFXTAG_MODE_WINDOW,
+        .paletteTag = PALTAG_MISC_UI,
+        .oam = &sOamData_ModeWindow,
+        .anims = sAnims_ModeWindow,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 static const struct OamData sOamData_ButtonWindow = {
@@ -1117,14 +1110,14 @@ static const struct OamData sOamData_ButtonWindow = {
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ButtonWindow =
-{
-    .tileTag = GFXTAG_BUTTON_WINDOW,
-    .paletteTag = PALTAG_MISC_UI,
-    .oam = &sOamData_ButtonWindow,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = GFXTAG_BUTTON_WINDOW,
+        .paletteTag = PALTAG_MISC_UI,
+        .oam = &sOamData_ButtonWindow,
+        .anims = gDummySpriteAnimTable,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 static const struct OamData sOamData_StartSelectButton = {
@@ -1176,36 +1169,36 @@ static const union AnimCmd *const sAnims_TwoFrame[] = {
 };
 
 static const struct SpriteTemplate sSpriteTemplate_StartSelectButton =
-{
-    .tileTag = GFXTAG_START_SELECT_BUTTONS,
-    .paletteTag = PALTAG_MISC_UI,
-    .oam = &sOamData_StartSelectButton,
-    .anims = sAnims_TwoFrame,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = GFXTAG_START_SELECT_BUTTONS,
+        .paletteTag = PALTAG_MISC_UI,
+        .oam = &sOamData_StartSelectButton,
+        .anims = sAnims_TwoFrame,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 static const struct SpriteTemplate sSpriteTemplate_ScrollIndicator =
-{
-    .tileTag = GFXTAG_SCROLL_INDICATOR,
-    .paletteTag = PALTAG_MISC_UI,
-    .oam = &sOamData_ScrollIndicator,
-    .anims = sAnims_TwoFrame,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCallbackDummy,
+    {
+        .tileTag = GFXTAG_SCROLL_INDICATOR,
+        .paletteTag = PALTAG_MISC_UI,
+        .oam = &sOamData_ScrollIndicator,
+        .anims = sAnims_TwoFrame,
+        .images = NULL,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCallbackDummy,
 };
 
 static const u8 sFooterOptionXOffsets[NUM_FOOTER_TYPES][4] = {
-    [FOOTER_NORMAL] = {16, 111, 196,   0},
-    [FOOTER_QUIZ]   = {16,  78, 130, 160},
-    [FOOTER_ANSWER] = {16,  80, 134, 170},
+    [FOOTER_NORMAL] = {16, 111, 196, 0},
+    [FOOTER_QUIZ] = {16, 78, 130, 160},
+    [FOOTER_ANSWER] = {16, 80, 134, 170},
 };
 
 static const u8 *const sFooterTextOptions[NUM_FOOTER_TYPES][4] = {
     [FOOTER_NORMAL] = {gText_DelAll, gText_Cancel5, gText_Ok2, NULL},
-    [FOOTER_QUIZ]   = {gText_DelAll, gText_Cancel5, gText_Ok2, gText_Quiz},
+    [FOOTER_QUIZ] = {gText_DelAll, gText_Cancel5, gText_Ok2, gText_Quiz},
     [FOOTER_ANSWER] = {gText_DelAll, gText_Cancel5, gText_Ok2, gText_Answer},
 };
 
@@ -1213,27 +1206,27 @@ static const u8 *const sFooterTextOptions[NUM_FOOTER_TYPES][4] = {
 #include "data/easy_chat/easy_chat_words_by_letter.h"
 
 static const u8 *const sEasyChatGroupNamePointers[EC_NUM_GROUPS] = {
-    [EC_GROUP_POKEMON]          = gEasyChatGroupName_Pokemon,
-    [EC_GROUP_TRAINER]          = gEasyChatGroupName_Trainer,
-    [EC_GROUP_STATUS]           = gEasyChatGroupName_Status,
-    [EC_GROUP_BATTLE]           = gEasyChatGroupName_Battle,
-    [EC_GROUP_GREETINGS]        = gEasyChatGroupName_Greetings,
-    [EC_GROUP_PEOPLE]           = gEasyChatGroupName_People,
-    [EC_GROUP_VOICES]           = gEasyChatGroupName_Voices,
-    [EC_GROUP_SPEECH]           = gEasyChatGroupName_Speech,
-    [EC_GROUP_ENDINGS]          = gEasyChatGroupName_Endings,
-    [EC_GROUP_FEELINGS]         = gEasyChatGroupName_Feelings,
-    [EC_GROUP_CONDITIONS]       = gEasyChatGroupName_Conditions,
-    [EC_GROUP_ACTIONS]          = gEasyChatGroupName_Actions,
-    [EC_GROUP_LIFESTYLE]        = gEasyChatGroupName_Lifestyle,
-    [EC_GROUP_HOBBIES]          = gEasyChatGroupName_Hobbies,
-    [EC_GROUP_TIME]             = gEasyChatGroupName_Time,
-    [EC_GROUP_MISC]             = gEasyChatGroupName_Misc,
-    [EC_GROUP_ADJECTIVES]       = gEasyChatGroupName_Adjectives,
-    [EC_GROUP_EVENTS]           = gEasyChatGroupName_Events,
-    [EC_GROUP_MOVE_1]           = gEasyChatGroupName_Move1,
-    [EC_GROUP_MOVE_2]           = gEasyChatGroupName_Move2,
-    [EC_GROUP_TRENDY_SAYING]    = gEasyChatGroupName_TrendySaying,
+    [EC_GROUP_POKEMON] = gEasyChatGroupName_Pokemon,
+    [EC_GROUP_TRAINER] = gEasyChatGroupName_Trainer,
+    [EC_GROUP_STATUS] = gEasyChatGroupName_Status,
+    [EC_GROUP_BATTLE] = gEasyChatGroupName_Battle,
+    [EC_GROUP_GREETINGS] = gEasyChatGroupName_Greetings,
+    [EC_GROUP_PEOPLE] = gEasyChatGroupName_People,
+    [EC_GROUP_VOICES] = gEasyChatGroupName_Voices,
+    [EC_GROUP_SPEECH] = gEasyChatGroupName_Speech,
+    [EC_GROUP_ENDINGS] = gEasyChatGroupName_Endings,
+    [EC_GROUP_FEELINGS] = gEasyChatGroupName_Feelings,
+    [EC_GROUP_CONDITIONS] = gEasyChatGroupName_Conditions,
+    [EC_GROUP_ACTIONS] = gEasyChatGroupName_Actions,
+    [EC_GROUP_LIFESTYLE] = gEasyChatGroupName_Lifestyle,
+    [EC_GROUP_HOBBIES] = gEasyChatGroupName_Hobbies,
+    [EC_GROUP_TIME] = gEasyChatGroupName_Time,
+    [EC_GROUP_MISC] = gEasyChatGroupName_Misc,
+    [EC_GROUP_ADJECTIVES] = gEasyChatGroupName_Adjectives,
+    [EC_GROUP_EVENTS] = gEasyChatGroupName_Events,
+    [EC_GROUP_MOVE_1] = gEasyChatGroupName_Move1,
+    [EC_GROUP_MOVE_2] = gEasyChatGroupName_Move2,
+    [EC_GROUP_TRENDY_SAYING] = gEasyChatGroupName_TrendySaying,
     [EC_GROUP_POKEMON_NATIONAL] = gEasyChatGroupName_Pokemon2,
 };
 
@@ -1275,21 +1268,20 @@ static const u16 sRestrictedWordSpecies[] = {
     SPECIES_DEOXYS,
 };
 
-
 // In addition to the task defines below, these two elements
 // have their indexes used explicitly because they are 4-byte
 // pointers, and occupy the next data element as well.
 // SetWordTaskArg/GetWordTaskArg use these defines to
 // read the pointer from the two elements
-#define TASKIDX_WORDS         2
+#define TASKIDX_WORDS 2
 #define TASKIDX_EXIT_CALLBACK 4
 
-#define tState        data[0]
-#define tType         data[1]
-#define tWords        data[TASKIDX_WORDS] // Occupies 2 and 3
+#define tState data[0]
+#define tType data[1]
+#define tWords data[TASKIDX_WORDS]                // Occupies 2 and 3
 #define tExitCallback data[TASKIDX_EXIT_CALLBACK] // Occupies 4 and 5
-#define tFuncId       data[6]
-#define tPersonType   data[7]
+#define tFuncId data[6]
+#define tPersonType data[7]
 
 void DoEasyChatScreen(u8 type, u16 *words, MainCallback exitCallback, u8 displayedPersonType)
 {
@@ -1329,7 +1321,8 @@ static void Task_InitEasyChatScreen(u8 taskId)
 {
     if (!IsOverworldLinkActive())
     {
-        while (InitEasyChatScreen(taskId));
+        while (InitEasyChatScreen(taskId))
+            ;
     }
     else
     {
@@ -1478,7 +1471,7 @@ void ShowEasyChatScreen(void)
         break;
     case EASY_CHAT_TYPE_BARD_SONG:
         bard = &gSaveBlock1Ptr->oldMan.bard;
-        for (i = 0; i < BARD_SONG_LENGTH; i ++)
+        for (i = 0; i < BARD_SONG_LENGTH; i++)
             bard->temporaryLyrics[i] = bard->songLyrics[i];
 
         words = bard->temporaryLyrics;
@@ -1533,9 +1526,6 @@ void ShowEasyChatScreen(void)
     case EASY_CHAT_TYPE_QUIZ_SET_ANSWER:
         words = &gSaveBlock1Ptr->lilycoveLady.quiz.correctAnswer;
         break;
-    case EASY_CHAT_TYPE_APPRENTICE:
-        words = gSaveBlock2Ptr->apprentices[0].speechWon;
-        break;
     case EASY_CHAT_TYPE_QUESTIONNAIRE:
         words = GetQuestionnaireWordsPtr();
         break;
@@ -1567,7 +1557,7 @@ static void CB2_QuizLadyQuestion(void)
         }
         return;
     }
-    gMain.state ++;
+    gMain.state++;
 }
 
 void QuizLadyShowQuizQuestion(void)
@@ -1579,7 +1569,7 @@ static int GetQuizLadyScreenByFuncId(u16 funcId)
 {
     int i;
 
-    for (i = 0; i < ARRAY_COUNT(sQuizLadyEasyChatScreens); i ++)
+    for (i = 0; i < ARRAY_COUNT(sQuizLadyEasyChatScreens); i++)
     {
         if (funcId == sQuizLadyEasyChatScreens[i].funcId)
             return i;
@@ -1613,25 +1603,25 @@ static void DoQuizAnswerEasyChatScreen(void)
 static void DoQuizQuestionEasyChatScreen(void)
 {
     DoEasyChatScreen(EASY_CHAT_TYPE_QUIZ_QUESTION,
-        gSaveBlock1Ptr->lilycoveLady.quiz.question,
-        CB2_ReturnToFieldContinueScript,
-        EASY_CHAT_PERSON_DISPLAY_NONE);
+                     gSaveBlock1Ptr->lilycoveLady.quiz.question,
+                     CB2_ReturnToFieldContinueScript,
+                     EASY_CHAT_PERSON_DISPLAY_NONE);
 }
 
 static void DoQuizSetAnswerEasyChatScreen(void)
 {
     DoEasyChatScreen(EASY_CHAT_TYPE_QUIZ_SET_ANSWER,
-        &gSaveBlock1Ptr->lilycoveLady.quiz.correctAnswer,
-        CB2_ReturnToFieldContinueScript,
-        EASY_CHAT_PERSON_DISPLAY_NONE);
+                     &gSaveBlock1Ptr->lilycoveLady.quiz.correctAnswer,
+                     CB2_ReturnToFieldContinueScript,
+                     EASY_CHAT_PERSON_DISPLAY_NONE);
 }
 
 static void DoQuizSetQuestionEasyChatScreen(void)
 {
     DoEasyChatScreen(EASY_CHAT_TYPE_QUIZ_SET_QUESTION,
-        gSaveBlock1Ptr->lilycoveLady.quiz.question,
-        CB2_ReturnToFieldContinueScript,
-        EASY_CHAT_PERSON_DISPLAY_NONE);
+                     gSaveBlock1Ptr->lilycoveLady.quiz.question,
+                     CB2_ReturnToFieldContinueScript,
+                     EASY_CHAT_PERSON_DISPLAY_NONE);
 }
 
 static bool8 InitEasyChatScreenStruct(u8 type, u16 *words, u8 displayedPersonType)
@@ -1678,7 +1668,7 @@ static bool8 InitEasyChatScreenStruct(u8 type, u16 *words, u8 displayedPersonTyp
     else
     {
         // Phrase starts with no words, fill with empty words and save
-        for (i = 0; i < sEasyChatScreen->maxWords; i ++)
+        for (i = 0; i < sEasyChatScreen->maxWords; i++)
             sEasyChatScreen->currentPhrase[i] = EC_EMPTY_WORD;
 
         sEasyChatScreen->savedPhrase = sEasyChatScreen->currentPhrase;
@@ -1972,8 +1962,7 @@ static u16 HandleEasyChatInput_ExitPrompt(void)
         return ECFUNC_CLOSE_PROMPT;
     case 0: // Yes (Exit)
         gSpecialVar_Result = 0;
-        if (sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_QUESTION
-         || sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_ANSWER)
+        if (sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_QUESTION || sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_ANSWER)
             SaveCurrentPhrase();
 
         return ECFUNC_EXIT;
@@ -2069,8 +2058,7 @@ static u16 HandleEasyChatInput_ConfirmLyricsYesNo(void)
 
 static u16 StartConfirmExitPrompt(void)
 {
-    if (sEasyChatScreen->type == EASY_CHAT_TYPE_APPRENTICE
-     || sEasyChatScreen->type == EASY_CHAT_TYPE_CONTEST_INTERVIEW)
+    if (sEasyChatScreen->type == EASY_CHAT_TYPE_CONTEST_INTERVIEW)
     {
         sEasyChatScreen->inputStateBackup = sEasyChatScreen->inputState;
         sEasyChatScreen->inputState = INPUTSTATE_WAIT_FOR_MSG;
@@ -2139,8 +2127,7 @@ static u16 TryConfirmWords(void)
         sEasyChatScreen->inputState = INPUTSTATE_CONFIRM_WORDS_YES_NO;
         return ECFUNC_PROMPT_CONFIRM;
     }
-    else if (sEasyChatScreen->type == EASY_CHAT_TYPE_TRENDY_PHRASE
-          || sEasyChatScreen->type == EASY_CHAT_TYPE_GOOD_SAYING)
+    else if (sEasyChatScreen->type == EASY_CHAT_TYPE_TRENDY_PHRASE || sEasyChatScreen->type == EASY_CHAT_TYPE_GOOD_SAYING)
     {
         if (!IsCurrentPhraseFull())
         {
@@ -2151,8 +2138,7 @@ static u16 TryConfirmWords(void)
         sEasyChatScreen->inputState = INPUTSTATE_CONFIRM_WORDS_YES_NO;
         return ECFUNC_PROMPT_CONFIRM;
     }
-    else if (sEasyChatScreen->type == EASY_CHAT_TYPE_APPRENTICE
-          || sEasyChatScreen->type == EASY_CHAT_TYPE_CONTEST_INTERVIEW)
+    else if (sEasyChatScreen->type == EASY_CHAT_TYPE_CONTEST_INTERVIEW)
     {
         if (IsCurrentPhraseEmpty())
         {
@@ -2331,8 +2317,7 @@ static bool8 DidPhraseChange(void)
 // 'Completed' if the phrase was changed, or in the case of making a quiz, the question and answer were filled out
 static bool32 GetEasyChatCompleted(void)
 {
-    if (sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_QUESTION
-     || sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_ANSWER)
+    if (sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_QUESTION || sEasyChatScreen->type == EASY_CHAT_TYPE_QUIZ_SET_ANSWER)
     {
         if (IsQuizQuestionEmpty())
             return FALSE;
@@ -2749,7 +2734,6 @@ static void GetEasyChatConfirmExitText(const u8 **str1, const u8 **str2)
         *str2 = NULL;
         break;
     }
-
 }
 
 static void GetEasyChatConfirmDeletionText(const u8 **str1, const u8 **str2)
@@ -3068,11 +3052,7 @@ static bool8 LoadEasyChatScreen(void)
         {
             SetWindowDimensions(0, 0, 0, 0);
             SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ | WININ_WIN0_CLR);
-            SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG0
-                                       | WINOUT_WIN01_BG1
-                                       | WINOUT_WIN01_BG3
-                                       | WINOUT_WIN01_OBJ
-                                       | WINOUT_WIN01_CLR);
+            SetGpuReg(REG_OFFSET_WINOUT, WINOUT_WIN01_BG0 | WINOUT_WIN01_BG1 | WINOUT_WIN01_BG3 | WINOUT_WIN01_OBJ | WINOUT_WIN01_CLR);
             ShowBg(3);
             ShowBg(1);
             ShowBg(2);
@@ -3107,42 +3087,78 @@ static bool8 RunEasyChatFunction(void)
 {
     switch (sScreenControl->currentFuncId)
     {
-    case ECFUNC_NONE: return FALSE;
-    case ECFUNC_REPRINT_PHRASE: return ReprintPhrase();
-    case ECFUNC_UPDATE_MAIN_CURSOR: return UpdateMainCursor();
-    case ECFUNC_UPDATE_MAIN_CURSOR_ON_BUTTONS: return UpdateMainCursorOnButtons();
-    case ECFUNC_PROMPT_DELETE_ALL: return ShowConfirmDeleteAllPrompt();
-    case ECFUNC_PROMPT_EXIT: return ShowConfirmExitPrompt();
-    case ECFUNC_PROMPT_CONFIRM: return ShowConfirmPrompt();
-    case ECFUNC_CLOSE_PROMPT: return ClosePrompt();
-    case ECFUNC_CLOSE_PROMPT_AFTER_DELETE: return ClosePromptAfterDeleteAll();
-    case ECFUNC_OPEN_KEYBOARD: return OpenKeyboard();
-    case ECFUNC_CLOSE_KEYBOARD: return CloseKeyboard();
-    case ECFUNC_OPEN_WORD_SELECT: return OpenWordSelect();
-    case ECFUNC_CLOSE_WORD_SELECT: return CloseWordSelect();
-    case ECFUNC_PROMPT_CONFIRM_LYRICS: return ShowConfirmLyricsPrompt();
-    case ECFUNC_RETURN_TO_KEYBOARD: return ReturnToKeyboard();
-    case ECFUNC_UPDATE_KEYBOARD_CURSOR: return UpdateKeyboardCursor();
-    case ECFUNC_GROUP_NAMES_SCROLL_DOWN: return GroupNamesScrollDown();
-    case ECFUNC_GROUP_NAMES_SCROLL_UP: return GroupNamesScrollUp();
-    case ECFUNC_UPDATE_WORD_SELECT_CURSOR: return UpdateWordSelectCursor();
-    case ECFUNC_WORD_SELECT_SCROLL_UP: return WordSelectScrollUp();
-    case ECFUNC_WORD_SELECT_SCROLL_DOWN: return WordSelectScrollDown();
-    case ECFUNC_WORD_SELECT_PAGE_UP: return WordSelectPageScrollUp();
-    case ECFUNC_WORD_SELECT_PAGE_DOWN: return WordSelectPageScrollDown();
-    case ECFUNC_SWITCH_KEYBOARD_MODE: return SwitchKeyboardMode();
-    case ECFUNC_EXIT: return FALSE;
-    case ECFUNC_QUIZ_QUESTION: return FALSE;     // The 4 quiz functions
-    case ECFUNC_QUIZ_ANSWER: return FALSE;       // 'finish' automatically
-    case ECFUNC_SET_QUIZ_QUESTION: return FALSE; // because they switch to a
-    case ECFUNC_SET_QUIZ_ANSWER: return FALSE;   // callback in sQuizLadyEasyChatScreens
-    case ECFUNC_MSG_CREATE_QUIZ: return ShowCreateQuizMsg();
-    case ECFUNC_MSG_SELECT_ANSWER: return ShowSelectAnswerMsg();
-    case ECFUNC_MSG_SONG_TOO_SHORT: return ShowSongTooShortMsg();
-    case ECFUNC_MSG_CANT_DELETE_LYRICS: return ShowCantDeleteLyricsMsg();
-    case ECFUNC_MSG_COMBINE_TWO_WORDS: return ShowCombineTwoWordsMsg();
-    case ECFUNC_MSG_CANT_EXIT: return ShowCantExitMsg();
-    default:        return FALSE;
+    case ECFUNC_NONE:
+        return FALSE;
+    case ECFUNC_REPRINT_PHRASE:
+        return ReprintPhrase();
+    case ECFUNC_UPDATE_MAIN_CURSOR:
+        return UpdateMainCursor();
+    case ECFUNC_UPDATE_MAIN_CURSOR_ON_BUTTONS:
+        return UpdateMainCursorOnButtons();
+    case ECFUNC_PROMPT_DELETE_ALL:
+        return ShowConfirmDeleteAllPrompt();
+    case ECFUNC_PROMPT_EXIT:
+        return ShowConfirmExitPrompt();
+    case ECFUNC_PROMPT_CONFIRM:
+        return ShowConfirmPrompt();
+    case ECFUNC_CLOSE_PROMPT:
+        return ClosePrompt();
+    case ECFUNC_CLOSE_PROMPT_AFTER_DELETE:
+        return ClosePromptAfterDeleteAll();
+    case ECFUNC_OPEN_KEYBOARD:
+        return OpenKeyboard();
+    case ECFUNC_CLOSE_KEYBOARD:
+        return CloseKeyboard();
+    case ECFUNC_OPEN_WORD_SELECT:
+        return OpenWordSelect();
+    case ECFUNC_CLOSE_WORD_SELECT:
+        return CloseWordSelect();
+    case ECFUNC_PROMPT_CONFIRM_LYRICS:
+        return ShowConfirmLyricsPrompt();
+    case ECFUNC_RETURN_TO_KEYBOARD:
+        return ReturnToKeyboard();
+    case ECFUNC_UPDATE_KEYBOARD_CURSOR:
+        return UpdateKeyboardCursor();
+    case ECFUNC_GROUP_NAMES_SCROLL_DOWN:
+        return GroupNamesScrollDown();
+    case ECFUNC_GROUP_NAMES_SCROLL_UP:
+        return GroupNamesScrollUp();
+    case ECFUNC_UPDATE_WORD_SELECT_CURSOR:
+        return UpdateWordSelectCursor();
+    case ECFUNC_WORD_SELECT_SCROLL_UP:
+        return WordSelectScrollUp();
+    case ECFUNC_WORD_SELECT_SCROLL_DOWN:
+        return WordSelectScrollDown();
+    case ECFUNC_WORD_SELECT_PAGE_UP:
+        return WordSelectPageScrollUp();
+    case ECFUNC_WORD_SELECT_PAGE_DOWN:
+        return WordSelectPageScrollDown();
+    case ECFUNC_SWITCH_KEYBOARD_MODE:
+        return SwitchKeyboardMode();
+    case ECFUNC_EXIT:
+        return FALSE;
+    case ECFUNC_QUIZ_QUESTION:
+        return FALSE; // The 4 quiz functions
+    case ECFUNC_QUIZ_ANSWER:
+        return FALSE; // 'finish' automatically
+    case ECFUNC_SET_QUIZ_QUESTION:
+        return FALSE; // because they switch to a
+    case ECFUNC_SET_QUIZ_ANSWER:
+        return FALSE; // callback in sQuizLadyEasyChatScreens
+    case ECFUNC_MSG_CREATE_QUIZ:
+        return ShowCreateQuizMsg();
+    case ECFUNC_MSG_SELECT_ANSWER:
+        return ShowSelectAnswerMsg();
+    case ECFUNC_MSG_SONG_TOO_SHORT:
+        return ShowSongTooShortMsg();
+    case ECFUNC_MSG_CANT_DELETE_LYRICS:
+        return ShowCantDeleteLyricsMsg();
+    case ECFUNC_MSG_COMBINE_TWO_WORDS:
+        return ShowCombineTwoWordsMsg();
+    case ECFUNC_MSG_CANT_EXIT:
+        return ShowCantExitMsg();
+    default:
+        return FALSE;
     }
 }
 
@@ -4143,7 +4159,7 @@ static void BufferFrameTilemap(u16 *tilemap)
             for (; x < right; x++)
                 tilemap[y * 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_TRANSPARENT;
 
-            tilemap[y* 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_R_EDGE;
+            tilemap[y * 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_R_EDGE;
         }
     }
     else
@@ -4171,7 +4187,7 @@ static void BufferFrameTilemap(u16 *tilemap)
             for (; x < right; x++)
                 tilemap[y * 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_TRANSPARENT;
 
-            tilemap[y* 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_R_EDGE;
+            tilemap[y * 32 + x] = FRAME_OFFSET_ORANGE + FRAME_TILE_R_EDGE;
         }
 
         // Draw bottom edge
@@ -4630,7 +4646,7 @@ static void LoadEasyChatGfx(void)
         LoadCompressedSpriteSheet(&sCompressedSpriteSheets[i]);
 }
 
-#define sDelayTimer    data[0]
+#define sDelayTimer data[0]
 #define sAnimateCursor data[1]
 
 static void CreateMainCursorSprite(void)
@@ -4703,8 +4719,7 @@ static void UpdateRectangleCursorPos(void)
     s8 column;
     s8 row;
 
-    if (sScreenControl->rectangleCursorSpriteRight
-     && sScreenControl->rectangleCursorSpriteLeft)
+    if (sScreenControl->rectangleCursorSpriteRight && sScreenControl->rectangleCursorSpriteLeft)
     {
         GetKeyboardCursorColAndRow(&column, &row);
         if (!GetInAlphabetMode())
@@ -5353,10 +5368,7 @@ static bool8 CanPhraseFitInXRowsYCols(const u16 *easyChatWords, u8 numRows, u8 n
 u16 GetRandomEasyChatWordFromGroup(u16 groupId)
 {
     u16 index = Random() % gEasyChatGroups[groupId].numWords;
-    if (groupId == EC_GROUP_POKEMON
-     || groupId == EC_GROUP_POKEMON_NATIONAL
-     || groupId == EC_GROUP_MOVE_1
-     || groupId == EC_GROUP_MOVE_2)
+    if (groupId == EC_GROUP_POKEMON || groupId == EC_GROUP_POKEMON_NATIONAL || groupId == EC_GROUP_MOVE_1 || groupId == EC_GROUP_MOVE_2)
     {
         index = gEasyChatGroups[groupId].wordData.valueList[index];
     }
@@ -5756,8 +5768,7 @@ static u16 SetSelectedWordGroup_GroupMode(u16 groupId)
     const struct EasyChatWordInfo *wordInfo;
     u16 numWords = gEasyChatGroups[groupId].numWords;
 
-    if (groupId == EC_GROUP_POKEMON || groupId == EC_GROUP_POKEMON_NATIONAL
-     || groupId == EC_GROUP_MOVE_1  || groupId == EC_GROUP_MOVE_2)
+    if (groupId == EC_GROUP_POKEMON || groupId == EC_GROUP_POKEMON_NATIONAL || groupId == EC_GROUP_MOVE_1 || groupId == EC_GROUP_MOVE_2)
     {
         list = gEasyChatGroups[groupId].wordData.valueList;
         for (i = 0, totalWords = 0; i < numWords; i++)

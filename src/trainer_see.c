@@ -12,7 +12,6 @@
 #include "trainer_see.h"
 #include "trainer_hill.h"
 #include "util.h"
-#include "battle_pyramid.h"
 #include "constants/battle_setup.h"
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
@@ -64,14 +63,15 @@ static const u8 sEmotion_QuestionMarkGfx[] = INCBIN_U8("graphics/field_effects/p
 static const u8 sEmotion_HeartGfx[] = INCBIN_U8("graphics/field_effects/pics/emotion_heart.4bpp");
 
 static u8 (*const sDirectionalApproachDistanceFuncs[])(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y) =
-{
-    GetTrainerApproachDistanceSouth,
-    GetTrainerApproachDistanceNorth,
-    GetTrainerApproachDistanceWest,
-    GetTrainerApproachDistanceEast,
+    {
+        GetTrainerApproachDistanceSouth,
+        GetTrainerApproachDistanceNorth,
+        GetTrainerApproachDistanceWest,
+        GetTrainerApproachDistanceEast,
 };
 
-enum {
+enum
+{
     TRSEE_NONE,
     TRSEE_EXCLAMATION,
     TRSEE_EXCLAMATION_WAIT,
@@ -87,105 +87,92 @@ enum {
 };
 
 static bool8 (*const sTrainerSeeFuncList[])(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj) =
-{
-    [TRSEE_NONE]                 = TrainerSeeIdle,
-    [TRSEE_EXCLAMATION]          = TrainerExclamationMark,
-    [TRSEE_EXCLAMATION_WAIT]     = WaitTrainerExclamationMark,
-    [TRSEE_MOVE_TO_PLAYER]       = TrainerMoveToPlayer,
-    [TRSEE_PLAYER_FACE]          = PlayerFaceApproachingTrainer,
-    [TRSEE_PLAYER_FACE_WAIT]     = WaitPlayerFaceApproachingTrainer,
-    [TRSEE_REVEAL_DISGUISE]      = RevealDisguisedTrainer,
-    [TRSEE_REVEAL_DISGUISE_WAIT] = WaitRevealDisguisedTrainer,
-    [TRSEE_REVEAL_BURIED]        = RevealBuriedTrainer,
-    [TRSEE_BURIED_POP_OUT]       = PopOutOfAshBuriedTrainer,
-    [TRSEE_BURIED_JUMP]          = JumpInPlaceBuriedTrainer,
-    [TRSEE_REVEAL_BURIED_WAIT]   = WaitRevealBuriedTrainer,
+    {
+        [TRSEE_NONE] = TrainerSeeIdle,
+        [TRSEE_EXCLAMATION] = TrainerExclamationMark,
+        [TRSEE_EXCLAMATION_WAIT] = WaitTrainerExclamationMark,
+        [TRSEE_MOVE_TO_PLAYER] = TrainerMoveToPlayer,
+        [TRSEE_PLAYER_FACE] = PlayerFaceApproachingTrainer,
+        [TRSEE_PLAYER_FACE_WAIT] = WaitPlayerFaceApproachingTrainer,
+        [TRSEE_REVEAL_DISGUISE] = RevealDisguisedTrainer,
+        [TRSEE_REVEAL_DISGUISE_WAIT] = WaitRevealDisguisedTrainer,
+        [TRSEE_REVEAL_BURIED] = RevealBuriedTrainer,
+        [TRSEE_BURIED_POP_OUT] = PopOutOfAshBuriedTrainer,
+        [TRSEE_BURIED_JUMP] = JumpInPlaceBuriedTrainer,
+        [TRSEE_REVEAL_BURIED_WAIT] = WaitRevealBuriedTrainer,
 };
 
 static bool8 (*const sTrainerSeeFuncList2[])(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj) =
-{
-    RevealBuriedTrainer,
-    PopOutOfAshBuriedTrainer,
-    JumpInPlaceBuriedTrainer,
-    WaitRevealBuriedTrainer,
+    {
+        RevealBuriedTrainer,
+        PopOutOfAshBuriedTrainer,
+        JumpInPlaceBuriedTrainer,
+        WaitRevealBuriedTrainer,
 };
 
 static const struct OamData sOamData_Icons =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = FALSE,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(16x16),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(16x16),
-    .tileNum = 0,
-    .priority = 1,
-    .paletteNum = 0,
-    .affineParam = 0,
+    {
+        .y = 0,
+        .affineMode = ST_OAM_AFFINE_OFF,
+        .objMode = ST_OAM_OBJ_NORMAL,
+        .mosaic = FALSE,
+        .bpp = ST_OAM_4BPP,
+        .shape = SPRITE_SHAPE(16x16),
+        .x = 0,
+        .matrixNum = 0,
+        .size = SPRITE_SIZE(16x16),
+        .tileNum = 0,
+        .priority = 1,
+        .paletteNum = 0,
+        .affineParam = 0,
 };
 
 static const struct SpriteFrameImage sSpriteImageTable_ExclamationQuestionMark[] =
-{
     {
-        .data = sEmotion_ExclamationMarkGfx,
-        .size = sizeof(sEmotion_ExclamationMarkGfx)
-    },
-    {
-        .data = sEmotion_QuestionMarkGfx,
-        .size = sizeof(sEmotion_QuestionMarkGfx)
-    }
-};
+        {.data = sEmotion_ExclamationMarkGfx,
+         .size = sizeof(sEmotion_ExclamationMarkGfx)},
+        {.data = sEmotion_QuestionMarkGfx,
+         .size = sizeof(sEmotion_QuestionMarkGfx)}};
 
 static const struct SpriteFrameImage sSpriteImageTable_HeartIcon[] =
-{
     {
-        .data = sEmotion_HeartGfx,
-        .size = sizeof(sEmotion_HeartGfx)
-    }
-};
+        {.data = sEmotion_HeartGfx,
+         .size = sizeof(sEmotion_HeartGfx)}};
 
 static const union AnimCmd sSpriteAnim_Icons1[] =
-{
-    ANIMCMD_FRAME(0, 60),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(0, 60),
+        ANIMCMD_END};
 
 static const union AnimCmd sSpriteAnim_Icons2[] =
-{
-    ANIMCMD_FRAME(1, 60),
-    ANIMCMD_END
-};
+    {
+        ANIMCMD_FRAME(1, 60),
+        ANIMCMD_END};
 
 static const union AnimCmd *const sSpriteAnimTable_Icons[] =
-{
-    sSpriteAnim_Icons1,
-    sSpriteAnim_Icons2
-};
+    {
+        sSpriteAnim_Icons1,
+        sSpriteAnim_Icons2};
 
 static const struct SpriteTemplate sSpriteTemplate_ExclamationQuestionMark =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = TAG_NONE,
-    .oam = &sOamData_Icons,
-    .anims = sSpriteAnimTable_Icons,
-    .images = sSpriteImageTable_ExclamationQuestionMark,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TrainerIcons
-};
+    {
+        .tileTag = TAG_NONE,
+        .paletteTag = TAG_NONE,
+        .oam = &sOamData_Icons,
+        .anims = sSpriteAnimTable_Icons,
+        .images = sSpriteImageTable_ExclamationQuestionMark,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_TrainerIcons};
 
 static const struct SpriteTemplate sSpriteTemplate_HeartIcon =
-{
-    .tileTag = TAG_NONE,
-    .paletteTag = FLDEFF_PAL_TAG_GENERAL_0,
-    .oam = &sOamData_Icons,
-    .anims = sSpriteAnimTable_Icons,
-    .images = sSpriteImageTable_HeartIcon,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_TrainerIcons
-};
+    {
+        .tileTag = TAG_NONE,
+        .paletteTag = FLDEFF_PAL_TAG_GENERAL_0,
+        .oam = &sOamData_Icons,
+        .anims = sSpriteAnimTable_Icons,
+        .images = sSpriteImageTable_HeartIcon,
+        .affineAnims = gDummySpriteAffineAnimTable,
+        .callback = SpriteCB_TrainerIcons};
 
 // code
 bool8 CheckForTrainersWantingBattle(void)
@@ -259,12 +246,7 @@ static u8 CheckTrainer(u8 objectEventId)
     else
         scriptPtr = GetObjectEventScriptPointerByObjectEventId(objectEventId);
 
-    if (InBattlePyramid())
-    {
-        if (GetBattlePyramidTrainerFlag(objectEventId))
-            return 0;
-    }
-    else if (InTrainerHill() == TRUE)
+    if (InTrainerHill() == TRUE)
     {
         if (GetHillTrainerFlag(objectEventId))
             return 0;
@@ -279,9 +261,7 @@ static u8 CheckTrainer(u8 objectEventId)
 
     if (approachDistance != 0)
     {
-        if (scriptPtr[1] == TRAINER_BATTLE_DOUBLE
-            || scriptPtr[1] == TRAINER_BATTLE_REMATCH_DOUBLE
-            || scriptPtr[1] == TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE)
+        if (scriptPtr[1] == TRAINER_BATTLE_DOUBLE || scriptPtr[1] == TRAINER_BATTLE_REMATCH_DOUBLE || scriptPtr[1] == TRAINER_BATTLE_CONTINUE_SCRIPT_DOUBLE)
         {
             if (GetMonsStateToDoubles_2() != PLAYER_HAS_TWO_USABLE_MONS)
                 return 0;
@@ -308,7 +288,7 @@ static u8 GetTrainerApproachDistance(struct ObjectEvent *trainerObj)
     u8 approachDistance;
 
     PlayerGetDestCoords(&x, &y);
-    if (trainerObj->trainerType == TRAINER_TYPE_NORMAL)  // can only see in one direction
+    if (trainerObj->trainerType == TRAINER_TYPE_NORMAL) // can only see in one direction
     {
         approachDistance = sDirectionalApproachDistanceFuncs[trainerObj->facingDirection - 1](trainerObj, trainerObj->trainerRange_berryTreeId, x, y);
         return CheckPathBetweenTrainerAndPlayer(trainerObj, approachDistance, trainerObj->facingDirection);
@@ -329,9 +309,7 @@ static u8 GetTrainerApproachDistance(struct ObjectEvent *trainerObj)
 // Returns how far south the player is from trainer. 0 if out of trainer's sight.
 static u8 GetTrainerApproachDistanceSouth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y)
 {
-    if (trainerObj->currentCoords.x == x
-     && y > trainerObj->currentCoords.y
-     && y <= trainerObj->currentCoords.y + range)
+    if (trainerObj->currentCoords.x == x && y > trainerObj->currentCoords.y && y <= trainerObj->currentCoords.y + range)
         return (y - trainerObj->currentCoords.y);
     else
         return 0;
@@ -340,9 +318,7 @@ static u8 GetTrainerApproachDistanceSouth(struct ObjectEvent *trainerObj, s16 ra
 // Returns how far north the player is from trainer. 0 if out of trainer's sight.
 static u8 GetTrainerApproachDistanceNorth(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y)
 {
-    if (trainerObj->currentCoords.x == x
-     && y < trainerObj->currentCoords.y
-     && y >= trainerObj->currentCoords.y - range)
+    if (trainerObj->currentCoords.x == x && y < trainerObj->currentCoords.y && y >= trainerObj->currentCoords.y - range)
         return (trainerObj->currentCoords.y - y);
     else
         return 0;
@@ -351,9 +327,7 @@ static u8 GetTrainerApproachDistanceNorth(struct ObjectEvent *trainerObj, s16 ra
 // Returns how far west the player is from trainer. 0 if out of trainer's sight.
 static u8 GetTrainerApproachDistanceWest(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y)
 {
-    if (trainerObj->currentCoords.y == y
-     && x < trainerObj->currentCoords.x
-     && x >= trainerObj->currentCoords.x - range)
+    if (trainerObj->currentCoords.y == y && x < trainerObj->currentCoords.x && x >= trainerObj->currentCoords.x - range)
         return (trainerObj->currentCoords.x - x);
     else
         return 0;
@@ -362,9 +336,7 @@ static u8 GetTrainerApproachDistanceWest(struct ObjectEvent *trainerObj, s16 ran
 // Returns how far east the player is from trainer. 0 if out of trainer's sight.
 static u8 GetTrainerApproachDistanceEast(struct ObjectEvent *trainerObj, s16 range, s16 x, s16 y)
 {
-    if (trainerObj->currentCoords.y == y
-     && x > trainerObj->currentCoords.x
-     && x <= trainerObj->currentCoords.x + range)
+    if (trainerObj->currentCoords.y == y && x > trainerObj->currentCoords.x && x <= trainerObj->currentCoords.x + range)
         return (x - trainerObj->currentCoords.x);
     else
         return 0;
@@ -407,9 +379,9 @@ static u8 CheckPathBetweenTrainerAndPlayer(struct ObjectEvent *trainerObj, u8 ap
     return 0;
 }
 
-#define tFuncId             data[0]
-#define tTrainerRange       data[3]
-#define tOutOfAshSpriteId   data[4]
+#define tFuncId data[0]
+#define tTrainerRange data[3]
+#define tOutOfAshSpriteId data[4]
 #define tTrainerObjectEventId data[7]
 
 static void InitTrainerApproachTask(struct ObjectEvent *trainerObj, u8 range)
@@ -449,7 +421,8 @@ static void Task_RunTrainerSeeFuncList(u8 taskId)
     }
     else
     {
-        while (sTrainerSeeFuncList[task->tFuncId](taskId, task, trainerObj));
+        while (sTrainerSeeFuncList[task->tFuncId](taskId, task, trainerObj))
+            ;
     }
 }
 
@@ -536,8 +509,7 @@ static bool8 WaitPlayerFaceApproachingTrainer(u8 taskId, struct Task *task, stru
 {
     struct ObjectEvent *playerObj = &gObjectEvents[gPlayerAvatar.objectEventId];
 
-    if (!ObjectEventIsMovementOverridden(playerObj)
-     || ObjectEventClearHeldMovementIfFinished(playerObj))
+    if (!ObjectEventIsMovementOverridden(playerObj) || ObjectEventClearHeldMovementIfFinished(playerObj))
         SwitchTaskToFollowupFunc(taskId);
     return FALSE;
 }
@@ -545,8 +517,7 @@ static bool8 WaitPlayerFaceApproachingTrainer(u8 taskId, struct Task *task, stru
 // TRSEE_REVEAL_DISGUISE
 static bool8 RevealDisguisedTrainer(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj)
 {
-    if (!ObjectEventIsMovementOverridden(trainerObj)
-     || ObjectEventClearHeldMovementIfFinished(trainerObj))
+    if (!ObjectEventIsMovementOverridden(trainerObj) || ObjectEventClearHeldMovementIfFinished(trainerObj))
     {
         ObjectEventSetHeldMovement(trainerObj, MOVEMENT_ACTION_REVEAL_TRAINER);
         task->tFuncId++; // TRSEE_REVEAL_DISGUISE_WAIT
@@ -566,8 +537,7 @@ static bool8 WaitRevealDisguisedTrainer(u8 taskId, struct Task *task, struct Obj
 // TRSEE_REVEAL_BURIED
 static bool8 RevealBuriedTrainer(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj)
 {
-    if (!ObjectEventIsMovementOverridden(trainerObj)
-     || ObjectEventClearHeldMovementIfFinished(trainerObj))
+    if (!ObjectEventIsMovementOverridden(trainerObj) || ObjectEventClearHeldMovementIfFinished(trainerObj))
     {
         ObjectEventSetHeldMovement(trainerObj, MOVEMENT_ACTION_FACE_PLAYER);
         task->tFuncId++;
@@ -689,12 +659,12 @@ void TryPrepareSecondApproachingTrainer(void)
     }
 }
 
-#define sLocalId    data[0]
-#define sMapNum     data[1]
-#define sMapGroup   data[2]
-#define sYVelocity  data[3]
-#define sYOffset    data[4]
-#define sFldEffId   data[7]
+#define sLocalId data[0]
+#define sMapNum data[1]
+#define sMapGroup data[2]
+#define sYVelocity data[3]
+#define sYOffset data[4]
+#define sFldEffId data[7]
 
 u8 FldEff_ExclamationMarkIcon(void)
 {
@@ -749,8 +719,7 @@ static void SpriteCB_TrainerIcons(struct Sprite *sprite)
 {
     u8 objEventId;
 
-    if (TryGetObjectEventIdByLocalIdAndMap(sprite->sLocalId, sprite->sMapNum, sprite->sMapGroup, &objEventId)
-     || sprite->animEnded)
+    if (TryGetObjectEventIdByLocalIdAndMap(sprite->sLocalId, sprite->sMapNum, sprite->sMapGroup, &objEventId) || sprite->animEnded)
     {
         FieldEffectStop(sprite, sprite->sFldEffId);
     }

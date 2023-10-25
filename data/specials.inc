@@ -415,7 +415,6 @@ gSpecials::
 	def_special GetContestLadyCategory
 	def_special PutLilycoveContestLadyShowOnTheAir
 	def_special CloseBattlePikeCurtain
-	def_special CallApprenticeFunction
 	def_special ShouldTryGetTrainerScript
 	def_special ShowMapNamePopup
 	def_special ShowMapNamePopup

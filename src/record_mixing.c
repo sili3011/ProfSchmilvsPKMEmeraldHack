@@ -41,7 +41,7 @@
 #define NUM_SWAP_COMBOS 3
 
 // Used by several tasks in this file
-#define tState        data[0]
+#define tState data[0]
 
 struct RecordMixingHallRecords
 {
@@ -73,7 +73,7 @@ struct PlayerRecordEmerald
     /* 0x1124 */ struct EmeraldBattleTowerRecord battleTowerRecord;
     /* 0x1210 */ u16 giftItem;
     /* 0x1214 */ LilycoveLady lilycoveLady;
-    /* 0x1254 */ struct Apprentice apprentices[2];
+    /* 0x1254 */ // struct Apprentice apprentices[2];
     /* 0x12DC */ struct PlayerHallRecords hallRecords;
     /* 0x1434 */ u8 filler_1434[16];
 }; // 0x1444
@@ -93,7 +93,6 @@ static struct DewfordTrend *sDewfordTrendsSave;
 static struct RecordMixingDaycareMail *sRecordMixMailSave;
 static void *sBattleTowerSave;
 static LilycoveLady *sLilycoveLadySave;
-static void *sApprenticesSave;
 static void *sBattleTowerSave_Duplicate;
 static u32 sRecordStructSize;
 static u8 sDaycareMailRandSum;
@@ -117,10 +116,8 @@ static void ReceiveBattleTowerData(void *, size_t, u8);
 static void ReceiveLilycoveLadyData(LilycoveLady *, size_t, u8);
 static void CalculateDaycareMailRandSum(const u8 *);
 static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *, size_t, u8, TVShow *);
-static void ReceiveGiftItem(u16 *, u8 );
+static void ReceiveGiftItem(u16 *, u8);
 static void Task_DoRecordMixing(u8);
-static void GetSavedApprentices(struct Apprentice *, struct Apprentice *);
-static void ReceiveApprenticeData(struct Apprentice *, size_t, u32);
 static void ReceiveRankingHallRecords(struct PlayerHallRecords *, size_t, u32);
 static void GetRecordMixingDaycareMail(struct RecordMixingDaycareMail *);
 static void SanitizeDaycareMailForRuby(struct RecordMixingDaycareMail *);
@@ -130,37 +127,37 @@ static void SanitizeRubyBattleTowerRecord(struct RSBattleTowerRecord *);
 static const u8 sPlayerIdxOrders_2Player[] = {1, 0};
 
 static const u8 sPlayerIdxOrders_3Player[][3] =
-{
-    {1, 2, 0},
-    {2, 0, 1},
+    {
+        {1, 2, 0},
+        {2, 0, 1},
 };
 
 static const u8 sPlayerIdxOrders_4Player[][4] =
-{
-    {1, 0, 3, 2},
-    {3, 0, 1, 2},
-    {2, 0, 3, 1},
-    {1, 3, 0, 2},
-    {2, 3, 0, 1},
-    {3, 2, 0, 1},
-    {1, 2, 3, 0},
-    {2, 3, 1, 0},
-    {3, 2, 1, 0},
+    {
+        {1, 0, 3, 2},
+        {3, 0, 1, 2},
+        {2, 0, 3, 1},
+        {1, 3, 0, 2},
+        {2, 3, 0, 1},
+        {3, 2, 0, 1},
+        {1, 2, 3, 0},
+        {2, 3, 1, 0},
+        {3, 2, 1, 0},
 };
 
 // When 3 players can swap mail 2 players are randomly selected and the 3rd is left out
 static const u8 sDaycareMailSwapIds_3Player[NUM_SWAP_COMBOS][2] =
-{
-    {0, 1},
-    {1, 2},
-    {2, 0},
+    {
+        {0, 1},
+        {1, 2},
+        {2, 0},
 };
 
 static const u8 sDaycareMailSwapIds_4Player[NUM_SWAP_COMBOS][4] =
-{
-    {0, 1,   2, 3}, // 0 swaps with 1, 2 swaps with 3
-    {0, 2,   1, 3},
-    {0, 3,   2, 1},
+    {
+        {0, 1, 2, 3}, // 0 swaps with 1, 2 swaps with 3
+        {0, 2, 1, 3},
+        {0, 3, 2, 1},
 };
 
 void RecordMixingPlayerSpotTriggered(void)
@@ -179,7 +176,6 @@ static void SetSrcLookupPointers(void)
     sRecordMixMailSave = &sRecordMixMail;
     sBattleTowerSave = &gSaveBlock2Ptr->frontier.towerPlayer;
     sLilycoveLadySave = &gSaveBlock1Ptr->lilycoveLady;
-    sApprenticesSave = gSaveBlock2Ptr->apprentices;
     sBattleTowerSave_Duplicate = &gSaveBlock2Ptr->frontier.towerPlayer;
 }
 
@@ -245,7 +241,6 @@ static void PrepareExchangePacket(void)
         if (GetMultiplayerId() == 0)
             sSentRecord->emerald.giftItem = GetRecordMixingGift();
 
-        GetSavedApprentices(sSentRecord->emerald.apprentices, sApprenticesSave);
         GetPlayerHallRecords(&sSentRecord->emerald.hallRecords);
     }
 }
@@ -278,7 +273,6 @@ static void ReceiveExchangePacket(u32 multiplayerId)
         ReceiveBattleTowerData(&sReceivedRecords->emerald.battleTowerRecord, sizeof(sReceivedRecords->emerald), multiplayerId);
         ReceiveGiftItem(&sReceivedRecords->emerald.giftItem, multiplayerId);
         ReceiveLilycoveLadyData(&sReceivedRecords->emerald.lilycoveLady, sizeof(sReceivedRecords->emerald), multiplayerId);
-        ReceiveApprenticeData(sReceivedRecords->emerald.apprentices, sizeof(sReceivedRecords->emerald), (u8)multiplayerId);
         ReceiveRankingHallRecords(&sReceivedRecords->emerald.hallRecords, sizeof(sReceivedRecords->emerald), (u8)multiplayerId);
     }
 }
@@ -303,8 +297,8 @@ static void Task_RecordMixing_SoundEffect(u8 taskId)
 
 #undef tCounter
 
-#define tTimer       data[8]
-#define tLinkTaskId  data[10]
+#define tTimer data[8]
+#define tLinkTaskId data[10]
 #define tSoundTaskId data[15]
 
 // Note: gSpecialVar_0x8005 here contains the player's spot id.
@@ -376,15 +370,15 @@ static void Task_RecordMixing_Main(u8 taskId)
 #undef tSoundTaskId
 
 // Task data for Task_MixingRecordsRecv and subsequent tasks
-#define tSentRecord    data[2] // Used to store a ptr, so data[2] and data[3]
+#define tSentRecord data[2] // Used to store a ptr, so data[2] and data[3]
 #define tNumChunksSent data[4]
 #define tMultiplayerId data[5]
-#define tCopyTaskId    data[10]
+#define tCopyTaskId data[10]
 
 // Task data for Task_CopyReceiveBuffer
-#define tParentTaskId     data[0]
+#define tParentTaskId data[0]
 #define tNumChunksRecv(i) data[1 + (i)] // Number of chunks of the record received per player
-#define tRecvRecords      data[5] // Used to store a ptr, so data[5] and data[6]
+#define tRecvRecords data[5]            // Used to store a ptr, so data[5] and data[6]
 
 static void Task_MixingRecordsRecv(u8 taskId)
 {
@@ -406,24 +400,24 @@ static void Task_MixingRecordsRecv(u8 taskId)
         }
         break;
     case 101:
+    {
+        u8 players = GetLinkPlayerCount_2();
+        if (IsLinkMaster() == TRUE)
         {
-            u8 players = GetLinkPlayerCount_2();
-            if (IsLinkMaster() == TRUE)
+            if (players == GetSavedPlayerCount())
             {
-                if (players == GetSavedPlayerCount())
-                {
-                    PlaySE(SE_PIN);
-                    task->tState = 201;
-                    task->data[12] = 0;
-                }
-            }
-            else
-            {
-                PlaySE(SE_BOO);
-                task->tState = 301;
+                PlaySE(SE_PIN);
+                task->tState = 201;
+                task->data[12] = 0;
             }
         }
-        break;
+        else
+        {
+            PlaySE(SE_BOO);
+            task->tState = 301;
+        }
+    }
+    break;
     case 201:
         // We're the link master. Delay for 30 frames per connected player.
         if (GetSavedPlayerCount() == GetLinkPlayerCount_2() && ++task->data[12] > (GetLinkPlayerCount_2() * 30))
@@ -451,33 +445,33 @@ static void Task_MixingRecordsRecv(u8 taskId)
         }
         break;
     case 2:
-        {
-            u8 subTaskId;
+    {
+        u8 subTaskId;
 
-            task->data[6] = GetLinkPlayerCount_2();
-            task->tState = 0;
-            task->tMultiplayerId = GetMultiplayerId_();
-            task->func = Task_SendPacket;
-            if (Link_AnyPartnersPlayingRubyOrSapphire())
-            {
-                StorePtrInTaskData(sSentRecord, &task->tSentRecord);
-                subTaskId = CreateTask(Task_CopyReceiveBuffer, 80);
-                task->tCopyTaskId = subTaskId;
-                gTasks[subTaskId].tParentTaskId = taskId;
-                StorePtrInTaskData(sReceivedRecords, &gTasks[subTaskId].tRecvRecords);
-                sRecordStructSize = sizeof(struct PlayerRecordRS);
-            }
-            else
-            {
-                StorePtrInTaskData(sSentRecord, &task->tSentRecord);
-                subTaskId = CreateTask(Task_CopyReceiveBuffer, 80);
-                task->tCopyTaskId = subTaskId;
-                gTasks[subTaskId].tParentTaskId = taskId;
-                StorePtrInTaskData(sReceivedRecords, &gTasks[subTaskId].tRecvRecords);
-                sRecordStructSize = sizeof(struct PlayerRecordEmerald);
-            }
+        task->data[6] = GetLinkPlayerCount_2();
+        task->tState = 0;
+        task->tMultiplayerId = GetMultiplayerId_();
+        task->func = Task_SendPacket;
+        if (Link_AnyPartnersPlayingRubyOrSapphire())
+        {
+            StorePtrInTaskData(sSentRecord, &task->tSentRecord);
+            subTaskId = CreateTask(Task_CopyReceiveBuffer, 80);
+            task->tCopyTaskId = subTaskId;
+            gTasks[subTaskId].tParentTaskId = taskId;
+            StorePtrInTaskData(sReceivedRecords, &gTasks[subTaskId].tRecvRecords);
+            sRecordStructSize = sizeof(struct PlayerRecordRS);
         }
-        break;
+        else
+        {
+            StorePtrInTaskData(sSentRecord, &task->tSentRecord);
+            subTaskId = CreateTask(Task_CopyReceiveBuffer, 80);
+            task->tCopyTaskId = subTaskId;
+            gTasks[subTaskId].tParentTaskId = taskId;
+            StorePtrInTaskData(sReceivedRecords, &gTasks[subTaskId].tRecvRecords);
+            sRecordStructSize = sizeof(struct PlayerRecordEmerald);
+        }
+    }
+    break;
     case 5: // wait 60 frames
         if (++task->data[10] > 60)
         {
@@ -494,13 +488,13 @@ static void Task_SendPacket(u8 taskId)
     switch (task->tState)
     {
     case 0: // Copy record data chunk to send buffer
-        {
-            void *recordData = LoadPtrFromTaskData(&task->tSentRecord) + task->tNumChunksSent * BUFFER_CHUNK_SIZE;
+    {
+        void *recordData = LoadPtrFromTaskData(&task->tSentRecord) + task->tNumChunksSent * BUFFER_CHUNK_SIZE;
 
-            memcpy(gBlockSendBuffer, recordData, BUFFER_CHUNK_SIZE);
-            task->tState++;
-        }
-        break;
+        memcpy(gBlockSendBuffer, recordData, BUFFER_CHUNK_SIZE);
+        task->tState++;
+    }
+    break;
     case 1:
         if (GetMultiplayerId() == 0)
             SendBlockRequest(BLOCK_REQ_SIZE_200);
@@ -716,7 +710,8 @@ static u8 GetDaycareMailItemId(struct DaycareMail *mail)
 
 // Indexes for a 2 element array used to store the multiplayer id and daycare
 // slot that correspond to a daycare Pokémon that can hold an item.
-enum {
+enum
+{
     MULTIPLAYER_ID,
     DAYCARE_SLOT,
 };
@@ -914,7 +909,7 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
             else if (itemId1 && !itemId2)
                 idxs[j][DAYCARE_SLOT] = 0;
             else if (!itemId1 && itemId2)
-                 idxs[j][DAYCARE_SLOT] = 1;
+                idxs[j][DAYCARE_SLOT] = 1;
 
             j++;
         }
@@ -964,7 +959,6 @@ static void ReceiveDaycareMailData(struct RecordMixingDaycareMail *records, size
     memcpy(&gSaveBlock1Ptr->daycare.mons[1].mail, &mixMail->mail[1], sizeof(struct DaycareMail));
     SeedRng(oldSeed);
 }
-
 
 static void ReceiveGiftItem(u16 *item, u8 multiplayerId)
 {
@@ -1059,60 +1053,6 @@ static void Task_DoRecordMixing(u8 taskId)
     }
 }
 
-static void GetSavedApprentices(struct Apprentice *dst, struct Apprentice *src)
-{
-    s32 i, id;
-    s32 apprenticeSaveId, oldPlayerApprenticeSaveId;
-    s32 numOldPlayerApprentices, numMixApprentices;
-
-    dst[0].playerName[0] = EOS;
-    dst[1].playerName[0] = EOS;
-
-    dst[0] = src[0];
-
-    oldPlayerApprenticeSaveId = 0;
-    numOldPlayerApprentices = 0;
-    apprenticeSaveId = 0;
-    numMixApprentices = 0;
-    for (i = 0; i < 2; i++)
-    {
-        id = (i + gSaveBlock2Ptr->playerApprentice.saveId) % (APPRENTICE_COUNT - 1) + 1;
-        if (src[id].playerName[0] != EOS)
-        {
-            if (GetTrainerId(src[id].playerId) != GetTrainerId(gSaveBlock2Ptr->playerTrainerId))
-            {
-                numMixApprentices++;
-                apprenticeSaveId = id;
-            }
-            if (GetTrainerId(src[id].playerId) == GetTrainerId(gSaveBlock2Ptr->playerTrainerId))
-            {
-                numOldPlayerApprentices++;
-                oldPlayerApprenticeSaveId = id;
-            }
-        }
-    }
-
-    // Prefer passing on other mixed Apprentices rather than old player's Apprentices
-    if (numMixApprentices == 0 && numOldPlayerApprentices != 0)
-    {
-        numMixApprentices = numOldPlayerApprentices;
-        apprenticeSaveId = oldPlayerApprenticeSaveId;
-    }
-
-    switch (numMixApprentices)
-    {
-    case 1:
-        dst[1] = src[apprenticeSaveId];
-        break;
-    case 2:
-        if (Random2() > 0x3333)
-            dst[1] = src[gSaveBlock2Ptr->playerApprentice.saveId + 1];
-        else
-            dst[1] = src[((gSaveBlock2Ptr->playerApprentice.saveId + 1) % (APPRENTICE_COUNT - 1) + 1)];
-        break;
-    }
-}
-
 void GetPlayerHallRecords(struct PlayerHallRecords *dst)
 {
     s32 i, j;
@@ -1149,58 +1089,6 @@ void GetPlayerHallRecords(struct PlayerHallRecords *dst)
         dst->onePlayer[RANKING_HALL_PYRAMID][i].winStreak = gSaveBlock2Ptr->frontier.pyramidRecordStreaks[i];
 
         dst->twoPlayers[i].winStreak = gSaveBlock2Ptr->frontier.towerRecordWinStreaks[FRONTIER_MODE_LINK_MULTIS][i];
-    }
-}
-
-static bool32 IsApprenticeAlreadySaved(struct Apprentice *mixApprentice, struct Apprentice *apprentices)
-{
-    s32 i;
-
-    for (i = 0; i < APPRENTICE_COUNT; i++)
-    {
-        if (GetTrainerId(mixApprentice->playerId) == GetTrainerId(apprentices[i].playerId)
-            && mixApprentice->number == apprentices[i].number)
-            return TRUE;
-    }
-
-    return FALSE;
-}
-
-static void ReceiveApprenticeData(struct Apprentice *records, size_t recordSize, u32 multiplayerId)
-{
-    s32 i, numApprentices, apprenticeId;
-    struct Apprentice *mixApprentice;
-    u32 mixIndices[MAX_LINK_PLAYERS];
-    u32 apprenticeSaveId;
-
-    ShufflePlayerIndices(mixIndices);
-    mixApprentice = (void *)records + (recordSize * mixIndices[multiplayerId]);
-    numApprentices = 0;
-    apprenticeId = 0;
-    for (i = 0; i < 2; i++)
-    {
-        if (mixApprentice[i].playerName[0] != EOS && !IsApprenticeAlreadySaved(&mixApprentice[i], &gSaveBlock2Ptr->apprentices[0]))
-        {
-            numApprentices++;
-            apprenticeId = i;
-        }
-    }
-
-    switch (numApprentices)
-    {
-    case 1:
-        apprenticeSaveId = gSaveBlock2Ptr->playerApprentice.saveId + 1;
-        gSaveBlock2Ptr->apprentices[apprenticeSaveId] = mixApprentice[apprenticeId];
-        gSaveBlock2Ptr->playerApprentice.saveId = (gSaveBlock2Ptr->playerApprentice.saveId + 1) % (APPRENTICE_COUNT - 1);
-        break;
-    case 2:
-        for (i = 0; i < 2; i++)
-        {
-            apprenticeSaveId = ((i ^ 1) + gSaveBlock2Ptr->playerApprentice.saveId) % (APPRENTICE_COUNT - 1) + 1;
-            gSaveBlock2Ptr->apprentices[apprenticeSaveId] = mixApprentice[i];
-        }
-        gSaveBlock2Ptr->playerApprentice.saveId = (gSaveBlock2Ptr->playerApprentice.saveId + 2) % (APPRENTICE_COUNT - 1);
-        break;
     }
 }
 
@@ -1267,8 +1155,7 @@ static void GetNewHallRecords(struct RecordMixingHallRecords *dst, void *records
             {
                 // If the new trainer pair is already in the existing saved records, only
                 // use the new pair if the win streak is better
-                if (GetTrainerId(dst->hallRecords2P[j][l].id1) == GetTrainerId(sPartnerHallRecords[k]->twoPlayers[j].id1)
-                 && GetTrainerId(dst->hallRecords2P[j][l].id2) == GetTrainerId(sPartnerHallRecords[k]->twoPlayers[j].id2))
+                if (GetTrainerId(dst->hallRecords2P[j][l].id1) == GetTrainerId(sPartnerHallRecords[k]->twoPlayers[j].id1) && GetTrainerId(dst->hallRecords2P[j][l].id2) == GetTrainerId(sPartnerHallRecords[k]->twoPlayers[j].id2))
                 {
                     repeatTrainers++;
                     if (dst->hallRecords2P[j][l].winStreak < sPartnerHallRecords[k]->twoPlayers[j].winStreak)
@@ -1390,7 +1277,6 @@ static void SanitizeDaycareMailForRuby(struct RecordMixingDaycareMail *src)
 
 static void SanitizeRubyBattleTowerRecord(struct RSBattleTowerRecord *src)
 {
-
 }
 
 static void SanitizeEmeraldBattleTowerRecord(struct EmeraldBattleTowerRecord *dst)
